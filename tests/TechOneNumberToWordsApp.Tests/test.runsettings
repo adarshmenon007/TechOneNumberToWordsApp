@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <ResultsDirectory>TestResults</ResultsDirectory>
+  </RunConfiguration>
+
+  <!-- Results: .trx file plus a console summary. -->
+  <LoggerRunSettings>
+    <Loggers>
+      <Logger friendlyName="trx" enabled="True" />
+      <Logger friendlyName="console" enabled="True">
+        <Configuration>
+          <Verbosity>normal</Verbosity>
+        </Configuration>
+      </Logger>
+    </Loggers>
+  </LoggerRunSettings>
+
+  <!-- Coverage (D46): Microsoft's collector, Cobertura output. The test assembly is excluded,
+       so the report covers Core and Web only. No --collect flag is needed. -->
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="Code Coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <CodeCoverage>
+            <ModulePaths>
+              <Exclude>
+                <ModulePath>.*Tests\.dll$</ModulePath>
+              </Exclude>
+            </ModulePaths>
+          </CodeCoverage>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
