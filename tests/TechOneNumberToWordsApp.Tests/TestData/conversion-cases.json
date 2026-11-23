@@ -250,5 +250,75 @@
     "description": "Ninety-nine: largest two-digit amount",
     "input": "99",
     "expectedWords": "NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "WORD-034",
+    "decisions": ["O1"],
+    "description": "One hundred is written ONE HUNDRED, not A HUNDRED",
+    "input": "100",
+    "expectedWords": "ONE HUNDRED DOLLARS"
+  },
+  {
+    "id": "WORD-035",
+    "decisions": ["O1"],
+    "description": "Hundreds word with another digit",
+    "input": "500",
+    "expectedWords": "FIVE HUNDRED DOLLARS"
+  },
+  {
+    "id": "WORD-036",
+    "decisions": ["D8","O1"],
+    "description": "Exact hundreds take no AND because nothing follows",
+    "input": "200",
+    "expectedWords": "TWO HUNDRED DOLLARS"
+  },
+  {
+    "id": "AND-001",
+    "decisions": ["D8"],
+    "description": "AND between the hundreds and a single unit",
+    "input": "101",
+    "expectedWords": "ONE HUNDRED AND ONE DOLLARS"
+  },
+  {
+    "id": "AND-002",
+    "decisions": ["D8"],
+    "description": "AND before a round ten",
+    "input": "110",
+    "expectedWords": "ONE HUNDRED AND TEN DOLLARS"
+  },
+  {
+    "id": "AND-003",
+    "decisions": ["D8"],
+    "description": "AND before a teen",
+    "input": "115",
+    "expectedWords": "ONE HUNDRED AND FIFTEEN DOLLARS"
+  },
+  {
+    "id": "AND-004",
+    "decisions": ["D8"],
+    "description": "AND before a round twenty",
+    "input": "120",
+    "expectedWords": "ONE HUNDRED AND TWENTY DOLLARS"
+  },
+  {
+    "id": "AND-005",
+    "decisions": ["D8"],
+    "description": "The dollars part of the brief's example",
+    "input": "123",
+    "expectedWords": "ONE HUNDRED AND TWENTY-THREE DOLLARS"
+  },
+  {
+    "id": "AND-006",
+    "decisions": ["D8"],
+    "description": "AND before the largest two-digit remainder",
+    "input": "199",
+    "expectedWords": "ONE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "AND-007",
+    "decisions": ["D8"],
+    "description": "Largest amount below one thousand",
+    "input": "999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE DOLLARS"
   }
 ]
