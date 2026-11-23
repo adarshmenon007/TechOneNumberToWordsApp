@@ -17,7 +17,7 @@
   </LoggerRunSettings>
 
   <!-- Coverage (D46): Microsoft's collector, Cobertura output. The test assembly is excluded,
-       so the report covers Core and Web only. No --collect flag is needed. -->
+       so the report covers Core and Web only. No collect flag is needed. -->
   <DataCollectionRunSettings>
     <DataCollectors>
       <DataCollector friendlyName="Code Coverage">
