@@ -320,5 +320,124 @@
     "description": "Largest amount below one thousand",
     "input": "999",
     "expectedWords": "NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "SCALE-001",
+    "decisions": ["O1"],
+    "description": "First amount that needs a scale word",
+    "input": "1000",
+    "expectedWords": "ONE THOUSAND DOLLARS"
+  },
+  {
+    "id": "SCALE-002",
+    "decisions": ["O1"],
+    "description": "Written ONE THOUSAND FIVE HUNDRED, never FIFTEEN HUNDRED",
+    "input": "1500",
+    "expectedWords": "ONE THOUSAND FIVE HUNDRED DOLLARS"
+  },
+  {
+    "id": "SCALE-003",
+    "decisions": ["O1"],
+    "description": "Largest amount below one million",
+    "input": "999999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "SCALE-004",
+    "decisions": ["O1"],
+    "description": "First amount that needs MILLION",
+    "input": "1000000",
+    "expectedWords": "ONE MILLION DOLLARS"
+  },
+  {
+    "id": "SCALE-005",
+    "decisions": ["O1"],
+    "description": "Largest amount below one billion",
+    "input": "999999999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "SCALE-006",
+    "decisions": ["O1"],
+    "description": "First amount that needs BILLION",
+    "input": "1000000000",
+    "expectedWords": "ONE BILLION DOLLARS"
+  },
+  {
+    "id": "SCALE-007",
+    "decisions": ["O1"],
+    "description": "Largest amount below one trillion",
+    "input": "999999999999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "SCALE-008",
+    "decisions": ["O1"],
+    "description": "First amount that needs TRILLION",
+    "input": "1000000000000",
+    "expectedWords": "ONE TRILLION DOLLARS"
+  },
+  {
+    "id": "AND-008",
+    "decisions": ["D8"],
+    "description": "Final group of 1-99 after a higher group takes AND",
+    "input": "1005",
+    "expectedWords": "ONE THOUSAND AND FIVE DOLLARS"
+  },
+  {
+    "id": "AND-009",
+    "decisions": ["D8"],
+    "description": "Final group of 100 or more takes no extra AND",
+    "input": "1100",
+    "expectedWords": "ONE THOUSAND ONE HUNDRED DOLLARS"
+  },
+  {
+    "id": "AND-010",
+    "decisions": ["D8"],
+    "description": "AND inside the thousands group; an empty final group adds none",
+    "input": "101000",
+    "expectedWords": "ONE HUNDRED AND ONE THOUSAND DOLLARS"
+  },
+  {
+    "id": "AND-011",
+    "decisions": ["D8"],
+    "description": "No AND between large groups when the final group is a plain hundred",
+    "input": "1000100",
+    "expectedWords": "ONE MILLION ONE HUNDRED DOLLARS"
+  },
+  {
+    "id": "AND-012",
+    "decisions": ["D8"],
+    "description": "AND before a final 1-99 with empty groups between",
+    "input": "2000050",
+    "expectedWords": "TWO MILLION AND FIFTY DOLLARS"
+  },
+  {
+    "id": "AND-013",
+    "decisions": ["D8"],
+    "description": "AND before a final single unit",
+    "input": "1000001",
+    "expectedWords": "ONE MILLION AND ONE DOLLARS"
+  },
+  {
+    "id": "AND-014",
+    "decisions": ["D8"],
+    "description": "Only the final group gets AND, not the one between",
+    "input": "1001005",
+    "expectedWords": "ONE MILLION ONE THOUSAND AND FIVE DOLLARS"
+  },
+  {
+    "id": "AND-015",
+    "decisions": ["D8"],
+    "description": "AND inside the final group, none added before it",
+    "input": "1234",
+    "expectedWords": "ONE THOUSAND TWO HUNDRED AND THIRTY-FOUR DOLLARS"
+  },
+  {
+    "id": "LIM-001",
+    "decisions": ["D58"],
+    "description": "Maximum amount: 999,999,999,999,999 dollars",
+    "input": "999999999999999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
   }
 ]
