@@ -68,5 +68,187 @@
     "description": "Single digit nine",
     "input": "9",
     "expectedWords": "NINE DOLLARS"
+  },
+  {
+    "id": "WORD-008",
+    "decisions": ["O1"],
+    "description": "Ten: first two-digit amount",
+    "input": "10",
+    "expectedWords": "TEN DOLLARS"
+  },
+  {
+    "id": "WORD-009",
+    "decisions": ["O1"],
+    "description": "Teen word eleven",
+    "input": "11",
+    "expectedWords": "ELEVEN DOLLARS"
+  },
+  {
+    "id": "WORD-010",
+    "decisions": ["O1"],
+    "description": "Teen word twelve",
+    "input": "12",
+    "expectedWords": "TWELVE DOLLARS"
+  },
+  {
+    "id": "WORD-011",
+    "decisions": ["O1"],
+    "description": "Teen word thirteen",
+    "input": "13",
+    "expectedWords": "THIRTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-012",
+    "decisions": ["O1"],
+    "description": "Teen word fourteen",
+    "input": "14",
+    "expectedWords": "FOURTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-013",
+    "decisions": ["O1"],
+    "description": "Teen word fifteen",
+    "input": "15",
+    "expectedWords": "FIFTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-014",
+    "decisions": ["O1"],
+    "description": "Teen word sixteen",
+    "input": "16",
+    "expectedWords": "SIXTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-015",
+    "decisions": ["O1"],
+    "description": "Teen word seventeen",
+    "input": "17",
+    "expectedWords": "SEVENTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-016",
+    "decisions": ["O1"],
+    "description": "Teen word eighteen",
+    "input": "18",
+    "expectedWords": "EIGHTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-017",
+    "decisions": ["O1"],
+    "description": "Nineteen: last of the teens",
+    "input": "19",
+    "expectedWords": "NINETEEN DOLLARS"
+  },
+  {
+    "id": "WORD-018",
+    "decisions": ["O1"],
+    "description": "Twenty: first round ten, no hyphen",
+    "input": "20",
+    "expectedWords": "TWENTY DOLLARS"
+  },
+  {
+    "id": "WORD-019",
+    "decisions": ["O1"],
+    "description": "Round ten thirty, no hyphen",
+    "input": "30",
+    "expectedWords": "THIRTY DOLLARS"
+  },
+  {
+    "id": "WORD-020",
+    "decisions": ["O1"],
+    "description": "Round ten forty, no hyphen",
+    "input": "40",
+    "expectedWords": "FORTY DOLLARS"
+  },
+  {
+    "id": "WORD-021",
+    "decisions": ["O1"],
+    "description": "Round ten fifty, no hyphen",
+    "input": "50",
+    "expectedWords": "FIFTY DOLLARS"
+  },
+  {
+    "id": "WORD-022",
+    "decisions": ["O1"],
+    "description": "Round ten sixty, no hyphen",
+    "input": "60",
+    "expectedWords": "SIXTY DOLLARS"
+  },
+  {
+    "id": "WORD-023",
+    "decisions": ["O1"],
+    "description": "Round ten seventy, no hyphen",
+    "input": "70",
+    "expectedWords": "SEVENTY DOLLARS"
+  },
+  {
+    "id": "WORD-024",
+    "decisions": ["O1"],
+    "description": "Round ten eighty, no hyphen",
+    "input": "80",
+    "expectedWords": "EIGHTY DOLLARS"
+  },
+  {
+    "id": "WORD-025",
+    "decisions": ["O1"],
+    "description": "Round ten ninety, no hyphen",
+    "input": "90",
+    "expectedWords": "NINETY DOLLARS"
+  },
+  {
+    "id": "WORD-026",
+    "decisions": ["O1"],
+    "description": "Twenty-one: first hyphenated amount",
+    "input": "21",
+    "expectedWords": "TWENTY-ONE DOLLARS"
+  },
+  {
+    "id": "WORD-027",
+    "decisions": ["O1"],
+    "description": "Hyphen after thirty",
+    "input": "35",
+    "expectedWords": "THIRTY-FIVE DOLLARS"
+  },
+  {
+    "id": "WORD-028",
+    "decisions": ["O1"],
+    "description": "Hyphen after forty (spelt FORTY, not FOURTY)",
+    "input": "48",
+    "expectedWords": "FORTY-EIGHT DOLLARS"
+  },
+  {
+    "id": "WORD-029",
+    "decisions": ["O1"],
+    "description": "Hyphen after fifty",
+    "input": "52",
+    "expectedWords": "FIFTY-TWO DOLLARS"
+  },
+  {
+    "id": "WORD-030",
+    "decisions": ["O1"],
+    "description": "Hyphen after sixty",
+    "input": "67",
+    "expectedWords": "SIXTY-SEVEN DOLLARS"
+  },
+  {
+    "id": "WORD-031",
+    "decisions": ["O1"],
+    "description": "Hyphen after seventy",
+    "input": "73",
+    "expectedWords": "SEVENTY-THREE DOLLARS"
+  },
+  {
+    "id": "WORD-032",
+    "decisions": ["O1"],
+    "description": "Hyphen after eighty",
+    "input": "86",
+    "expectedWords": "EIGHTY-SIX DOLLARS"
+  },
+  {
+    "id": "WORD-033",
+    "decisions": ["O1"],
+    "description": "Ninety-nine: largest two-digit amount",
+    "input": "99",
+    "expectedWords": "NINETY-NINE DOLLARS"
   }
 ]
