@@ -4,7 +4,7 @@ namespace TechOneNumberToWordsApp.Core;
 /// Spells a whole number in English capitals, for example 45 as "FORTY-FIVE" (O1).
 /// </summary>
 /// <remarks>
-/// Built test-first. For now it covers 0 to 99; hundreds and the larger scales are added with their tests.
+/// Built test-first. For now it covers 0 to 999; the larger scales are added with their tests.
 /// </remarks>
 internal static class NumberWords
 {
@@ -24,20 +24,35 @@ internal static class NumberWords
     /// <summary>Spells <paramref name="number"/> in words.</summary>
     public static string Spell(long number)
     {
+        if (number < 100)
+        {
+            return SpellBelowHundred(number);
+        }
+
+        if (number < 1000)
+        {
+            var hundreds = $"{BelowTwenty[number / 100]} HUNDRED";
+            var rest = number % 100;
+
+            // Inside a group of three digits, AND links the hundreds to whatever follows them (D8):
+            // 123 is ONE HUNDRED AND TWENTY-THREE, but 200 is just TWO HUNDRED.
+            return rest == 0 ? hundreds : $"{hundreds} AND {SpellBelowHundred(rest)}";
+        }
+
+        throw new NotImplementedException("Numbers of 1,000 or more are not supported so far; more rules arrive test-first.");
+    }
+
+    private static string SpellBelowHundred(long number)
+    {
         if (number < 20)
         {
             return BelowTwenty[number];
         }
 
-        if (number < 100)
-        {
-            var tens = Tens[number / 10];
-            var units = number % 10;
+        var tens = Tens[number / 10];
+        var units = number % 10;
 
-            // 21 to 99 are written with a hyphen between the tens and the units: FORTY-FIVE.
-            return units == 0 ? tens : $"{tens}-{BelowTwenty[units]}";
-        }
-
-        throw new NotImplementedException("Numbers of 100 or more are not supported so far; more rules arrive test-first.");
+        // 21 to 99 are written with a hyphen between the tens and the units: FORTY-FIVE.
+        return units == 0 ? tens : $"{tens}-{BelowTwenty[units]}";
     }
 }
