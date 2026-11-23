@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ZERO-001",
+    "decisions": ["D58"],
+    "description": "Zero is written out and takes the plural unit",
+    "input": "0",
+    "expectedWords": "ZERO DOLLARS"
+  },
+  {
+    "id": "PLUR-001",
+    "decisions": ["D58"],
+    "description": "Exactly one uses the singular unit",
+    "input": "1",
+    "expectedWords": "ONE DOLLAR"
+  },
+  {
+    "id": "PLUR-002",
+    "decisions": ["D58"],
+    "description": "Two is the first amount that takes the plural unit",
+    "input": "2",
+    "expectedWords": "TWO DOLLARS"
+  },
+  {
+    "id": "WORD-001",
+    "decisions": ["O1"],
+    "description": "Single digit three",
+    "input": "3",
+    "expectedWords": "THREE DOLLARS"
+  },
+  {
+    "id": "WORD-002",
+    "decisions": ["O1"],
+    "description": "Single digit four",
+    "input": "4",
+    "expectedWords": "FOUR DOLLARS"
+  },
+  {
+    "id": "WORD-003",
+    "decisions": ["O1"],
+    "description": "Single digit five",
+    "input": "5",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "WORD-004",
+    "decisions": ["O1"],
+    "description": "Single digit six",
+    "input": "6",
+    "expectedWords": "SIX DOLLARS"
+  },
+  {
+    "id": "WORD-005",
+    "decisions": ["O1"],
+    "description": "Single digit seven",
+    "input": "7",
+    "expectedWords": "SEVEN DOLLARS"
+  },
+  {
+    "id": "WORD-006",
+    "decisions": ["O1"],
+    "description": "Single digit eight",
+    "input": "8",
+    "expectedWords": "EIGHT DOLLARS"
+  },
+  {
+    "id": "WORD-007",
+    "decisions": ["O1"],
+    "description": "Single digit nine",
+    "input": "9",
+    "expectedWords": "NINE DOLLARS"
+  }
+]
