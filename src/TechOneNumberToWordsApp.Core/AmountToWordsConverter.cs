@@ -8,13 +8,16 @@ namespace TechOneNumberToWordsApp.Core;
 public sealed class AmountToWordsConverter
 {
     /// <summary>The longest raw input accepted, counting every character including spaces (D29).</summary>
-    public const int MaxInputLength = 30;
+    internal const int MaxInputLength = 30;
 
     /// <summary>The most digits allowed before the decimal point, not counting leading zeros (D58).</summary>
-    public const int MaxIntegerDigits = 15;
+    internal const int MaxIntegerDigits = 15;
 
-    /// <summary>The most digits allowed after the decimal point (E1).</summary>
-    public const int MaxDecimalPlaces = 2;
+    /// <summary>
+    /// The most digits allowed after the decimal point (E1). This must stay 2: cents are fixed (D40), and the parser,
+    /// <c>MoneyAmount</c> and the cents wording all assume two digits.
+    /// </summary>
+    internal const int MaxDecimalPlaces = 2;
 
     /// <summary>Converts the amount the user typed into words, or says what is wrong with it.</summary>
     /// <param name="input">The raw amount, for example "45.50".</param>
@@ -30,6 +33,7 @@ public sealed class AmountToWordsConverter
             return ConversionResult.Failure(error);
         }
 
+        // The validator needs the raw text to measure the length cap (D29); the parser only wants the trimmed text.
         var amount = AmountParser.Parse(AmountValidator.TrimSpacesAndTabs(input));
 
         return ConversionResult.Success(MoneyWords.Spell(amount));
