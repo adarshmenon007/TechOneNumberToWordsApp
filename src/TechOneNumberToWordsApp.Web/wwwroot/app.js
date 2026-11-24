@@ -94,7 +94,6 @@
         busy = true;
         button.disabled = true;
         input.readOnly = true;
-        output.setAttribute('aria-busy', 'true');
         show({ kind: 'progress', text: CONVERTING });
 
         let outcome;
@@ -109,8 +108,6 @@
             if (document.activeElement === null || document.activeElement === document.body) {
                 button.focus();
             }
-            // Cleared before the answer is written, so a screen reader announces it.
-            output.removeAttribute('aria-busy');
         }
 
         show(outcome);

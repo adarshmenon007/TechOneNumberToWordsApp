@@ -69,7 +69,7 @@ button:disabled {
 
 input:focus-visible,
 button:focus-visible {
-  outline: 3px solid #f2a900;
+  outline: 3px solid #b36b00;
   outline-offset: 2px;
 }
 

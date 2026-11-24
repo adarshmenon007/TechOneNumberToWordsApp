@@ -29,7 +29,7 @@ builder.Services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadReq
 
 var app = builder.Build();
 
-// First, so every response gets the headers, including errors and, later, static files (D34).
+// First, so every response gets the headers, including errors and the static files (D34).
 app.UseSecurityHeaders();
 
 // HTTPS: HSTS everywhere except Development (it would stick in a developer's browser), and always redirect plain http
