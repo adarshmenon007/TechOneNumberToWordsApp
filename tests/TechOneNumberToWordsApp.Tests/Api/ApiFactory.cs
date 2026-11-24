@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace TechOneNumberToWordsApp.Tests.Api;
@@ -12,6 +14,7 @@ namespace TechOneNumberToWordsApp.Tests.Api;
 public sealed class ApiFactory : WebApplicationFactory<Program>
 {
     private readonly string _environment;
+    private readonly Action<IServiceCollection>? _configureServices;
 
     public ApiFactory()
         : this("Testing")
@@ -20,7 +23,12 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
 
     // Internal so xUnit sees one public constructor, as it requires of a fixture. Tests that need another
     // environment create the factory themselves.
-    internal ApiFactory(string environment) => _environment = environment;
+    // The optional services action lets a test replace a registration, for example the converter in the 500 test (D23).
+    internal ApiFactory(string environment, Action<IServiceCollection>? configureServices = null)
+    {
+        _environment = environment;
+        _configureServices = configureServices;
+    }
 
     /// <summary>Everything the application logs while this factory is running.</summary>
     public InMemoryLogProvider Logs { get; } = new();
@@ -39,6 +47,11 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment(_environment);
+        if (_configureServices is not null)
+        {
+            builder.ConfigureTestServices(_configureServices);
+        }
+
         builder.ConfigureLogging(logging =>
         {
             // Only our provider, so a test sees every entry and the test output stays quiet.
