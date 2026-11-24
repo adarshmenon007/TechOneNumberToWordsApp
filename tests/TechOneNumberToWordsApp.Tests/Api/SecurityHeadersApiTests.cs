@@ -23,7 +23,8 @@ public class SecurityHeadersApiTests
     public async Task SuccessfulResponse_HasSecurityHeaders()
     {
         using var factory = new ApiFactory();
-        using var response = await PostAsync(factory, """{"amount":"5"}""");
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, """{"amount":"5"}""");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         AssertSecurityHeaders(response);
@@ -35,7 +36,8 @@ public class SecurityHeadersApiTests
     public async Task BadRequestResponse_HasSecurityHeaders()
     {
         using var factory = new ApiFactory();
-        using var response = await PostAsync(factory, """{"amount":"abc"}""");
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, """{"amount":"abc"}""");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         AssertSecurityHeaders(response);
@@ -61,15 +63,16 @@ public class SecurityHeadersApiTests
     public async Task ServerErrorResponse_HasSecurityHeaders()
     {
         using var factory = ApiFactory.WithConverterThatThrows("boom");
-        using var response = await PostAsync(factory, """{"amount":"5"}""");
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, """{"amount":"5"}""");
 
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         AssertSecurityHeaders(response);
     }
 
-    private static async Task<HttpResponseMessage> PostAsync(ApiFactory factory, string json)
+    // The caller owns the factory and the client and keeps them alive until it has read the response.
+    private static async Task<HttpResponseMessage> PostAsync(HttpClient client, string json)
     {
-        using var client = factory.CreateHttpsClient();
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         return await client.PostAsync("/api/convert", content, TestContext.Current.CancellationToken);

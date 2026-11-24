@@ -23,7 +23,9 @@ public class RequestErrorApiTests
     [Trait("Decision", "D24e")]
     public async Task EmptyBody_IsInvalidRequest(string environment)
     {
-        using var response = await PostAsync(environment, "application/json", string.Empty);
+        using var factory = new ApiFactory(environment);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, "application/json", string.Empty);
 
         await ProblemAssert.RequestErrorAsync(response, HttpStatusCode.BadRequest, "InvalidRequest", TestContext.Current.CancellationToken);
     }
@@ -34,7 +36,9 @@ public class RequestErrorApiTests
     [Trait("Decision", "D24e")]
     public async Task AmountAbsent_IsMissingField(string environment)
     {
-        using var response = await PostAsync(environment, "application/json", "{}");
+        using var factory = new ApiFactory(environment);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, "application/json", "{}");
 
         await ProblemAssert.RequestErrorAsync(response, HttpStatusCode.BadRequest, "MissingField", TestContext.Current.CancellationToken);
     }
@@ -45,7 +49,9 @@ public class RequestErrorApiTests
     [Trait("Decision", "D24e")]
     public async Task AmountNull_IsMissingField(string environment)
     {
-        using var response = await PostAsync(environment, "application/json", """{"amount":null}""");
+        using var factory = new ApiFactory(environment);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, "application/json", """{"amount":null}""");
 
         await ProblemAssert.RequestErrorAsync(response, HttpStatusCode.BadRequest, "MissingField", TestContext.Current.CancellationToken);
     }
@@ -57,7 +63,9 @@ public class RequestErrorApiTests
     [Trait("Decision", "D41")]
     public async Task MalformedJson_IsInvalidRequest(string environment)
     {
-        using var response = await PostAsync(environment, "application/json", """{"amount":""");
+        using var factory = new ApiFactory(environment);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, "application/json", """{"amount":""");
 
         await ProblemAssert.RequestErrorAsync(response, HttpStatusCode.BadRequest, "InvalidRequest", TestContext.Current.CancellationToken);
     }
@@ -69,7 +77,9 @@ public class RequestErrorApiTests
     [Trait("Decision", "D41")]
     public async Task AmountSentAsJsonNumber_IsInvalidRequest(string environment)
     {
-        using var response = await PostAsync(environment, "application/json", """{"amount":5}""");
+        using var factory = new ApiFactory(environment);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, "application/json", """{"amount":5}""");
 
         await ProblemAssert.RequestErrorAsync(response, HttpStatusCode.BadRequest, "InvalidRequest", TestContext.Current.CancellationToken);
     }
@@ -80,7 +90,9 @@ public class RequestErrorApiTests
     [Trait("Decision", "E5")]
     public async Task UnknownExtraField_IsIgnored(string environment)
     {
-        using var response = await PostAsync(environment, "application/json", """{"amount":"5","extra":1}""");
+        using var factory = new ApiFactory(environment);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, "application/json", """{"amount":"5","extra":1}""");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("application/json", response.Content.Headers.ContentType?.MediaType);
@@ -95,7 +107,9 @@ public class RequestErrorApiTests
     [Trait("Decision", "D41")]
     public async Task NonJsonContentType_IsUnsupportedMediaType(string environment)
     {
-        using var response = await PostAsync(environment, "text/plain", "5");
+        using var factory = new ApiFactory(environment);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAsync(client, "text/plain", "5");
 
         await ProblemAssert.RequestErrorAsync(response, HttpStatusCode.UnsupportedMediaType, "UnsupportedMediaType", TestContext.Current.CancellationToken);
     }
@@ -128,11 +142,10 @@ public class RequestErrorApiTests
         await ProblemAssert.RequestErrorAsync(response, HttpStatusCode.MethodNotAllowed, "MethodNotAllowed", TestContext.Current.CancellationToken);
     }
 
-    // Posts raw text with the given content type, so the tests control exactly what goes on the wire.
-    private static async Task<HttpResponseMessage> PostAsync(string environment, string contentType, string body)
+    // Posts raw text with the given content type, so the tests control exactly what goes on the wire. The caller owns the
+    // factory and the client and keeps them alive until it has read the response.
+    private static async Task<HttpResponseMessage> PostAsync(HttpClient client, string contentType, string body)
     {
-        using var factory = new ApiFactory(environment);
-        using var client = factory.CreateHttpsClient();
         using var content = new StringContent(body, Encoding.UTF8, contentType);
 
         return await client.PostAsync(ConvertPath, content, TestContext.Current.CancellationToken);

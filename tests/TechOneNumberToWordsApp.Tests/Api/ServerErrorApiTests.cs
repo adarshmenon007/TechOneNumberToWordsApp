@@ -21,7 +21,9 @@ public class ServerErrorApiTests
     [Trait("Decision", "D41")]
     public async Task UnexpectedException_Is500ServerError()
     {
-        using var response = await PostWithBrokenConverterAsync();
+        using var factory = ApiFactory.WithConverterThatThrows(Secret);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostValidAmountAsync(client);
 
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
@@ -39,7 +41,9 @@ public class ServerErrorApiTests
     [Trait("Decision", "D24")]
     public async Task UnexpectedException_BodyLeaksNothing()
     {
-        using var response = await PostWithBrokenConverterAsync();
+        using var factory = ApiFactory.WithConverterThatThrows(Secret);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostValidAmountAsync(client);
         var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
@@ -52,11 +56,10 @@ public class ServerErrorApiTests
         Assert.False(problem.TryGetProperty("exception", out _), "The body must not carry an exception object.");
     }
 
-    // A valid amount, so the failure can only come from the converter that throws when it is resolved.
-    private static async Task<HttpResponseMessage> PostWithBrokenConverterAsync()
+    // A valid amount, so the failure can only come from the converter that throws when it is resolved. The caller owns the
+    // factory and the client and keeps them alive until it has read the response.
+    private static async Task<HttpResponseMessage> PostValidAmountAsync(HttpClient client)
     {
-        using var factory = ApiFactory.WithConverterThatThrows(Secret);
-        using var client = factory.CreateHttpsClient();
         using var content = new StringContent("""{"amount":"5"}""", Encoding.UTF8, "application/json");
 
         return await client.PostAsync("/api/convert", content, TestContext.Current.CancellationToken);

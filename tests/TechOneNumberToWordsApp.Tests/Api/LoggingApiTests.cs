@@ -25,7 +25,8 @@ public class LoggingApiTests
     public async Task RejectedAmount_LogsOneInformationEntryWithTheErrorCode()
     {
         using var factory = new ApiFactory();
-        using var response = await PostAmountAsync(factory, Marker);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAmountAsync(client, Marker);
 
         var entry = Assert.Single(factory.Logs.Entries, e => e.Category == EndpointCategory);
         Assert.Equal(LogLevel.Information, entry.Level);
@@ -38,7 +39,8 @@ public class LoggingApiTests
     public async Task SuccessfulConversion_LogsNothingFromTheEndpoint()
     {
         using var factory = new ApiFactory();
-        using var response = await PostAmountAsync(factory, "5");
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAmountAsync(client, "5");
 
         Assert.True(response.IsSuccessStatusCode);
         Assert.DoesNotContain(factory.Logs.Entries, e => e.Category == EndpointCategory && e.Level >= LogLevel.Information);
@@ -50,7 +52,8 @@ public class LoggingApiTests
     public async Task RejectedAmount_TheRawInputIsInNoLogEntry()
     {
         using var factory = new ApiFactory();
-        using var response = await PostAmountAsync(factory, Marker);
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAmountAsync(client, Marker);
 
         var entries = factory.Logs.Entries;
 
@@ -70,7 +73,8 @@ public class LoggingApiTests
     {
         const string message = "boom-for-the-log";
         using var factory = ApiFactory.WithConverterThatThrows(message);
-        using var response = await PostAmountAsync(factory, "5");
+        using var client = factory.CreateHttpsClient();
+        using var response = await PostAmountAsync(client, "5");
 
         // The entry comes from the framework's exception handler, not from our code.
         var entry = Assert.Single(factory.Logs.Entries, e => e.Level >= LogLevel.Error);
@@ -88,9 +92,9 @@ public class LoggingApiTests
         Assert.Contains(responseTraceId, scopeTraceIds);
     }
 
-    private static async Task<HttpResponseMessage> PostAmountAsync(ApiFactory factory, string amount)
+    // The caller owns the factory and the client and keeps them alive until it has read the response.
+    private static async Task<HttpResponseMessage> PostAmountAsync(HttpClient client, string amount)
     {
-        using var client = factory.CreateHttpsClient();
         using var content = new StringContent(JsonSerializer.Serialize(new { amount }), Encoding.UTF8, "application/json");
 
         return await client.PostAsync("/api/convert", content, TestContext.Current.CancellationToken);
