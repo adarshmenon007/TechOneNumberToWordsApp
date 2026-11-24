@@ -54,11 +54,11 @@ sequence in one category can skip numbers that belong to a C# test (`VAL-021`, `
 | `ZERO` | Zero in every decimal-point form | 4 |
 | `PLUR` | DOLLAR vs DOLLARS, CENT vs CENTS | 4 |
 | `FMT` | Valid formats: trimming, leading zeros, commas | 14 |
-| `VAL` | Rejected input, one rule at a time (D27 checks 2–12) | 45 |
+| `VAL` | Rejected input, one rule at a time (D27 checks 2–12) | 46 |
 | `ORD` | Which error wins when an input breaks two rules (D27) | 12 |
 | `LIM` | The size limits: 30-character cap, 15 digits | 11 |
 | `API`, `SEC`, `UI` | Added at gates 2 and 3 | 0 |
-| **Total** | | **163** |
+| **Total** | | **164** |
 
 ### 1.3 Tests that are not data rows
 
@@ -107,7 +107,7 @@ Library-level evidence only. Rows marked "later" gain evidence at the gate named
 | **R5** C# | D1 | `Core` and `Web` are C# on .NET 10 | |
 | **R6** Readme | D56 | later (slice 11) | |
 | **R7** AI model and conversation history | D57 | `Docs/AI/` (exports per phase, plan copies, the claude.ai review); `Docs/AI/README.md` later | |
-| **S1** production quality | D7, D10, D19, D22, D23, D27–D29 (library) | 163 tests, one rule at a time and every ordering pair (`ORD`); 99.2% line / 99.2% branch coverage of `Core`; warnings are errors (D39) | `dotnet test`; `dotnet build` (warnings are errors) |
+| **S1** production quality | D7, D10, D19, D22, D23, D27–D29 (library) | 164 tests, one rule at a time and every ordering pair (`ORD`); 99.2% line / 99.3% branch coverage of `Core`; warnings are errors (D39) | `dotnet test`; `dotnet build` (warnings are errors) |
 | **S2** explain all code | D50, D55 | small single-purpose classes with comments that give the reason, not just the action; walkthrough later in the design document | |
 | **S3** no internet solutions | D54 | `.claude/settings.json` denies `WebSearch` and `WebFetch` | `git log -p .claude/settings.json` |
 | **S4** no libraries or NuGet packages | D4, D11 | `Core` and `Web` have no `PackageReference`; the parser, validator and wording are hand-written | `grep -c PackageReference src/*/*.csproj` prints 0 for both |
@@ -133,11 +133,11 @@ Library-level evidence only. Rows marked "later" gain evidence at the gate named
 | E1 | VAL-041..043 | 3 |
 | E2 | VAL-025..028 | 4 |
 | E3 | FMT-009..013, VAL-029..039 | 16 |
-| E4 | VAL-017..019, VAL-021 | 4 |
+| E4 | VAL-017..019, VAL-021, VAL-046 | 5 |
 | F1 | VAL-020 | 1 |
 | O1 | CENT-007..008, SCALE-001..008, WORD-001..036 | 46 |
 
-A test can link to several decisions, so the counts add up to more than 163. D7, D21 and D25 describe how the library is built
+A test can link to several decisions, so the counts add up to more than 164. D7, D21 and D25 describe how the library is built
 and tested rather than rules to test; they have no rows of their own.
 
 ### 3.3 Rejected input → error code
@@ -152,7 +152,7 @@ Every `ConversionErrorCode` has at least one test, and every rejection row also 
 | `NegativeAmount` | ORD-002, ORD-006, VAL-007, VAL-045 (4) |
 | `SignNotAllowed` | ORD-003, VAL-008 (2) |
 | `ContainsWhitespace` | ORD-004, VAL-009..010 (3) |
-| `InvalidCharacter` | ORD-005, ORD-011, VAL-011..020 (12) |
+| `InvalidCharacter` | ORD-005, ORD-011, VAL-011..020, VAL-046 (13) |
 | `MultipleDecimalPoints` | VAL-022..024 (3) |
 | `InvalidThousandsSeparator` | ORD-007, VAL-029..040 (13) |
 | `TooManyDecimalPlaces` | ORD-008, VAL-041..043 (4) |
@@ -168,11 +168,11 @@ check to win, for every neighbouring pair that could be confused (1 before 2, 1 
 | | |
 |---|---|
 | Date | 2026-11-24 |
-| Commit tested | `7bf6a86` on `phase/1-library`, the last commit before this document |
+| Commit tested | `c1f3448` on `phase/1-library`, the last code commit before this update |
 | Environment | .NET SDK 10.0.401, Windows 11 |
 | Command | `dotnet test` |
-| Result | **163 run, 163 passed, 0 failed, 0 skipped** |
-| Data rows / C# tests | 161 rows in `conversion-cases.json`, 2 C# tests (`VAL-021`, `VAL-044`) |
+| Result | **164 run, 164 passed, 0 failed, 0 skipped** |
+| Data rows / C# tests | 162 rows in `conversion-cases.json`, 2 C# tests (`VAL-021`, `VAL-044`) |
 
 ### Coverage (Microsoft code coverage, Cobertura, test assembly excluded)
 
@@ -186,7 +186,7 @@ check to win, for every neighbouring pair that could be confused (1 before 2, 1 
 | `MoneyAmount` | 100% | 100% (see 5.1) |
 | `MoneyWords` | 100% | 100% |
 | `NumberWords` | 96.5% | 95.8% (see 5.2) |
-| **`TechOneNumberToWordsApp.Core` total** | **99.2% (246 of 248)** | **99.2% (119 of 120)** |
+| **`TechOneNumberToWordsApp.Core` total** | **99.2% (251 of 253)** | **99.3% (133 of 134)** |
 
 `Web` is not in the report yet: no test loads it. It appears once the API tests start the application (gate 2). Coverage is
 evidence, not a target; there is no minimum (D46).
