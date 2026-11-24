@@ -1186,5 +1186,13 @@
     "input": "$ 5",
     "expectedErrorCode": "CurrencySymbolNotAllowed",
     "messageContains": "currency symbol"
+  },
+  {
+    "id": "VAL-046",
+    "decisions": ["E4"],
+    "description": "A combining mark is invisible on its own, so only the code point is shown",
+    "input": "5\u0301",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "Invalid character (U+0301)"
   }
 ]
