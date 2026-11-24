@@ -228,7 +228,12 @@ internal static class AmountValidator
             or UnicodeCategory.Format
             or UnicodeCategory.SpaceSeparator
             or UnicodeCategory.LineSeparator
-            or UnicodeCategory.ParagraphSeparator);
+            or UnicodeCategory.ParagraphSeparator
+            or UnicodeCategory.NonSpacingMark
+            or UnicodeCategory.SpacingCombiningMark
+            or UnicodeCategory.EnclosingMark
+            or UnicodeCategory.PrivateUse
+            or UnicodeCategory.OtherNotAssigned);
 
     private static ConversionError Error(ConversionErrorCode code, string message) => new(code, message);
 }
