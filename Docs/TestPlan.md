@@ -130,7 +130,7 @@ structured values, scopes and exception (D33). Each logging test creates its own
 | `SEC-010` | D37 | A body of exactly 1,024 bytes passes the limit and reaches the converter (400 `AmountTooLong`); 1,025 bytes gives the 413 | Real Kestrel, http |
 | `SEC-011` | D33 | A unique marker typed into a rejected amount appears in no log entry (message, structured values, scopes, exception) | Testing |
 | `SEC-012` | D24 | A 500 body has no stack trace, exception message or exception type name | Testing |
-| `SEC-014` | D24 | `app.js` is served and contains `textContent`, and none of `innerHTML`, `outerHTML`, `insertAdjacentHTML` or `document.write` appears in it (comments included). A text scan: it cannot prove safety, so `UI-009` checks the behaviour by hand | Testing |
+| `SEC-014` | D24 | A guard, not a proof. `app.js` is served, it assigns to `textContent` (a pattern match on `.textContent =`, so the word in a comment is not enough), and none of `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `HTMLUnsafe`, `createContextualFragment`, `DOMParser`, `eval(` or `new Function` appears in it (comments included). A text scan can be got around (for example by building a name from pieces), so `UI-009` checks the behaviour by hand | Testing |
 | `LIM-012` | D23, C1 | (library) `AmountTooLongMessage` equals the message of the `AmountTooLong` error; with `SEC-006` this proves the 413 `detail` matches | Library |
 
 IDs that are deliberately not used: `API-001` and `API-002` (dropped in design; the HTTP theory above replaces them), `SEC-009`
@@ -315,7 +315,7 @@ Every error response has an `errorCode` (D24a). The 11 conversion codes of secti
 | | |
 |---|---|
 | Date | 2026-11-24 |
-| Commit tested | `74855e3` on `phase/3-ui`, the last code commit before this update |
+| Commit tested | `5c068ee` on `phase/3-ui`, the last code commit before this update (the coverage figures below were taken at `74855e3`; the C# code has not changed since, only a comment) |
 | Environment | .NET SDK 10.0.401, Windows 11 |
 | Command | `dotnet test` |
 | Result | **364 run, 364 passed, 0 failed, 0 skipped** |
@@ -390,6 +390,9 @@ fire if the validator is changed to let a larger number through. These are the t
   they do not show what `dotnet run` does with the launch profile, where both ports exist (there a plain-http request gets a 307 to
   https, checked by hand on 2026-11-24). The manual case `UI-018` now covers it: open `http://localhost:5080` and the browser
   must end up on the page at `https://localhost:5443`.
+- **Where the static files sit in the pipeline (D34, D35).** `SEC-005` uses an https client, so it shows that the files carry the
+  security headers (it would fail if they were moved before the headers middleware). It does not prove that they sit after the
+  HTTPS redirect and the exception handler; `UI-018` covers the redirect by hand.
 - **Console logging scopes (C2).** `appsettings.json` sets `"IncludeScopes": true` for the console logger so the `TraceId` appears in
   the console output. The tests clear the console provider and read scopes through the in-memory provider instead, so the setting
   itself is not tested, only that the log scope carries the `TraceId` (`API-015`).
@@ -411,13 +414,17 @@ Both sides of each `IsDevelopment()` check in `Program.cs` do run, because the r
 The solution has no JavaScript tooling (no Node, no test runner, no package), and the brief rules out libraries, so nothing runs
 `app.js` under `dotnet test`. What covers it instead:
 
-- `SEC-014` scans the script for the calls that insert HTML (`innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`) and
-  checks that it uses `textContent` (D24). It is a text scan and cannot prove safety.
-- `SEC-005` shows the script, the page, the style sheet and the icon are served with the security headers (D34).
+- `SEC-014` is a guard, not proof: it scans the script for the usual ways to insert HTML or run text as code (`innerHTML`,
+  `outerHTML`, `insertAdjacentHTML`, `document.write`, `HTMLUnsafe`, `createContextualFragment`, `DOMParser`, `eval(`,
+  `new Function`) and checks that the script assigns to `textContent` (D24). A text scan can be got around, so `UI-009` checks the
+  behaviour.
+- `SEC-005` shows the script, the page, the style sheet and the icon are served with the security headers (D34). It does not prove
+  where the static files sit in the pipeline after the HTTPS redirect and the exception handler (see 5.3).
 - The manual cases `UI-001` to `UI-019` (section 1.5) run the script in a browser: every response the page can get (200, 400,
   413, 500, no answer, timeout), the busy state (E6, D60), keyboard use and the console check for CSP violations.
 
-Nothing checks the script in browsers other than the one the author uses; the cases are written for Chrome.
+The page needs a current browser (2022 or later), because the script uses `AbortSignal.timeout` (D60) with no fallback. Nothing
+checks it in browsers other than Chrome, and no screen reader was tested; the cases are written for Chrome.
 
 ## 6. Still to come
 

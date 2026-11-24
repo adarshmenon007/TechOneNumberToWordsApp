@@ -66,7 +66,8 @@ While the request runs the Convert button is disabled, the amount box cannot be 
 answer within 15 seconds, or cannot be reached, the page says "Something went wrong. Please try again." (D60). After an
 unexpected server error the same sentence is followed by a **Reference**; to find that error in the server log, see section 7 (F3).
 
-The page works with the keyboard alone, and the answer area is announced by screen readers. It is plain HTML, one style sheet and
+It can be used with the keyboard alone (`UI-015`). The answer area is a live region for screen readers; no screen reader was
+tested. It is plain HTML, one style sheet and
 one script, with no framework; the files are in `src/TechOneNumberToWordsApp.Web/wwwroot/`. The checks for it are the manual cases
 in [`Docs/TestPlan.md`](Docs/TestPlan.md) (section 1.5).
 
@@ -243,4 +244,6 @@ the exception.
 
 ## 10. Limitations and future work
 
-*To be written in slice 11.*
+*To be finished in slice 11.* So far:
+
+- The page needs a current browser (2022 or later). It was checked in Chrome only.
