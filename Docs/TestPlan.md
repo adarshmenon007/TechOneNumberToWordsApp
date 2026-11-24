@@ -310,7 +310,7 @@ Coverage is evidence, not a target; there is no minimum (D46).
 
 Sections 5.1 and 5.2 are two guards that protect the library against a bug in the library itself. The validator makes both
 unreachable through the public API, so no test can trigger them (D25: tests go through the public class only, with no
-`InternalsVisibleTo`). Sections 5.3 to 5.5 are about the API layer.
+`InternalsVisibleTo`). Sections 5.3 and 5.4 are about the API layer.
 
 ### 5.1 `MoneyAmount.Create` range checks (D11)
 
@@ -351,19 +351,8 @@ framework give are 400, 404, 405, 413, 415 and 500. The branch makes sure an unm
 Both sides of each `IsDevelopment()` check in `Program.cs` do run, because the request-error tests run under `Testing` and
 `Development` (section 1.4), so they are not uncovered.
 
-### 5.5 Manual check of a real Development run
-
-Automated tests run the app in memory. Before submission, check it as a reviewer would run it: `dotnet run --project
-src/TechOneNumberToWordsApp.Web` (Development, launch profile), then post `{"amount":5}` with `Content-Type: application/json` to
-`https://localhost:5443/api/convert`. Expect 400, `errorCode` `InvalidRequest`, and no stack trace (the `ThrowOnBadRequest` setting,
-D24).
-
-Last done: 2026-11-24 at `59e90c0`, with the built app started with `ASPNETCORE_ENVIRONMENT=Development` on `http://localhost:5099`
-rather than through the launch profile: 400, `InvalidRequest`, no stack trace. The launch-profile run with the https port is still to be done.
-
 ## 6. Still to come
 
 - **Gate 3 (UI):** manual cases `UI-xxx` with steps and a hand-recorded outcome (E6, F3, accessibility basics).
 - **Slice 10:** `SEC-005` (security headers on `index.html`).
-- **Slice 11:** final results (date, commit, totals, coverage), the finished matrix, the launch-profile run in 5.5, and the
-  executable decision (D20).
+- **Slice 11:** final results (date, commit, totals, coverage), the finished matrix, and the executable decision (D20).
