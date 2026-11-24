@@ -46,14 +46,20 @@ public class StaticFilesApiTests(ApiFactory factory) : IClassFixture<ApiFactory>
         var script = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
         // Without these two checks the test would pass on an error body or an empty file, which contain none of the
-        // forbidden words.
+        // forbidden words. The pattern needs an assignment, so the word "textContent" in a comment is not enough.
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Contains("textContent", script);
+        Assert.Matches(@"\.textContent\s*=", script);
 
-        // A text scan: it includes comments, so a comment in app.js must not name these either.
-        foreach (var forbidden in new[] { "innerHTML", "outerHTML", "insertAdjacentHTML", "document.write" })
+        // A guard, not a proof: a text scan for the usual ways to insert HTML or run text as code. It includes comments, so a
+        // comment in app.js must not name these either. "eval(" has its bracket so a word like "retrieval" cannot trip it.
+        string[] forbidden =
+        [
+            "innerHTML", "outerHTML", "insertAdjacentHTML", "document.write",
+            "HTMLUnsafe", "createContextualFragment", "DOMParser", "eval(", "new Function",
+        ];
+        foreach (var word in forbidden)
         {
-            Assert.DoesNotContain(forbidden, script);
+            Assert.DoesNotContain(word, script);
         }
     }
 }
