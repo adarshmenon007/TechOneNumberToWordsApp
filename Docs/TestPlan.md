@@ -264,7 +264,7 @@ Every error response has an `errorCode` (D24a). The 11 conversion codes of secti
 | | |
 |---|---|
 | Date | 2026-11-24 |
-| Commit tested | `59e90c0` on `phase/2-api`, the last code commit before this update |
+| Commit tested | `749be38` on `phase/2-api`, the last code commit before this update |
 | Environment | .NET SDK 10.0.401, Windows 11 |
 | Command | `dotnet test` |
 | Result | **359 run, 359 passed, 0 failed, 0 skipped** |
