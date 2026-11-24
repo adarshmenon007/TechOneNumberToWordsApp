@@ -1,0 +1,1198 @@
+[
+  {
+    "id": "ZERO-001",
+    "decisions": ["D58"],
+    "description": "Zero is written out and takes the plural unit",
+    "input": "0",
+    "expectedWords": "ZERO DOLLARS"
+  },
+  {
+    "id": "PLUR-001",
+    "decisions": ["D58"],
+    "description": "Exactly one uses the singular unit",
+    "input": "1",
+    "expectedWords": "ONE DOLLAR"
+  },
+  {
+    "id": "PLUR-002",
+    "decisions": ["D58"],
+    "description": "Two is the first amount that takes the plural unit",
+    "input": "2",
+    "expectedWords": "TWO DOLLARS"
+  },
+  {
+    "id": "WORD-001",
+    "decisions": ["O1"],
+    "description": "Single digit three",
+    "input": "3",
+    "expectedWords": "THREE DOLLARS"
+  },
+  {
+    "id": "WORD-002",
+    "decisions": ["O1"],
+    "description": "Single digit four",
+    "input": "4",
+    "expectedWords": "FOUR DOLLARS"
+  },
+  {
+    "id": "WORD-003",
+    "decisions": ["O1"],
+    "description": "Single digit five",
+    "input": "5",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "WORD-004",
+    "decisions": ["O1"],
+    "description": "Single digit six",
+    "input": "6",
+    "expectedWords": "SIX DOLLARS"
+  },
+  {
+    "id": "WORD-005",
+    "decisions": ["O1"],
+    "description": "Single digit seven",
+    "input": "7",
+    "expectedWords": "SEVEN DOLLARS"
+  },
+  {
+    "id": "WORD-006",
+    "decisions": ["O1"],
+    "description": "Single digit eight",
+    "input": "8",
+    "expectedWords": "EIGHT DOLLARS"
+  },
+  {
+    "id": "WORD-007",
+    "decisions": ["O1"],
+    "description": "Single digit nine",
+    "input": "9",
+    "expectedWords": "NINE DOLLARS"
+  },
+  {
+    "id": "WORD-008",
+    "decisions": ["O1"],
+    "description": "Ten: first two-digit amount",
+    "input": "10",
+    "expectedWords": "TEN DOLLARS"
+  },
+  {
+    "id": "WORD-009",
+    "decisions": ["O1"],
+    "description": "Teen word eleven",
+    "input": "11",
+    "expectedWords": "ELEVEN DOLLARS"
+  },
+  {
+    "id": "WORD-010",
+    "decisions": ["O1"],
+    "description": "Teen word twelve",
+    "input": "12",
+    "expectedWords": "TWELVE DOLLARS"
+  },
+  {
+    "id": "WORD-011",
+    "decisions": ["O1"],
+    "description": "Teen word thirteen",
+    "input": "13",
+    "expectedWords": "THIRTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-012",
+    "decisions": ["O1"],
+    "description": "Teen word fourteen",
+    "input": "14",
+    "expectedWords": "FOURTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-013",
+    "decisions": ["O1"],
+    "description": "Teen word fifteen",
+    "input": "15",
+    "expectedWords": "FIFTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-014",
+    "decisions": ["O1"],
+    "description": "Teen word sixteen",
+    "input": "16",
+    "expectedWords": "SIXTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-015",
+    "decisions": ["O1"],
+    "description": "Teen word seventeen",
+    "input": "17",
+    "expectedWords": "SEVENTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-016",
+    "decisions": ["O1"],
+    "description": "Teen word eighteen",
+    "input": "18",
+    "expectedWords": "EIGHTEEN DOLLARS"
+  },
+  {
+    "id": "WORD-017",
+    "decisions": ["O1"],
+    "description": "Nineteen: last of the teens",
+    "input": "19",
+    "expectedWords": "NINETEEN DOLLARS"
+  },
+  {
+    "id": "WORD-018",
+    "decisions": ["O1"],
+    "description": "Twenty: first round ten, no hyphen",
+    "input": "20",
+    "expectedWords": "TWENTY DOLLARS"
+  },
+  {
+    "id": "WORD-019",
+    "decisions": ["O1"],
+    "description": "Round ten thirty, no hyphen",
+    "input": "30",
+    "expectedWords": "THIRTY DOLLARS"
+  },
+  {
+    "id": "WORD-020",
+    "decisions": ["O1"],
+    "description": "Round ten forty, no hyphen",
+    "input": "40",
+    "expectedWords": "FORTY DOLLARS"
+  },
+  {
+    "id": "WORD-021",
+    "decisions": ["O1"],
+    "description": "Round ten fifty, no hyphen",
+    "input": "50",
+    "expectedWords": "FIFTY DOLLARS"
+  },
+  {
+    "id": "WORD-022",
+    "decisions": ["O1"],
+    "description": "Round ten sixty, no hyphen",
+    "input": "60",
+    "expectedWords": "SIXTY DOLLARS"
+  },
+  {
+    "id": "WORD-023",
+    "decisions": ["O1"],
+    "description": "Round ten seventy, no hyphen",
+    "input": "70",
+    "expectedWords": "SEVENTY DOLLARS"
+  },
+  {
+    "id": "WORD-024",
+    "decisions": ["O1"],
+    "description": "Round ten eighty, no hyphen",
+    "input": "80",
+    "expectedWords": "EIGHTY DOLLARS"
+  },
+  {
+    "id": "WORD-025",
+    "decisions": ["O1"],
+    "description": "Round ten ninety, no hyphen",
+    "input": "90",
+    "expectedWords": "NINETY DOLLARS"
+  },
+  {
+    "id": "WORD-026",
+    "decisions": ["O1"],
+    "description": "Twenty-one: first hyphenated amount",
+    "input": "21",
+    "expectedWords": "TWENTY-ONE DOLLARS"
+  },
+  {
+    "id": "WORD-027",
+    "decisions": ["O1"],
+    "description": "Hyphen after thirty",
+    "input": "35",
+    "expectedWords": "THIRTY-FIVE DOLLARS"
+  },
+  {
+    "id": "WORD-028",
+    "decisions": ["O1"],
+    "description": "Hyphen after forty (spelt FORTY, not FOURTY)",
+    "input": "48",
+    "expectedWords": "FORTY-EIGHT DOLLARS"
+  },
+  {
+    "id": "WORD-029",
+    "decisions": ["O1"],
+    "description": "Hyphen after fifty",
+    "input": "52",
+    "expectedWords": "FIFTY-TWO DOLLARS"
+  },
+  {
+    "id": "WORD-030",
+    "decisions": ["O1"],
+    "description": "Hyphen after sixty",
+    "input": "67",
+    "expectedWords": "SIXTY-SEVEN DOLLARS"
+  },
+  {
+    "id": "WORD-031",
+    "decisions": ["O1"],
+    "description": "Hyphen after seventy",
+    "input": "73",
+    "expectedWords": "SEVENTY-THREE DOLLARS"
+  },
+  {
+    "id": "WORD-032",
+    "decisions": ["O1"],
+    "description": "Hyphen after eighty",
+    "input": "86",
+    "expectedWords": "EIGHTY-SIX DOLLARS"
+  },
+  {
+    "id": "WORD-033",
+    "decisions": ["O1"],
+    "description": "Ninety-nine: largest two-digit amount",
+    "input": "99",
+    "expectedWords": "NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "WORD-034",
+    "decisions": ["O1"],
+    "description": "One hundred is written ONE HUNDRED, not A HUNDRED",
+    "input": "100",
+    "expectedWords": "ONE HUNDRED DOLLARS"
+  },
+  {
+    "id": "WORD-035",
+    "decisions": ["O1"],
+    "description": "Hundreds word with another digit",
+    "input": "500",
+    "expectedWords": "FIVE HUNDRED DOLLARS"
+  },
+  {
+    "id": "WORD-036",
+    "decisions": ["D8","O1"],
+    "description": "Exact hundreds take no AND because nothing follows",
+    "input": "200",
+    "expectedWords": "TWO HUNDRED DOLLARS"
+  },
+  {
+    "id": "AND-001",
+    "decisions": ["D8"],
+    "description": "AND between the hundreds and a single unit",
+    "input": "101",
+    "expectedWords": "ONE HUNDRED AND ONE DOLLARS"
+  },
+  {
+    "id": "AND-002",
+    "decisions": ["D8"],
+    "description": "AND before a round ten",
+    "input": "110",
+    "expectedWords": "ONE HUNDRED AND TEN DOLLARS"
+  },
+  {
+    "id": "AND-003",
+    "decisions": ["D8"],
+    "description": "AND before a teen",
+    "input": "115",
+    "expectedWords": "ONE HUNDRED AND FIFTEEN DOLLARS"
+  },
+  {
+    "id": "AND-004",
+    "decisions": ["D8"],
+    "description": "AND before a round twenty",
+    "input": "120",
+    "expectedWords": "ONE HUNDRED AND TWENTY DOLLARS"
+  },
+  {
+    "id": "AND-005",
+    "decisions": ["D8"],
+    "description": "The dollars part of the brief's example",
+    "input": "123",
+    "expectedWords": "ONE HUNDRED AND TWENTY-THREE DOLLARS"
+  },
+  {
+    "id": "AND-006",
+    "decisions": ["D8"],
+    "description": "AND before the largest two-digit remainder",
+    "input": "199",
+    "expectedWords": "ONE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "AND-007",
+    "decisions": ["D8"],
+    "description": "Largest amount below one thousand",
+    "input": "999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "SCALE-001",
+    "decisions": ["O1"],
+    "description": "First amount that needs a scale word",
+    "input": "1000",
+    "expectedWords": "ONE THOUSAND DOLLARS"
+  },
+  {
+    "id": "SCALE-002",
+    "decisions": ["O1"],
+    "description": "Written ONE THOUSAND FIVE HUNDRED, never FIFTEEN HUNDRED",
+    "input": "1500",
+    "expectedWords": "ONE THOUSAND FIVE HUNDRED DOLLARS"
+  },
+  {
+    "id": "SCALE-003",
+    "decisions": ["O1"],
+    "description": "Largest amount below one million",
+    "input": "999999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "SCALE-004",
+    "decisions": ["O1"],
+    "description": "First amount that needs MILLION",
+    "input": "1000000",
+    "expectedWords": "ONE MILLION DOLLARS"
+  },
+  {
+    "id": "SCALE-005",
+    "decisions": ["O1"],
+    "description": "Largest amount below one billion",
+    "input": "999999999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "SCALE-006",
+    "decisions": ["O1"],
+    "description": "First amount that needs BILLION",
+    "input": "1000000000",
+    "expectedWords": "ONE BILLION DOLLARS"
+  },
+  {
+    "id": "SCALE-007",
+    "decisions": ["O1"],
+    "description": "Largest amount below one trillion",
+    "input": "999999999999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "SCALE-008",
+    "decisions": ["O1"],
+    "description": "First amount that needs TRILLION",
+    "input": "1000000000000",
+    "expectedWords": "ONE TRILLION DOLLARS"
+  },
+  {
+    "id": "AND-008",
+    "decisions": ["D8"],
+    "description": "Final group of 1-99 after a higher group takes AND",
+    "input": "1005",
+    "expectedWords": "ONE THOUSAND AND FIVE DOLLARS"
+  },
+  {
+    "id": "AND-009",
+    "decisions": ["D8"],
+    "description": "Final group of 100 or more takes no extra AND",
+    "input": "1100",
+    "expectedWords": "ONE THOUSAND ONE HUNDRED DOLLARS"
+  },
+  {
+    "id": "AND-010",
+    "decisions": ["D8"],
+    "description": "AND inside the thousands group; an empty final group adds none",
+    "input": "101000",
+    "expectedWords": "ONE HUNDRED AND ONE THOUSAND DOLLARS"
+  },
+  {
+    "id": "AND-011",
+    "decisions": ["D8"],
+    "description": "No AND between large groups when the final group is a plain hundred",
+    "input": "1000100",
+    "expectedWords": "ONE MILLION ONE HUNDRED DOLLARS"
+  },
+  {
+    "id": "AND-012",
+    "decisions": ["D8"],
+    "description": "AND before a final 1-99 with empty groups between",
+    "input": "2000050",
+    "expectedWords": "TWO MILLION AND FIFTY DOLLARS"
+  },
+  {
+    "id": "AND-013",
+    "decisions": ["D8"],
+    "description": "AND before a final single unit",
+    "input": "1000001",
+    "expectedWords": "ONE MILLION AND ONE DOLLARS"
+  },
+  {
+    "id": "AND-014",
+    "decisions": ["D8"],
+    "description": "Only the final group gets AND, not the one between",
+    "input": "1001005",
+    "expectedWords": "ONE MILLION ONE THOUSAND AND FIVE DOLLARS"
+  },
+  {
+    "id": "AND-015",
+    "decisions": ["D8"],
+    "description": "AND inside the final group, none added before it",
+    "input": "1234",
+    "expectedWords": "ONE THOUSAND TWO HUNDRED AND THIRTY-FOUR DOLLARS"
+  },
+  {
+    "id": "LIM-001",
+    "decisions": ["D58"],
+    "description": "Maximum amount: 999,999,999,999,999 dollars",
+    "input": "999999999999999",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "CENT-001",
+    "decisions": ["D8"],
+    "description": "The brief's example (R0)",
+    "input": "123.45",
+    "expectedWords": "ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS"
+  },
+  {
+    "id": "CENT-002",
+    "decisions": ["D58"],
+    "description": "Cents only, with a leading zero",
+    "input": "0.45",
+    "expectedWords": "FORTY-FIVE CENTS"
+  },
+  {
+    "id": "CENT-003",
+    "decisions": ["D58"],
+    "description": "Cents only, no digit before the point",
+    "input": ".45",
+    "expectedWords": "FORTY-FIVE CENTS"
+  },
+  {
+    "id": "CENT-004",
+    "decisions": ["D58"],
+    "description": "One decimal digit is tens of cents, not units",
+    "input": ".5",
+    "expectedWords": "FIFTY CENTS"
+  },
+  {
+    "id": "CENT-005",
+    "decisions": ["D58"],
+    "description": "One decimal digit is tens of cents, not units",
+    "input": ".1",
+    "expectedWords": "TEN CENTS"
+  },
+  {
+    "id": "CENT-006",
+    "decisions": ["D58"],
+    "description": "A cents part that starts with zero",
+    "input": "0.07",
+    "expectedWords": "SEVEN CENTS"
+  },
+  {
+    "id": "CENT-007",
+    "decisions": ["D58","O1"],
+    "description": "Exactly one cent is singular",
+    "input": "0.01",
+    "expectedWords": "ONE CENT"
+  },
+  {
+    "id": "CENT-008",
+    "decisions": ["D58","O1"],
+    "description": "Singular dollar and singular cent",
+    "input": "1.01",
+    "expectedWords": "ONE DOLLAR AND ONE CENT"
+  },
+  {
+    "id": "CENT-009",
+    "decisions": ["D58"],
+    "description": "Zero cents are left out",
+    "input": "1.00",
+    "expectedWords": "ONE DOLLAR"
+  },
+  {
+    "id": "CENT-010",
+    "decisions": ["D58"],
+    "description": "A trailing decimal point with no cents",
+    "input": "5.",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "CENT-011",
+    "decisions": ["D11"],
+    "description": "Cents are exact; floating point would give 34 cents",
+    "input": "4.35",
+    "expectedWords": "FOUR DOLLARS AND THIRTY-FIVE CENTS"
+  },
+  {
+    "id": "ZERO-002",
+    "decisions": ["D58"],
+    "description": "Zero with two zero cents",
+    "input": "0.00",
+    "expectedWords": "ZERO DOLLARS"
+  },
+  {
+    "id": "ZERO-003",
+    "decisions": ["D58"],
+    "description": "Zero with no digit before the point",
+    "input": ".00",
+    "expectedWords": "ZERO DOLLARS"
+  },
+  {
+    "id": "ZERO-004",
+    "decisions": ["D58"],
+    "description": "Zero with a trailing decimal point",
+    "input": "0.",
+    "expectedWords": "ZERO DOLLARS"
+  },
+  {
+    "id": "PLUR-003",
+    "decisions": ["D58"],
+    "description": "Plural dollars, singular cent",
+    "input": "2.01",
+    "expectedWords": "TWO DOLLARS AND ONE CENT"
+  },
+  {
+    "id": "PLUR-004",
+    "decisions": ["D58"],
+    "description": "Singular dollar, plural cents",
+    "input": "1.02",
+    "expectedWords": "ONE DOLLAR AND TWO CENTS"
+  },
+  {
+    "id": "AND-016",
+    "decisions": ["D8"],
+    "description": "AND before the final group and AND before the cents",
+    "input": "1005.05",
+    "expectedWords": "ONE THOUSAND AND FIVE DOLLARS AND FIVE CENTS"
+  },
+  {
+    "id": "LIM-002",
+    "decisions": ["D58"],
+    "description": "Maximum amount: 999,999,999,999,999.99",
+    "input": "999999999999999.99",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS AND NINETY-NINE CENTS"
+  },
+  {
+    "id": "FMT-001",
+    "decisions": ["D9","D10"],
+    "description": "A leading space is trimmed",
+    "input": " 5",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-002",
+    "decisions": ["D9","D10"],
+    "description": "A trailing space is trimmed",
+    "input": "5 ",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-003",
+    "decisions": ["D9","D10"],
+    "description": "Tabs at both ends are trimmed",
+    "input": "\t5\t",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-004",
+    "decisions": ["D9","D10"],
+    "description": "A mix of spaces and tabs at both ends is trimmed",
+    "input": " \t5\t ",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-005",
+    "decisions": ["D9","D10"],
+    "description": "The brief's example with surrounding spaces",
+    "input": " 123.45 ",
+    "expectedWords": "ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS"
+  },
+  {
+    "id": "FMT-006",
+    "decisions": ["D58"],
+    "description": "Leading zeros do not change the amount",
+    "input": "007",
+    "expectedWords": "SEVEN DOLLARS"
+  },
+  {
+    "id": "FMT-007",
+    "decisions": ["D58"],
+    "description": "Leading zeros before a singular amount",
+    "input": "0001",
+    "expectedWords": "ONE DOLLAR"
+  },
+  {
+    "id": "FMT-008",
+    "decisions": ["D58"],
+    "description": "Maximum amount preceded by three leading zeros: 15 significant digits",
+    "input": "000999999999999999.99",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS AND NINETY-NINE CENTS"
+  },
+  {
+    "id": "LIM-003",
+    "decisions": ["D29"],
+    "description": "Exactly 30 characters, the longest input allowed",
+    "input": "000000000000000000000000000005",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-009",
+    "decisions": ["E3"],
+    "description": "One comma",
+    "input": "1,234",
+    "expectedWords": "ONE THOUSAND TWO HUNDRED AND THIRTY-FOUR DOLLARS"
+  },
+  {
+    "id": "FMT-010",
+    "decisions": ["E3"],
+    "description": "A first group of two digits",
+    "input": "12,345",
+    "expectedWords": "TWELVE THOUSAND THREE HUNDRED AND FORTY-FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-011",
+    "decisions": ["E3"],
+    "description": "A first group of three digits",
+    "input": "123,456",
+    "expectedWords": "ONE HUNDRED AND TWENTY-THREE THOUSAND FOUR HUNDRED AND FIFTY-SIX DOLLARS"
+  },
+  {
+    "id": "FMT-012",
+    "decisions": ["E3"],
+    "description": "Two commas",
+    "input": "1,000,000",
+    "expectedWords": "ONE MILLION DOLLARS"
+  },
+  {
+    "id": "FMT-013",
+    "decisions": ["E3"],
+    "description": "Commas together with cents",
+    "input": "1,234,567.89",
+    "expectedWords": "ONE MILLION TWO HUNDRED AND THIRTY-FOUR THOUSAND FIVE HUNDRED AND SIXTY-SEVEN DOLLARS AND EIGHTY-NINE CENTS"
+  },
+  {
+    "id": "LIM-004",
+    "decisions": ["D29","D58"],
+    "description": "Maximum amount with commas: 22 characters, the longest valid input without leading zeros or spaces",
+    "input": "999,999,999,999,999.99",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS AND NINETY-NINE CENTS"
+  },
+  {
+    "id": "FMT-014",
+    "decisions": ["D28"],
+    "description": "Commas then a trailing decimal point",
+    "input": "1,234.",
+    "expectedWords": "ONE THOUSAND TWO HUNDRED AND THIRTY-FOUR DOLLARS"
+  },
+  {
+    "id": "LIM-005",
+    "decisions": ["D29","D27"],
+    "description": "31 characters is one too many",
+    "input": "0000000000000000000000000000005",
+    "expectedErrorCode": "AmountTooLong",
+    "messageContains": "30 characters"
+  },
+  {
+    "id": "LIM-006",
+    "decisions": ["D29"],
+    "description": "Exactly 30 characters, mostly spaces: accepted because the cap counts the raw text",
+    "input": "                             5",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "LIM-007",
+    "decisions": ["D29","D27"],
+    "description": "31 characters of mostly spaces: rejected even though only one character remains after trimming",
+    "input": "                              5",
+    "expectedErrorCode": "AmountTooLong",
+    "messageContains": "30 characters"
+  },
+  {
+    "id": "VAL-001",
+    "decisions": ["D19","D27"],
+    "description": "Empty input",
+    "input": "",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-002",
+    "decisions": ["D19","D27"],
+    "description": "Only spaces",
+    "input": "   ",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-003",
+    "decisions": ["D19","D27"],
+    "description": "Only a tab",
+    "input": "\t",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-004",
+    "decisions": ["D22"],
+    "description": "Dollar sign before the amount",
+    "input": "$5",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "without a currency symbol"
+  },
+  {
+    "id": "VAL-005",
+    "decisions": ["D22"],
+    "description": "Euro sign after the amount",
+    "input": "5\u20ac",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "without a currency symbol"
+  },
+  {
+    "id": "VAL-006",
+    "decisions": ["D22"],
+    "description": "A dollar sign on its own",
+    "input": "$",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "without a currency symbol"
+  },
+  {
+    "id": "VAL-007",
+    "decisions": ["D12"],
+    "description": "Leading minus sign",
+    "input": "-5",
+    "expectedErrorCode": "NegativeAmount",
+    "messageContains": "Negative amounts are not supported"
+  },
+  {
+    "id": "VAL-008",
+    "decisions": ["D27"],
+    "description": "Leading plus sign",
+    "input": "+5",
+    "expectedErrorCode": "SignNotAllowed",
+    "messageContains": "without a plus sign"
+  },
+  {
+    "id": "VAL-009",
+    "decisions": ["D10"],
+    "description": "A space inside the amount",
+    "input": "1 234",
+    "expectedErrorCode": "ContainsWhitespace",
+    "messageContains": "spaces or tabs inside"
+  },
+  {
+    "id": "VAL-010",
+    "decisions": ["D10"],
+    "description": "A tab inside the amount",
+    "input": "1\t234",
+    "expectedErrorCode": "ContainsWhitespace",
+    "messageContains": "spaces or tabs inside"
+  },
+  {
+    "id": "VAL-011",
+    "decisions": ["D10"],
+    "description": "A letter",
+    "input": "5a",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'a' (U+0061)"
+  },
+  {
+    "id": "VAL-012",
+    "decisions": ["D10"],
+    "description": "Scientific notation is not accepted",
+    "input": "1e5",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'e' (U+0065)"
+  },
+  {
+    "id": "VAL-013",
+    "decisions": ["D10"],
+    "description": "A minus sign that is not at the start",
+    "input": "7-2",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'-' (U+002D)"
+  },
+  {
+    "id": "VAL-014",
+    "decisions": ["D10"],
+    "description": "A trailing minus sign",
+    "input": "5-",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'-' (U+002D)"
+  },
+  {
+    "id": "VAL-015",
+    "decisions": ["D10"],
+    "description": "A full-width digit is not an ASCII digit",
+    "input": "\uff15",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+FF15)"
+  },
+  {
+    "id": "VAL-016",
+    "decisions": ["D10"],
+    "description": "An Arabic-Indic digit is not an ASCII digit",
+    "input": "\u0665",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+0665)"
+  },
+  {
+    "id": "VAL-017",
+    "decisions": ["E4"],
+    "description": "A leading non-breaking space is not trimmed and shows as a code point",
+    "input": "\u00a05",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+00A0)"
+  },
+  {
+    "id": "VAL-018",
+    "decisions": ["E4"],
+    "description": "A newline inside shows as a code point",
+    "input": "5\n5",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+000A)"
+  },
+  {
+    "id": "VAL-019",
+    "decisions": ["E4"],
+    "description": "A zero-width space shows as a code point",
+    "input": "5\u200b",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+200B)"
+  },
+  {
+    "id": "VAL-020",
+    "decisions": ["F1"],
+    "description": "An emoji is reported as one whole character, not half a surrogate pair",
+    "input": "5\ud83d\ude00",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+1F600)"
+  },
+  {
+    "id": "VAL-022",
+    "decisions": ["D27"],
+    "description": "Two decimal points",
+    "input": "1.2.3",
+    "expectedErrorCode": "MultipleDecimalPoints",
+    "messageContains": "more than one decimal point"
+  },
+  {
+    "id": "VAL-023",
+    "decisions": ["D27"],
+    "description": "Two decimal points and no digits: the point count is checked first",
+    "input": "..",
+    "expectedErrorCode": "MultipleDecimalPoints",
+    "messageContains": "more than one decimal point"
+  },
+  {
+    "id": "VAL-024",
+    "decisions": ["D27"],
+    "description": "Two decimal points next to each other",
+    "input": "1..2",
+    "expectedErrorCode": "MultipleDecimalPoints",
+    "messageContains": "more than one decimal point"
+  },
+  {
+    "id": "VAL-025",
+    "decisions": ["E2"],
+    "description": "A decimal point on its own",
+    "input": ".",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-026",
+    "decisions": ["E2"],
+    "description": "A comma on its own",
+    "input": ",",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-027",
+    "decisions": ["E2"],
+    "description": "Only commas",
+    "input": ",,",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-028",
+    "decisions": ["E2"],
+    "description": "A decimal point and a comma, no digits",
+    "input": ".,",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-029",
+    "decisions": ["E3"],
+    "description": "Groups of one digit",
+    "input": "1,2,3",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-030",
+    "decisions": ["E3"],
+    "description": "A comma at the very start",
+    "input": ",123",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-031",
+    "decisions": ["E3"],
+    "description": "A last group of two digits",
+    "input": "1,23",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-032",
+    "decisions": ["E3"],
+    "description": "A last group of two digits after a two-digit first group",
+    "input": "12,34",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-033",
+    "decisions": ["E3"],
+    "description": "A last group of four digits",
+    "input": "1,2345",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-034",
+    "decisions": ["E3"],
+    "description": "An empty group between two commas",
+    "input": "1,,234",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-035",
+    "decisions": ["E3"],
+    "description": "A trailing comma",
+    "input": "1,234,",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-036",
+    "decisions": ["E3"],
+    "description": "A first group of four digits",
+    "input": "1234,567",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-037",
+    "decisions": ["E3"],
+    "description": "A first group of zero: in many countries this means 0.001",
+    "input": "0,001",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-038",
+    "decisions": ["E3"],
+    "description": "A first group with a leading zero",
+    "input": "00,500",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-039",
+    "decisions": ["E3"],
+    "description": "All zeros with a comma",
+    "input": "0,000",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-040",
+    "decisions": ["D28"],
+    "description": "A comma after the decimal point",
+    "input": "1.2,3",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "after the decimal point"
+  },
+  {
+    "id": "VAL-041",
+    "decisions": ["E1"],
+    "description": "Three decimal places: in some countries 1.500 means 1500",
+    "input": "1.500",
+    "expectedErrorCode": "TooManyDecimalPlaces",
+    "messageContains": "too many decimal places"
+  },
+  {
+    "id": "VAL-042",
+    "decisions": ["E1"],
+    "description": "Three decimal places",
+    "input": "1.234",
+    "expectedErrorCode": "TooManyDecimalPlaces",
+    "messageContains": "too many decimal places"
+  },
+  {
+    "id": "VAL-043",
+    "decisions": ["E1"],
+    "description": "A tenth of a cent",
+    "input": "0.001",
+    "expectedErrorCode": "TooManyDecimalPlaces",
+    "messageContains": "too many decimal places"
+  },
+  {
+    "id": "LIM-008",
+    "decisions": ["D58"],
+    "description": "Sixteen digits",
+    "input": "9999999999999999",
+    "expectedErrorCode": "AmountTooLarge",
+    "messageContains": "999,999,999,999,999.99"
+  },
+  {
+    "id": "LIM-009",
+    "decisions": ["D58"],
+    "description": "One more than the maximum, with commas",
+    "input": "1,000,000,000,000,000",
+    "expectedErrorCode": "AmountTooLarge",
+    "messageContains": "999,999,999,999,999.99"
+  },
+  {
+    "id": "LIM-010",
+    "decisions": ["D58"],
+    "description": "Leading zeros do not hide a 16-digit number",
+    "input": "001000000000000000",
+    "expectedErrorCode": "AmountTooLarge",
+    "messageContains": "999,999,999,999,999.99"
+  },
+  {
+    "id": "LIM-011",
+    "decisions": ["D58"],
+    "description": "One more than the maximum, with cents",
+    "input": "1000000000000000.00",
+    "expectedErrorCode": "AmountTooLarge",
+    "messageContains": "999,999,999,999,999.99"
+  },
+  {
+    "id": "ORD-001",
+    "decisions": ["D27"],
+    "description": "Check 3 (symbol) comes before check 4 (negative)",
+    "input": "-$5",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "currency symbol"
+  },
+  {
+    "id": "ORD-002",
+    "decisions": ["D27"],
+    "description": "Check 4 (negative) comes before check 7 (invalid character)",
+    "input": "-7-2",
+    "expectedErrorCode": "NegativeAmount",
+    "messageContains": "Negative"
+  },
+  {
+    "id": "ORD-003",
+    "decisions": ["D27"],
+    "description": "Check 5 (plus sign) comes before check 7 (invalid character)",
+    "input": "+-5",
+    "expectedErrorCode": "SignNotAllowed",
+    "messageContains": "plus sign"
+  },
+  {
+    "id": "ORD-004",
+    "decisions": ["D27"],
+    "description": "Check 6 (space inside) comes before check 7 (invalid character)",
+    "input": "1 2a",
+    "expectedErrorCode": "ContainsWhitespace",
+    "messageContains": "spaces or tabs"
+  },
+  {
+    "id": "ORD-005",
+    "decisions": ["D27"],
+    "description": "Check 7 (invalid character) comes before check 11 (decimal places)",
+    "input": "1.234a",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'a' (U+0061)"
+  },
+  {
+    "id": "ORD-006",
+    "decisions": ["D27"],
+    "description": "Check 4 (negative) comes before check 8 (decimal points)",
+    "input": "-1.2.3",
+    "expectedErrorCode": "NegativeAmount",
+    "messageContains": "Negative"
+  },
+  {
+    "id": "ORD-007",
+    "decisions": ["D27"],
+    "description": "Check 10 (commas) comes before check 11 (decimal places)",
+    "input": "1,23.456",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "ORD-008",
+    "decisions": ["D27"],
+    "description": "Check 11 (decimal places) comes before check 12 (too large)",
+    "input": "9999999999999999.999",
+    "expectedErrorCode": "TooManyDecimalPlaces",
+    "messageContains": "too many decimal places"
+  },
+  {
+    "id": "ORD-009",
+    "decisions": ["D27","D29"],
+    "description": "Check 1 (length, 31 characters) comes before check 3 (symbol)",
+    "input": "$000000000000000000000000000000",
+    "expectedErrorCode": "AmountTooLong",
+    "messageContains": "30 characters"
+  },
+  {
+    "id": "CENT-012",
+    "decisions": ["D58"],
+    "description": "A trailing zero in the cents is kept: ten cents, not one",
+    "input": "1.10",
+    "expectedWords": "ONE DOLLAR AND TEN CENTS"
+  },
+  {
+    "id": "CENT-013",
+    "decisions": ["D58"],
+    "description": "The largest cents amount",
+    "input": "0.99",
+    "expectedWords": "NINETY-NINE CENTS"
+  },
+  {
+    "id": "VAL-045",
+    "decisions": ["D9","D12"],
+    "description": "A space before the minus sign is trimmed first, so the sign is still recognised",
+    "input": " -5",
+    "expectedErrorCode": "NegativeAmount",
+    "messageContains": "Negative amounts are not supported"
+  },
+  {
+    "id": "ORD-010",
+    "decisions": ["D27","D29"],
+    "description": "Check 1 (length) comes before check 2 (empty after trimming)",
+    "input": "                               ",
+    "expectedErrorCode": "AmountTooLong",
+    "messageContains": "30 characters"
+  },
+  {
+    "id": "ORD-011",
+    "decisions": ["D27"],
+    "description": "Check 7 (invalid character) comes before check 8 (decimal points)",
+    "input": "1.2.3a",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'a' (U+0061)"
+  },
+  {
+    "id": "ORD-012",
+    "decisions": ["D27"],
+    "description": "Check 3 (symbol) comes before check 6 (space inside)",
+    "input": "$ 5",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "currency symbol"
+  },
+  {
+    "id": "VAL-046",
+    "decisions": ["E4"],
+    "description": "A combining mark is invisible on its own, so only the code point is shown",
+    "input": "5\u0301",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "Invalid character (U+0301)"
+  }
+]

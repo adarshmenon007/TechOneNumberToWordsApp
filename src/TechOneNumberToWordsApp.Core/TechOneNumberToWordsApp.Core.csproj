@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Intentionally empty: shared settings come from Directory.Build.props; no packages (D4). -->
+
+</Project>
