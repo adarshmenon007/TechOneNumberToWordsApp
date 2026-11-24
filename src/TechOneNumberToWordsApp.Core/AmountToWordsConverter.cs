@@ -6,19 +6,16 @@ namespace TechOneNumberToWordsApp.Core;
 /// It holds no state, so one instance can be shared by every request (D23).
 /// </summary>
 /// <remarks>
-/// Built test-first: each rule (more digits, cents, separators, rejections) is added when its tests are written.
+/// Built test-first: each rule (separators, rejections) is added when its tests are written.
 /// </remarks>
 public sealed class AmountToWordsConverter
 {
     /// <summary>Converts the amount the user typed into words.</summary>
-    /// <param name="input">The raw amount, for example "45".</param>
+    /// <param name="input">The raw amount, for example "45.50".</param>
     public ConversionResult Convert(string input)
     {
-        var dollars = AmountParser.ParseDollars(input);
+        var amount = AmountParser.Parse(input);
 
-        // Exactly one dollar is singular; every other amount, including zero, is plural (D58).
-        var unit = dollars == 1 ? "DOLLAR" : "DOLLARS";
-
-        return ConversionResult.Success($"{NumberWords.Spell(dollars)} {unit}");
+        return ConversionResult.Success(MoneyWords.Spell(amount));
     }
 }
