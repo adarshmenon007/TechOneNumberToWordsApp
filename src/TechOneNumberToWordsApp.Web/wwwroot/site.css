@@ -1,0 +1,103 @@
+/* Plain and readable; no framework (D5). Nothing here is inline in the page, because the CSP allows only this file (D34). */
+
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+  padding: 1rem;
+}
+
+main {
+  max-width: 36rem;
+  margin: 2rem auto;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin: 0 0 1.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+}
+
+.hint {
+  margin: 0.25rem 0 0.5rem;
+  color: #444;
+}
+
+/* The input and the button share a row and wrap onto two rows when the window is narrow. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font: inherit;
+  padding: 0.5rem;
+  border: 1px solid #555;
+  border-radius: 4px;
+}
+
+/* Read-only while a request runs (E6); it keeps focus but looks different from an editable field. */
+input[readonly] {
+  background: #eee;
+}
+
+button {
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border: 1px solid #1a4f8b;
+  border-radius: 4px;
+  background: #1a4f8b;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:disabled {
+  border-color: #6b7a8c;
+  background: #6b7a8c;
+  cursor: wait;
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 3px solid #f2a900;
+  outline-offset: 2px;
+}
+
+/* The output box is always on the page, so a screen reader announces the first result; it only gets its border and
+   padding once it has something in it (D5). */
+#output {
+  margin-top: 1.5rem;
+  overflow-wrap: anywhere;
+}
+
+#output:not(:empty) {
+  padding: 1rem;
+  border: 1px solid #555;
+  border-radius: 4px;
+}
+
+#output.result {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* An error is shown by its label and a heavier border as well as by colour. */
+#output.error {
+  border: 2px solid #b00020;
+}
+
+.error-label {
+  margin-right: 0.25rem;
+  font-weight: 700;
+  color: #b00020;
+}

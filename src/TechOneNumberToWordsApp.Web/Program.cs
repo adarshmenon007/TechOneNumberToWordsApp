@@ -48,6 +48,12 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler();
 }
 
+// The page and its files from wwwroot, with the default document first (D38). They come after the headers, the redirect
+// and the exception handler, so they get the same treatment as the API, and before the status code pages, so a path with
+// no file still falls through to the 404 ProblemDetails (D34).
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 // Turns every empty error response (400, 404, 405, 413, 415) into ProblemDetails with an errorCode (D41). The 500 is
 // written by the exception handler above, through the same customizer.
 app.UseStatusCodePages();
