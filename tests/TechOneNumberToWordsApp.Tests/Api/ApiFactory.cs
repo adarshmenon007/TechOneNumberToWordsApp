@@ -1,0 +1,49 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Logging;
+
+namespace TechOneNumberToWordsApp.Tests.Api;
+
+/// <summary>
+/// Starts the web application in memory for the API tests (D45). It runs in the <c>Testing</c> environment unless a
+/// test asks for another: <c>WebApplicationFactory</c> would otherwise pick Development, which turns on the developer
+/// exception page and would hide the 500 behaviour the 500 test checks.
+/// </summary>
+public sealed class ApiFactory : WebApplicationFactory<Program>
+{
+    private readonly string _environment;
+
+    public ApiFactory()
+        : this("Testing")
+    {
+    }
+
+    // Internal so xUnit sees one public constructor, as it requires of a fixture. Tests that need another
+    // environment create the factory themselves.
+    internal ApiFactory(string environment) => _environment = environment;
+
+    /// <summary>Everything the application logs while this factory is running.</summary>
+    public InMemoryLogProvider Logs { get; } = new();
+
+    /// <summary>
+    /// A client for the in-memory server. Its address is https (D35), so the HTTPS redirect can never interfere,
+    /// and it does not follow redirects, so a stray one would show up as a failure.
+    /// </summary>
+    public HttpClient CreateHttpsClient() =>
+        CreateClient(new WebApplicationFactoryClientOptions
+        {
+            BaseAddress = new Uri("https://localhost"),
+            AllowAutoRedirect = false,
+        });
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment(_environment);
+        builder.ConfigureLogging(logging =>
+        {
+            // Only our provider, so a test sees every entry and the test output stays quiet.
+            logging.ClearProviders();
+            logging.AddProvider(Logs);
+        });
+    }
+}
