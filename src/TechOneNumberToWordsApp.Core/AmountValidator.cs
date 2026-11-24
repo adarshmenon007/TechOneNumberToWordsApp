@@ -13,6 +13,9 @@ namespace TechOneNumberToWordsApp.Core;
 /// </remarks>
 internal static class AmountValidator
 {
+    // Shown for check 2 (nothing entered) and check 9 (no digits), which are the same mistake to the user.
+    private const string AmountRequiredMessage = "Please enter an amount.";
+
     // The largest amount written with commas and a point, such as 999,999,999,999,999.99, built from the limits
     // so the message cannot drift from them. InvariantCulture keeps the commas and point the same on every machine (D11).
     private static readonly string LargestAmountText = BuildLargestAmountText();
@@ -38,7 +41,7 @@ internal static class AmountValidator
         var text = TrimSpacesAndTabs(input);
         if (text.Length == 0)
         {
-            return Error(ConversionErrorCode.AmountRequired, "Please enter an amount.");
+            return Error(ConversionErrorCode.AmountRequired, AmountRequiredMessage);
         }
 
         // 3. A currency symbol anywhere ($, €, £, ...), by Unicode category rather than a fixed list (D22).
@@ -95,7 +98,7 @@ internal static class AmountValidator
         // 9. No digits at all (".", ",", ",,") is the same as entering nothing (E2).
         if (text.AsSpan().IndexOfAnyInRange('0', '9') < 0)
         {
-            return Error(ConversionErrorCode.AmountRequired, "Please enter an amount.");
+            return Error(ConversionErrorCode.AmountRequired, AmountRequiredMessage);
         }
 
         // 10. Commas must group the whole part in threes (E3), and cannot appear after the decimal point (D28).
