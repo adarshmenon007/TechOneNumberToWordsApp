@@ -12,6 +12,12 @@ public static class ApiProblem
     /// <summary>The title of errors about the request itself (D24b).</summary>
     public const string InvalidRequestTitle = "Invalid request";
 
+    /// <summary>The title of an unexpected failure (D24b).</summary>
+    public const string ServerErrorTitle = "Server error";
+
+    /// <summary>The only thing a client is told about an unexpected failure (D24).</summary>
+    public const string ServerErrorDetail = "An unexpected error occurred.";
+
     /// <summary>The name of the extension that carries the error code.</summary>
     public const string ErrorCodeKey = "errorCode";
 

@@ -19,6 +19,13 @@ builder.Services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadReq
 
 var app = builder.Build();
 
+// One generic 500 in every environment except Development, where the developer exception page (added by the host)
+// shows the details instead (D24). The exception is logged by the handler; no try/catch here (D42).
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler();
+}
+
 app.UseStatusCodePages();
 
 app.MapConvertEndpoint();

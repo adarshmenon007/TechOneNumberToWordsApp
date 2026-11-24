@@ -20,4 +20,7 @@ public enum ApiErrorCode
 
     /// <summary>The address exists but not for that HTTP method (D41).</summary>
     MethodNotAllowed,
+
+    /// <summary>Something unexpected went wrong inside the service (D24).</summary>
+    ServerError,
 }

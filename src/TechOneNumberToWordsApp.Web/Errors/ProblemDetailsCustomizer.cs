@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http;
 namespace TechOneNumberToWordsApp.Web.Errors;
 
 /// <summary>
-/// Gives the errors the framework makes (empty-body 400, 404, 405, 415) an <c>errorCode</c> and a title, so every
-/// error body has the same shape (D24a, D41).
+/// Gives the errors the framework makes (empty-body 400, 404, 405, 415) and the unexpected 500 an <c>errorCode</c>
+/// and a title, so every error body has the same shape (D24a, D41).
 /// </summary>
 public static class ProblemDetailsCustomizer
 {
@@ -15,6 +15,15 @@ public static class ProblemDetailsCustomizer
         // The endpoint's own errors already carry a code and a title; leave them alone (D41).
         if (problem.Extensions.ContainsKey(ApiProblem.ErrorCodeKey))
         {
+            return;
+        }
+
+        if (problem.Status == StatusCodes.Status500InternalServerError)
+        {
+            // The same words every time and nothing from the exception; the traceId links the response to the log (D24).
+            problem.Extensions[ApiProblem.ErrorCodeKey] = ApiErrorCode.ServerError.ToString();
+            problem.Title = ApiProblem.ServerErrorTitle;
+            problem.Detail = ApiProblem.ServerErrorDetail;
             return;
         }
 
