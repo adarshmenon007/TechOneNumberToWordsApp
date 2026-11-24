@@ -6,19 +6,25 @@ namespace TechOneNumberToWordsApp.Core;
 /// It holds no state, so one instance can be shared by every request (D23).
 /// </summary>
 /// <remarks>
-/// Built test-first: each rule (the rejections) is added when its tests are written.
+/// Built test-first: each rule (the remaining rejections) is added when its tests are written.
 /// </remarks>
 public sealed class AmountToWordsConverter
 {
-    /// <summary>Converts the amount the user typed into words.</summary>
+    /// <summary>The longest raw input accepted, counting every character including spaces (D29).</summary>
+    public const int MaxInputLength = 30;
+
+    /// <summary>Converts the amount the user typed into words, or says what is wrong with it.</summary>
     /// <param name="input">The raw amount, for example "45.50".</param>
     public ConversionResult Convert(string input)
     {
-        // Only spaces and tabs are trimmed, and only at the two ends (D9, D10).
-        // string.Trim() with no arguments would also strip other kinds of whitespace.
-        var trimmed = input.Trim(' ', '\t');
+        // Check first, so the parser only ever sees input that has passed every rule (D27).
+        var error = AmountValidator.Validate(input);
+        if (error is not null)
+        {
+            return ConversionResult.Failure(error);
+        }
 
-        var amount = AmountParser.Parse(trimmed);
+        var amount = AmountParser.Parse(AmountValidator.TrimSpacesAndTabs(input));
 
         return ConversionResult.Success(MoneyWords.Spell(amount));
     }
