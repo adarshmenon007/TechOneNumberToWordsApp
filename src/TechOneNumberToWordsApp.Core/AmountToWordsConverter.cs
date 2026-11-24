@@ -23,6 +23,9 @@ public sealed class AmountToWordsConverter
     /// <param name="input">The raw amount, for example "45.50".</param>
     public ConversionResult Convert(string input)
     {
+        // Null can only come from a bug in the caller; a user can only type text (D23).
+        ArgumentNullException.ThrowIfNull(input);
+
         // Check first, so the parser only ever sees input that has passed every rule (D27).
         var error = AmountValidator.Validate(input);
         if (error is not null)
