@@ -23,7 +23,7 @@ internal sealed class MoneyAmount
     public int MinorUnits { get; }
 
     /// <summary>
-    /// Creates an amount. The parser rejects bad user input before it gets here, so a value out of range
+    /// Creates an amount. The validator rejects bad user input before it gets here, so a value out of range
     /// means a bug in our own code; that is why this throws instead of returning a conversion error.
     /// </summary>
     public static MoneyAmount Create(long majorUnits, int minorUnits)

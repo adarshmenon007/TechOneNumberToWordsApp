@@ -5,7 +5,7 @@ namespace TechOneNumberToWordsApp.Core;
 /// them to callers as text (D24d), so renaming one is a breaking change.
 /// </summary>
 /// <remarks>
-/// Members are added as their rejection tests are written, in the order the checks run (D27).
+/// Members are listed in the order the checks run (D27).
 /// </remarks>
 public enum ConversionErrorCode
 {

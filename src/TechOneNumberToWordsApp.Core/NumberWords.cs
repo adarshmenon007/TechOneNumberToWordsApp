@@ -4,7 +4,7 @@ namespace TechOneNumberToWordsApp.Core;
 /// Spells a whole number in English capitals, for example 45 as "FORTY-FIVE" (O1).
 /// </summary>
 /// <remarks>
-/// Built test-first. It covers 0 up to 999 trillion, the largest amount the service accepts (D58).
+/// It covers 0 up to 999,999,999,999,999, the largest amount the service accepts (D58).
 /// </remarks>
 internal static class NumberWords
 {

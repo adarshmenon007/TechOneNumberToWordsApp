@@ -9,7 +9,7 @@ namespace TechOneNumberToWordsApp.Core;
 /// one that fails is the error returned (D27), so the parser only ever sees valid input.
 /// </summary>
 /// <remarks>
-/// Built test-first, one check at a time, in the order of the numbered comments below.
+/// The numbered comments in <see cref="Validate"/> follow the order in the design (D27).
 /// </remarks>
 internal static class AmountValidator
 {

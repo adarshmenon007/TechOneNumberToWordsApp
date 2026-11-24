@@ -5,9 +5,6 @@ namespace TechOneNumberToWordsApp.Core;
 /// (for example "123.45" becomes "ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS").
 /// It holds no state, so one instance can be shared by every request (D23).
 /// </summary>
-/// <remarks>
-/// Built test-first: each rule is added when its tests are written.
-/// </remarks>
 public sealed class AmountToWordsConverter
 {
     /// <summary>The longest raw input accepted, counting every character including spaces (D29).</summary>
