@@ -13,6 +13,10 @@ namespace TechOneNumberToWordsApp.Core;
 /// </remarks>
 internal static class AmountValidator
 {
+    // The largest amount written with commas and a point, such as 999,999,999,999,999.99, built from the limits
+    // so the message cannot drift from them. InvariantCulture keeps the commas and point the same on every machine (D11).
+    private static readonly string LargestAmountText = BuildLargestAmountText();
+
     /// <summary>
     /// Removes spaces and tabs from both ends. <c>string.Trim()</c> with no arguments would also remove
     /// other whitespace, which must be reported as an invalid character instead (D10).
@@ -126,10 +130,6 @@ internal static class AmountValidator
 
         return null;
     }
-
-    // The largest amount written with commas and a point, such as 999,999,999,999,999.99, built from the limits
-    // so the message cannot drift from them. InvariantCulture keeps the commas and point the same on every machine (D11).
-    private static readonly string LargestAmountText = BuildLargestAmountText();
 
     private static string BuildLargestAmountText()
     {
