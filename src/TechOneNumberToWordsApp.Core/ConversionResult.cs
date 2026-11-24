@@ -25,9 +25,9 @@ public sealed class ConversionResult
     /// <summary>What was wrong with the input. Null when the conversion succeeded.</summary>
     public ConversionError? Error { get; }
 
-    /// <summary>Creates a successful result. Together with <see cref="Failure"/> this is the only way to build one (D7).</summary>
-    public static ConversionResult Success(string words) => new(words, null);
+    /// <summary>Creates a successful result. Only this library builds results; callers just read them (D7).</summary>
+    internal static ConversionResult Success(string words) => new(words, null);
 
     /// <summary>Creates a failed result carrying the reason.</summary>
-    public static ConversionResult Failure(ConversionError error) => new(null, error);
+    internal static ConversionResult Failure(ConversionError error) => new(null, error);
 }
