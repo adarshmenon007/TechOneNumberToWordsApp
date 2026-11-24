@@ -38,7 +38,7 @@ each row carries its `Id` and `Decision` as xUnit traits (D47, D48). At gate 2 t
 **The loader checks the file and fails the whole run** with a message naming every problem, rather than skipping a bad row:
 a duplicate ID, a row with both or neither of `expectedWords` / `expectedErrorCode`, an `expectedErrorCode` that is not a
 member of `ConversionErrorCode`, an empty `decisions` list, a missing required field, or an unknown (misspelt) field (D43).
-The loader has no tests of its own (D52); each of these checks was tried by hand against deliberately broken data.
+D52: no automated tests for test code; each check fails the run with a message naming the row.
 
 ### 1.2 Test IDs and categories (D47)
 
