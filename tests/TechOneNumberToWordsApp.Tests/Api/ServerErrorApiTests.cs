@@ -2,8 +2,6 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Extensions.DependencyInjection;
-using TechOneNumberToWordsApp.Core;
 
 namespace TechOneNumberToWordsApp.Tests.Api;
 
@@ -57,9 +55,7 @@ public class ServerErrorApiTests
     // A valid amount, so the failure can only come from the converter that throws when it is resolved.
     private static async Task<HttpResponseMessage> PostWithBrokenConverterAsync()
     {
-        using var factory = new ApiFactory(
-            "Testing",
-            services => services.AddSingleton<AmountToWordsConverter>(_ => throw new InvalidOperationException(Secret)));
+        using var factory = ApiFactory.WithConverterThatThrows(Secret);
         using var client = factory.CreateHttpsClient();
         using var content = new StringContent("""{"amount":"5"}""", Encoding.UTF8, "application/json");
 

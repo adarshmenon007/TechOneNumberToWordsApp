@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using TechOneNumberToWordsApp.Core;
 using Microsoft.Extensions.Logging;
 
 namespace TechOneNumberToWordsApp.Tests.Api;
@@ -29,6 +30,13 @@ public sealed class ApiFactory : WebApplicationFactory<Program>
         _environment = environment;
         _configureServices = configureServices;
     }
+
+    /// <summary>
+    /// A factory in the <c>Testing</c> environment whose converter throws with the given message as soon as it is used.
+    /// It stands in for any unexpected failure in the 500 tests (D23, D45).
+    /// </summary>
+    internal static ApiFactory WithConverterThatThrows(string message) =>
+        new("Testing", services => services.AddSingleton<AmountToWordsConverter>(_ => throw new InvalidOperationException(message)));
 
     /// <summary>Everything the application logs while this factory is running.</summary>
     public InMemoryLogProvider Logs { get; } = new();
