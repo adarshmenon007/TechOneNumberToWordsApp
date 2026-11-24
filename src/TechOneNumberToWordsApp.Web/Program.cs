@@ -1,4 +1,5 @@
-// Composition root only (D50). Error handling, headers and limits are added test-first in later steps.
+// Composition root only (D50): it registers the services and sets up the request pipeline, and holds no logic of its own.
+// The order of the pipeline matters; the comments below say what each step is for.
 using Microsoft.AspNetCore.Routing;
 using TechOneNumberToWordsApp.Core;
 using TechOneNumberToWordsApp.Web.Endpoints;
@@ -47,6 +48,8 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler();
 }
 
+// Turns every empty error response (400, 404, 405, 413, 415) into ProblemDetails with an errorCode (D41). The 500 is
+// written by the exception handler above, through the same customizer.
 app.UseStatusCodePages();
 
 app.MapConvertEndpoint();
