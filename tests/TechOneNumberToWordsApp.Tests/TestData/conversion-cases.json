@@ -1140,5 +1140,51 @@
     "input": "$000000000000000000000000000000",
     "expectedErrorCode": "AmountTooLong",
     "messageContains": "30 characters"
+  },
+  {
+    "id": "CENT-012",
+    "decisions": ["D58"],
+    "description": "A trailing zero in the cents is kept: ten cents, not one",
+    "input": "1.10",
+    "expectedWords": "ONE DOLLAR AND TEN CENTS"
+  },
+  {
+    "id": "CENT-013",
+    "decisions": ["D58"],
+    "description": "The largest cents amount",
+    "input": "0.99",
+    "expectedWords": "NINETY-NINE CENTS"
+  },
+  {
+    "id": "VAL-045",
+    "decisions": ["D9","D12"],
+    "description": "A space before the minus sign is trimmed first, so the sign is still recognised",
+    "input": " -5",
+    "expectedErrorCode": "NegativeAmount",
+    "messageContains": "Negative amounts are not supported"
+  },
+  {
+    "id": "ORD-010",
+    "decisions": ["D27","D29"],
+    "description": "Check 1 (length) comes before check 2 (empty after trimming)",
+    "input": "                               ",
+    "expectedErrorCode": "AmountTooLong",
+    "messageContains": "30 characters"
+  },
+  {
+    "id": "ORD-011",
+    "decisions": ["D27"],
+    "description": "Check 7 (invalid character) comes before check 8 (decimal points)",
+    "input": "1.2.3a",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'a' (U+0061)"
+  },
+  {
+    "id": "ORD-012",
+    "decisions": ["D27"],
+    "description": "Check 3 (symbol) comes before check 6 (space inside)",
+    "input": "$ 5",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "currency symbol"
   }
 ]
