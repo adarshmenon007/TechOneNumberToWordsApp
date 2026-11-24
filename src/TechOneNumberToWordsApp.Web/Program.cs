@@ -1,4 +1,5 @@
 // Composition root only (D50). Error handling, headers and limits are added test-first in later steps.
+using Microsoft.AspNetCore.Routing;
 using TechOneNumberToWordsApp.Core;
 using TechOneNumberToWordsApp.Web.Endpoints;
 using TechOneNumberToWordsApp.Web.Errors;
@@ -10,6 +11,11 @@ builder.Services.AddSingleton<AmountToWordsConverter>();
 
 // Errors with no body (404, 405, 415, a bad request the framework rejects) become ProblemDetails (D24, D41).
 builder.Services.AddProblemDetails(options => options.CustomizeProblemDetails = ProblemDetailsCustomizer.Customize);
+
+// By default this is true in Development only: a body the framework cannot read (malformed JSON, an amount sent as a
+// number) then throws, and the developer exception page answers with a stack trace instead of a 400. False makes
+// every environment answer 400 InvalidRequest, as in production (D24, D37).
+builder.Services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadRequest = false);
 
 var app = builder.Build();
 
