@@ -126,7 +126,7 @@ more than one rule, the first rule in the order below wins (D27).
 #### Unexpected errors: 500, title "Server error"
 
 `errorCode` `ServerError` and the fixed `detail` "An unexpected error occurred." Nothing from the exception is sent to the client;
-the exception is written to the server log. Use the `traceId` to find it (section 8).
+the exception is written to the server log. Use the `traceId` to find it (section 7).
 
 #### Headers on every response (D34)
 
@@ -192,16 +192,15 @@ Docs/                          decision log, test plan, AI conversation history
 Nothing about the conversion is configurable: the limits (30 characters, 15 digits, 2 decimal places) are part of the rules.
 Outside Development the app also sends an HSTS header (D35).
 
-## 7. Logging
+**Logging.** A rejected amount writes one Information line from the endpoint with only its `errorCode`; what the user typed is
+never logged (D33). A successful conversion writes nothing of its own. An unexpected exception is logged once, as an Error with
+the exception.
 
-A rejected amount writes one Information line from the endpoint with only its `errorCode`; what the user typed is never logged
-(D33). A successful conversion writes nothing of its own. An unexpected exception is logged once, as an Error with the exception.
-
-## 8. Troubleshooting
+## 7. Troubleshooting
 
 - **The browser or `curl` complains about the certificate.** Run `dotnet dev-certs https --trust`. On Linux that command does not
-  trust the certificate system-wide; use `http://localhost:5080` (it redirects to https) or tell your client to skip
-  verification (`curl -k`).
+  trust the certificate system-wide, and `http://localhost:5080` only redirects to the https address, so it does not help. Tell
+  your client to skip certificate verification (`curl -k`, or the equivalent in your HTTP tool).
 - **"Failed to determine the https port for redirect" in the log.** The app was started without the launch profile (for example
   with `ASPNETCORE_URLS` set to an http address), so it does not know where to redirect. Plain http still works. Run with
   `dotnet run --project src/TechOneNumberToWordsApp.Web` to use both ports.
@@ -209,11 +208,11 @@ A rejected amount writes one Information line from the endpoint with only its `e
   `00-<TraceId>-<SpanId>-<flags>`. The log shows only the 32-character `TraceId`, which is the middle part: search the log for
   that.
 
-## 9. Continuous integration
+## 8. Continuous integration
 
 *To be written in slice 11.*
 
-## 10. Documentation and AI usage
+## 9. Documentation and AI usage
 
 | Document | What it is |
 |---|---|
@@ -223,6 +222,6 @@ A rejected amount writes one Information line from the endpoint with only its `e
 
 *The design document, and the account of which AI models were used and how, are to be written in slice 11.*
 
-## 11. Limitations and future work
+## 10. Limitations and future work
 
 *To be written in slice 11.*
