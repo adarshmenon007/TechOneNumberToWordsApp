@@ -104,6 +104,11 @@
             busy = false;
             button.disabled = false;
             input.readOnly = false;
+            // A disabled button drops focus; put it back so the next Tab carries on from Convert (E6). Not when focus
+            // is somewhere else on purpose, and only after the button is enabled again, because a disabled one cannot take focus.
+            if (document.activeElement === null || document.activeElement === document.body) {
+                button.focus();
+            }
             // Cleared before the answer is written, so a screen reader announces it.
             output.removeAttribute('aria-busy');
         }
