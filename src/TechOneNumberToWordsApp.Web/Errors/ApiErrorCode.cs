@@ -21,6 +21,9 @@ public enum ApiErrorCode
     /// <summary>The address exists but not for that HTTP method (D41).</summary>
     MethodNotAllowed,
 
+    /// <summary>The request body is larger than the limit (D37).</summary>
+    PayloadTooLarge,
+
     /// <summary>Something unexpected went wrong inside the service (D24).</summary>
     ServerError,
 }

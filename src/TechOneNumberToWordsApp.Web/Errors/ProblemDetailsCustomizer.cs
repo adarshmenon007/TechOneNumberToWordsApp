@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using TechOneNumberToWordsApp.Core;
 
 namespace TechOneNumberToWordsApp.Web.Errors;
 
@@ -24,6 +25,16 @@ public static class ProblemDetailsCustomizer
             problem.Extensions[ApiProblem.ErrorCodeKey] = ApiErrorCode.ServerError.ToString();
             problem.Title = ApiProblem.ServerErrorTitle;
             problem.Detail = ApiProblem.ServerErrorDetail;
+            return;
+        }
+
+        if (problem.Status == StatusCodes.Status413PayloadTooLarge)
+        {
+            // The one "Invalid request" error with a detail: the same words as AmountTooLong, since a body that large
+            // is an amount that is too long (C1).
+            problem.Extensions[ApiProblem.ErrorCodeKey] = ApiErrorCode.PayloadTooLarge.ToString();
+            problem.Title = ApiProblem.InvalidRequestTitle;
+            problem.Detail = AmountToWordsConverter.AmountTooLongMessage;
             return;
         }
 

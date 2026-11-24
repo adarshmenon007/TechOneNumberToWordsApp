@@ -7,6 +7,14 @@ using TechOneNumberToWordsApp.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Every request body is limited to 1 KB, for all current and future endpoints (D37). The Server header is removed (D34).
+// Kestrel answers an oversized body with an empty 413, which the status code pages turn into ProblemDetails (D41).
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.AddServerHeader = false;
+    options.Limits.MaxRequestBodySize = 1024;
+});
+
 // The converter holds no state, so one instance serves every request (D23).
 builder.Services.AddSingleton<AmountToWordsConverter>();
 
