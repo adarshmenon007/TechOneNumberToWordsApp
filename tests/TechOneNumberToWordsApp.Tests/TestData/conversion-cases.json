@@ -439,5 +439,131 @@
     "description": "Maximum amount: 999,999,999,999,999 dollars",
     "input": "999999999999999",
     "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS"
+  },
+  {
+    "id": "CENT-001",
+    "decisions": ["D8"],
+    "description": "The brief's example (R0)",
+    "input": "123.45",
+    "expectedWords": "ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS"
+  },
+  {
+    "id": "CENT-002",
+    "decisions": ["D58"],
+    "description": "Cents only, with a leading zero",
+    "input": "0.45",
+    "expectedWords": "FORTY-FIVE CENTS"
+  },
+  {
+    "id": "CENT-003",
+    "decisions": ["D58"],
+    "description": "Cents only, no digit before the point",
+    "input": ".45",
+    "expectedWords": "FORTY-FIVE CENTS"
+  },
+  {
+    "id": "CENT-004",
+    "decisions": ["D58"],
+    "description": "One decimal digit is tens of cents, not units",
+    "input": ".5",
+    "expectedWords": "FIFTY CENTS"
+  },
+  {
+    "id": "CENT-005",
+    "decisions": ["D58"],
+    "description": "One decimal digit is tens of cents, not units",
+    "input": ".1",
+    "expectedWords": "TEN CENTS"
+  },
+  {
+    "id": "CENT-006",
+    "decisions": ["D58"],
+    "description": "A cents part that starts with zero",
+    "input": "0.07",
+    "expectedWords": "SEVEN CENTS"
+  },
+  {
+    "id": "CENT-007",
+    "decisions": ["D58","O1"],
+    "description": "Exactly one cent is singular",
+    "input": "0.01",
+    "expectedWords": "ONE CENT"
+  },
+  {
+    "id": "CENT-008",
+    "decisions": ["D58","O1"],
+    "description": "Singular dollar and singular cent",
+    "input": "1.01",
+    "expectedWords": "ONE DOLLAR AND ONE CENT"
+  },
+  {
+    "id": "CENT-009",
+    "decisions": ["D58"],
+    "description": "Zero cents are left out",
+    "input": "1.00",
+    "expectedWords": "ONE DOLLAR"
+  },
+  {
+    "id": "CENT-010",
+    "decisions": ["D58"],
+    "description": "A trailing decimal point with no cents",
+    "input": "5.",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "CENT-011",
+    "decisions": ["D11"],
+    "description": "Cents are exact; floating point would give 34 cents",
+    "input": "4.35",
+    "expectedWords": "FOUR DOLLARS AND THIRTY-FIVE CENTS"
+  },
+  {
+    "id": "ZERO-002",
+    "decisions": ["D58"],
+    "description": "Zero with two zero cents",
+    "input": "0.00",
+    "expectedWords": "ZERO DOLLARS"
+  },
+  {
+    "id": "ZERO-003",
+    "decisions": ["D58"],
+    "description": "Zero with no digit before the point",
+    "input": ".00",
+    "expectedWords": "ZERO DOLLARS"
+  },
+  {
+    "id": "ZERO-004",
+    "decisions": ["D58"],
+    "description": "Zero with a trailing decimal point",
+    "input": "0.",
+    "expectedWords": "ZERO DOLLARS"
+  },
+  {
+    "id": "PLUR-003",
+    "decisions": ["D58"],
+    "description": "Plural dollars, singular cent",
+    "input": "2.01",
+    "expectedWords": "TWO DOLLARS AND ONE CENT"
+  },
+  {
+    "id": "PLUR-004",
+    "decisions": ["D58"],
+    "description": "Singular dollar, plural cents",
+    "input": "1.02",
+    "expectedWords": "ONE DOLLAR AND TWO CENTS"
+  },
+  {
+    "id": "AND-016",
+    "decisions": ["D8"],
+    "description": "AND before the final group and AND before the cents",
+    "input": "1005.05",
+    "expectedWords": "ONE THOUSAND AND FIVE DOLLARS AND FIVE CENTS"
+  },
+  {
+    "id": "LIM-002",
+    "decisions": ["D58"],
+    "description": "Maximum amount: 999,999,999,999,999.99",
+    "input": "999999999999999.99",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS AND NINETY-NINE CENTS"
   }
 ]
