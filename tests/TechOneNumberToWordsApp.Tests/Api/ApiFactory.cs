@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using TechOneNumberToWordsApp.Core;
 using Microsoft.Extensions.Logging;
+using TechOneNumberToWordsApp.Core;
 
 namespace TechOneNumberToWordsApp.Tests.Api;
 
