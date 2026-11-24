@@ -10,7 +10,9 @@ namespace TechOneNumberToWordsApp.Tests.Api;
 /// The request size limit and the Server header need a real Kestrel server: the in-memory TestServer enforces no
 /// Kestrel limit and never sends a Server header (D34, D37). The server listens on plain http, because neither
 /// behaviour has anything to do with HTTPS and CI has no development certificate (D37). The HTTPS redirection middleware
-/// is in the pipeline (D35); these tests would fail with a 307 if it got in the way of plain http.
+/// is in the pipeline (D35), but no https port is configured here, so it has nothing to redirect to and passes plain http
+/// through. These tests therefore say nothing about a server that knows its https port: there, plain http gets a 307
+/// redirect to https (TestPlan 5.3).
 /// </summary>
 public class RequestLimitApiTests
 {

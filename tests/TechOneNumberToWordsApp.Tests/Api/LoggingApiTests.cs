@@ -81,7 +81,7 @@ public class LoggingApiTests
         Assert.NotNull(entry.Exception);
         Assert.Equal(message, entry.Exception.Message);
 
-        // The response shows the full W3C id, "00-<TraceId>-<SpanId>-01"; the log scope holds only the TraceId (C2).
+        // The response shows the full W3C id, "00-<TraceId>-<SpanId>-<flags>"; the log scope holds only the TraceId (C2).
         var problem = await response.Content.ReadFromJsonAsync<JsonElement>(TestContext.Current.CancellationToken);
         var responseTraceId = problem.GetProperty("traceId").GetString()!.Split('-')[1];
         var scopeTraceIds = entry.Scopes

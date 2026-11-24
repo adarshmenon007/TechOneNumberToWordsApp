@@ -4,8 +4,8 @@ using TechOneNumberToWordsApp.Core;
 namespace TechOneNumberToWordsApp.Web.Errors;
 
 /// <summary>
-/// Gives the errors the framework makes (empty-body 400, 404, 405, 415) and the unexpected 500 an <c>errorCode</c>
-/// and a title, so every error body has the same shape (D24a, D41).
+/// Gives the errors the framework makes (empty-body 400, 404, 405, 413, 415) and the unexpected 500 an <c>errorCode</c>
+/// and a title, so every error body has the same shape (D24a, D41). The 413 also gets a detail (C1).
 /// </summary>
 public static class ProblemDetailsCustomizer
 {
