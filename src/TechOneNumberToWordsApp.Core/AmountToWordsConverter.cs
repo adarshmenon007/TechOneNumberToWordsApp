@@ -6,12 +6,18 @@ namespace TechOneNumberToWordsApp.Core;
 /// It holds no state, so one instance can be shared by every request (D23).
 /// </summary>
 /// <remarks>
-/// Built test-first: each rule (the remaining rejections) is added when its tests are written.
+/// Built test-first: each rule is added when its tests are written.
 /// </remarks>
 public sealed class AmountToWordsConverter
 {
     /// <summary>The longest raw input accepted, counting every character including spaces (D29).</summary>
     public const int MaxInputLength = 30;
+
+    /// <summary>The most digits allowed before the decimal point, not counting leading zeros (D58).</summary>
+    public const int MaxIntegerDigits = 15;
+
+    /// <summary>The most digits allowed after the decimal point (E1).</summary>
+    public const int MaxDecimalPlaces = 2;
 
     /// <summary>Converts the amount the user typed into words, or says what is wrong with it.</summary>
     /// <param name="input">The raw amount, for example "45.50".</param>

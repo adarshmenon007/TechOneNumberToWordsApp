@@ -12,7 +12,7 @@ public enum ConversionErrorCode
     /// <summary>The raw text is longer than <see cref="AmountToWordsConverter.MaxInputLength"/> characters.</summary>
     AmountTooLong,
 
-    /// <summary>Nothing was entered, or only spaces and tabs.</summary>
+    /// <summary>Nothing was entered: empty, only spaces and tabs, or no digits at all (such as "." or ",").</summary>
     AmountRequired,
 
     /// <summary>The text contains a currency symbol such as $ or €.</summary>
@@ -29,4 +29,16 @@ public enum ConversionErrorCode
 
     /// <summary>A character other than a digit, decimal point or comma was found.</summary>
     InvalidCharacter,
+
+    /// <summary>The text has more than one decimal point.</summary>
+    MultipleDecimalPoints,
+
+    /// <summary>A comma is in the wrong place, or comes after the decimal point.</summary>
+    InvalidThousandsSeparator,
+
+    /// <summary>More than <see cref="AmountToWordsConverter.MaxDecimalPlaces"/> digits follow the decimal point.</summary>
+    TooManyDecimalPlaces,
+
+    /// <summary>More than <see cref="AmountToWordsConverter.MaxIntegerDigits"/> digits come before the decimal point.</summary>
+    AmountTooLarge,
 }

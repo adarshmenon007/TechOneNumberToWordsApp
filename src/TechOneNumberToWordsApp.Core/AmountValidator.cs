@@ -9,8 +9,7 @@ namespace TechOneNumberToWordsApp.Core;
 /// one that fails is the error returned (D27), so the parser only ever sees valid input.
 /// </summary>
 /// <remarks>
-/// Built test-first. Checks 1 to 7 are here; the decimal point, grouping, decimal places and size
-/// checks are added with their tests.
+/// Built test-first, one check at a time, in the order of the numbered comments below.
 /// </remarks>
 internal static class AmountValidator
 {
@@ -28,7 +27,7 @@ internal static class AmountValidator
         {
             return Error(
                 ConversionErrorCode.AmountTooLong,
-                $"The amount is too long. Please enter no more than {AmountToWordsConverter.MaxInputLength} characters.");
+                FormattableString.Invariant($"The amount is too long. Please enter no more than {AmountToWordsConverter.MaxInputLength} characters."));
         }
 
         // 2. Nothing left once spaces and tabs are trimmed.
@@ -69,7 +68,123 @@ internal static class AmountValidator
         }
 
         // 7. Anything that is not a digit, decimal point or comma. Only the ASCII digits count (D10).
-        return FindInvalidCharacter(text);
+        var invalidCharacter = FindInvalidCharacter(text);
+        if (invalidCharacter is not null)
+        {
+            return invalidCharacter;
+        }
+
+        // From here on the text holds only digits, commas and decimal points.
+        // Split it at the decimal point: "1,234.5" has the whole part "1,234" and the decimal part "5".
+        var firstPoint = text.IndexOf('.');
+        var whole = firstPoint < 0 ? text : text[..firstPoint];
+        var decimals = firstPoint < 0 ? string.Empty : text[(firstPoint + 1)..];
+
+        // 8. More than one decimal point. The extra points end up in the decimal part.
+        if (decimals.Contains('.'))
+        {
+            return Error(
+                ConversionErrorCode.MultipleDecimalPoints,
+                "The amount has more than one decimal point. Please use a single decimal point.");
+        }
+
+        // 9. No digits at all (".", ",", ",,") is the same as entering nothing (E2).
+        if (text.AsSpan().IndexOfAnyInRange('0', '9') < 0)
+        {
+            return Error(ConversionErrorCode.AmountRequired, "Please enter an amount.");
+        }
+
+        // 10. Commas must group the whole part in threes (E3), and cannot appear after the decimal point (D28).
+        if (whole.Contains(',') && !HasValidGrouping(whole))
+        {
+            return Error(
+                ConversionErrorCode.InvalidThousandsSeparator,
+                "The commas in the amount are in the wrong place. Use a comma only between groups of three digits, for example 1,234,567.");
+        }
+
+        if (decimals.Contains(','))
+        {
+            return Error(ConversionErrorCode.InvalidThousandsSeparator, "Commas cannot be used after the decimal point.");
+        }
+
+        // 11. Too many decimal places (E1). "1.500" is rejected rather than guessed at: some countries read it as 1500.
+        if (decimals.Length > AmountToWordsConverter.MaxDecimalPlaces)
+        {
+            return Error(
+                ConversionErrorCode.TooManyDecimalPlaces,
+                FormattableString.Invariant(
+                    $"The amount has too many decimal places. Please enter at most {AmountToWordsConverter.MaxDecimalPlaces} digits after the decimal point."));
+        }
+
+        // 12. Too large. Leading zeros and commas do not count towards the digit limit (D58).
+        if (CountSignificantDigits(whole) > AmountToWordsConverter.MaxIntegerDigits)
+        {
+            return Error(
+                ConversionErrorCode.AmountTooLarge,
+                $"The amount is too large. The largest amount is {LargestAmountText}.");
+        }
+
+        return null;
+    }
+
+    // The largest amount written with commas and a point, such as 999,999,999,999,999.99, built from the limits
+    // so the message cannot drift from them. InvariantCulture keeps the commas and point the same on every machine (D11).
+    private static readonly string LargestAmountText = BuildLargestAmountText();
+
+    private static string BuildLargestAmountText()
+    {
+        long largestWhole = 0;
+        for (var digit = 0; digit < AmountToWordsConverter.MaxIntegerDigits; digit++)
+        {
+            largestWhole = (largestWhole * 10) + 9;
+        }
+
+        return largestWhole.ToString("N0", CultureInfo.InvariantCulture)
+            + "."
+            + new string('9', AmountToWordsConverter.MaxDecimalPlaces);
+    }
+
+    // Valid grouping: a first group of 1 to 3 digits that does not start with 0, then groups of exactly 3 digits.
+    // That rejects ",123" (empty first group), "1,,234" and "1,234," (empty groups), "1,23" and "1,2345"
+    // (wrong size), and "0,001" (a first group starting with 0 can read as a fraction in other countries).
+    private static bool HasValidGrouping(string whole)
+    {
+        var groups = whole.Split(',');
+
+        if (groups[0].Length is < 1 or > 3 || groups[0][0] == '0')
+        {
+            return false;
+        }
+
+        for (var index = 1; index < groups.Length; index++)
+        {
+            if (groups[index].Length != 3)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Digits from the first non-zero digit onwards, skipping commas: "000,000" has 0, "0012" has 2.
+    private static int CountSignificantDigits(string whole)
+    {
+        var count = 0;
+        foreach (var character in whole)
+        {
+            if (character == ',')
+            {
+                continue;
+            }
+
+            if (count > 0 || character != '0')
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     private static ConversionError? FindInvalidCharacter(string text)
