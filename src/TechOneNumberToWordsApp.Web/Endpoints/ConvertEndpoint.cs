@@ -1,4 +1,5 @@
 using TechOneNumberToWordsApp.Core;
+using TechOneNumberToWordsApp.Web.Errors;
 using TechOneNumberToWordsApp.Web.Models;
 
 namespace TechOneNumberToWordsApp.Web.Endpoints;
@@ -15,23 +16,24 @@ public static class ConvertEndpoint
         return routes;
     }
 
-    private static IResult Handle(ConvertRequest request, AmountToWordsConverter converter)
+    // The request is nullable on purpose: an empty body arrives as null, and this method answers it (D24e).
+    private static IResult Handle(ConvertRequest? request, AmountToWordsConverter converter)
     {
-        // Temporary: a missing amount becomes a 400 MissingField in the next step, which starts with its tests (D24e).
-        ArgumentNullException.ThrowIfNull(request.Amount);
+        // Checked in the order of D27: the body, then the amount, then the converter.
+        if (request is null)
+        {
+            return ApiProblem.BadRequest(ApiErrorCode.InvalidRequest);
+        }
+
+        if (request.Amount is null)
+        {
+            return ApiProblem.BadRequest(ApiErrorCode.MissingField);
+        }
 
         var result = converter.Convert(request.Amount);
 
-        if (result.IsSuccess)
-        {
-            return TypedResults.Ok(new ConvertResponse(result.Words));
-        }
-
-        // The errorCode is the enum member's name as text, a public contract (D24d). The 400 keeps its own title (D41).
-        return TypedResults.Problem(
-            title: "Invalid amount",
-            detail: result.Error.Message,
-            statusCode: StatusCodes.Status400BadRequest,
-            extensions: new Dictionary<string, object?> { ["errorCode"] = result.Error.Code.ToString() });
+        return result.IsSuccess
+            ? TypedResults.Ok(new ConvertResponse(result.Words))
+            : ApiProblem.InvalidAmount(result.Error.Code.ToString(), result.Error.Message);
     }
 }
