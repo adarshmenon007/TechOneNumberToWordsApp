@@ -17,7 +17,7 @@ public static class ConvertEndpoint
     }
 
     // The request is nullable on purpose: an empty body arrives as null, and this method answers it (D24e).
-    private static IResult Handle(ConvertRequest? request, AmountToWordsConverter converter)
+    private static IResult Handle(ConvertRequest? request, AmountToWordsConverter converter, ILoggerFactory loggerFactory)
     {
         // Checked in the order of D27: the body, then the amount, then the converter.
         if (request is null)
@@ -32,8 +32,17 @@ public static class ConvertEndpoint
 
         var result = converter.Convert(request.Amount);
 
-        return result.IsSuccess
-            ? TypedResults.Ok(new ConvertResponse(result.Words))
-            : ApiProblem.InvalidAmount(result.Error.Code.ToString(), result.Error.Message);
+        if (result.IsSuccess)
+        {
+            return TypedResults.Ok(new ConvertResponse(result.Words));
+        }
+
+        // A typo is not a system problem, so Information. Only the code is logged, never what the user typed (D33).
+        // The endpoint is a static class, which cannot be an ILogger type argument, so its category comes from the type.
+        var errorCode = result.Error.Code.ToString();
+        var logger = loggerFactory.CreateLogger(typeof(ConvertEndpoint));
+        logger.LogInformation("Conversion rejected: {ErrorCode}", errorCode);
+
+        return ApiProblem.InvalidAmount(errorCode, result.Error.Message);
     }
 }
