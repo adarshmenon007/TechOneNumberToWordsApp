@@ -91,13 +91,22 @@ public class RequestLimitApiTests
         await AssertPayloadTooLargeAsync(overLimitResponse);
     }
 
-    // A real Kestrel server on a free port, plain http (D37).
+    // A real Kestrel server on a free port, plain http (D37). The caller disposes the factory; if the server fails to
+    // start, it is disposed here because the caller never receives it.
     private static ApiFactory StartKestrel()
     {
         var factory = new ApiFactory();
-        factory.UseKestrel(0);
-        factory.StartServer();
-        return factory;
+        try
+        {
+            factory.UseKestrel(0);
+            factory.StartServer();
+            return factory;
+        }
+        catch
+        {
+            factory.Dispose();
+            throw;
+        }
     }
 
     private static string BodyWithDigits(int digits) => $$"""{"amount":"{{new string('1', digits)}}"}""";
