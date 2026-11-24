@@ -677,5 +677,188 @@
     "description": "Commas then a trailing decimal point",
     "input": "1,234.",
     "expectedWords": "ONE THOUSAND TWO HUNDRED AND THIRTY-FOUR DOLLARS"
+  },
+  {
+    "id": "LIM-005",
+    "decisions": ["D29","D27"],
+    "description": "31 characters is one too many",
+    "input": "0000000000000000000000000000005",
+    "expectedErrorCode": "AmountTooLong",
+    "messageContains": "30 characters"
+  },
+  {
+    "id": "LIM-006",
+    "decisions": ["D29"],
+    "description": "Exactly 30 characters, mostly spaces: accepted because the cap counts the raw text",
+    "input": "                             5",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "LIM-007",
+    "decisions": ["D29","D27"],
+    "description": "31 characters of mostly spaces: rejected even though only one character remains after trimming",
+    "input": "                              5",
+    "expectedErrorCode": "AmountTooLong",
+    "messageContains": "30 characters"
+  },
+  {
+    "id": "VAL-001",
+    "decisions": ["D19","D27"],
+    "description": "Empty input",
+    "input": "",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-002",
+    "decisions": ["D19","D27"],
+    "description": "Only spaces",
+    "input": "   ",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-003",
+    "decisions": ["D19","D27"],
+    "description": "Only a tab",
+    "input": "\t",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-004",
+    "decisions": ["D22"],
+    "description": "Dollar sign before the amount",
+    "input": "$5",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "without a currency symbol"
+  },
+  {
+    "id": "VAL-005",
+    "decisions": ["D22"],
+    "description": "Euro sign after the amount",
+    "input": "5\u20ac",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "without a currency symbol"
+  },
+  {
+    "id": "VAL-006",
+    "decisions": ["D22"],
+    "description": "A dollar sign on its own",
+    "input": "$",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "without a currency symbol"
+  },
+  {
+    "id": "VAL-007",
+    "decisions": ["D12"],
+    "description": "Leading minus sign",
+    "input": "-5",
+    "expectedErrorCode": "NegativeAmount",
+    "messageContains": "Negative amounts are not supported"
+  },
+  {
+    "id": "VAL-008",
+    "decisions": ["D27"],
+    "description": "Leading plus sign",
+    "input": "+5",
+    "expectedErrorCode": "SignNotAllowed",
+    "messageContains": "without a plus sign"
+  },
+  {
+    "id": "VAL-009",
+    "decisions": ["D10"],
+    "description": "A space inside the amount",
+    "input": "1 234",
+    "expectedErrorCode": "ContainsWhitespace",
+    "messageContains": "spaces or tabs inside"
+  },
+  {
+    "id": "VAL-010",
+    "decisions": ["D10"],
+    "description": "A tab inside the amount",
+    "input": "1\t234",
+    "expectedErrorCode": "ContainsWhitespace",
+    "messageContains": "spaces or tabs inside"
+  },
+  {
+    "id": "VAL-011",
+    "decisions": ["D10"],
+    "description": "A letter",
+    "input": "5a",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'a' (U+0061)"
+  },
+  {
+    "id": "VAL-012",
+    "decisions": ["D10"],
+    "description": "Scientific notation is not accepted",
+    "input": "1e5",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'e' (U+0065)"
+  },
+  {
+    "id": "VAL-013",
+    "decisions": ["D10"],
+    "description": "A minus sign that is not at the start",
+    "input": "7-2",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'-' (U+002D)"
+  },
+  {
+    "id": "VAL-014",
+    "decisions": ["D10"],
+    "description": "A trailing minus sign",
+    "input": "5-",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'-' (U+002D)"
+  },
+  {
+    "id": "VAL-015",
+    "decisions": ["D10"],
+    "description": "A full-width digit is not an ASCII digit",
+    "input": "\uff15",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+FF15)"
+  },
+  {
+    "id": "VAL-016",
+    "decisions": ["D10"],
+    "description": "An Arabic-Indic digit is not an ASCII digit",
+    "input": "\u0665",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+0665)"
+  },
+  {
+    "id": "VAL-017",
+    "decisions": ["E4"],
+    "description": "A leading non-breaking space is not trimmed and shows as a code point",
+    "input": "\u00a05",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+00A0)"
+  },
+  {
+    "id": "VAL-018",
+    "decisions": ["E4"],
+    "description": "A newline inside shows as a code point",
+    "input": "5\n5",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+000A)"
+  },
+  {
+    "id": "VAL-019",
+    "decisions": ["E4"],
+    "description": "A zero-width space shows as a code point",
+    "input": "5\u200b",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+200B)"
+  },
+  {
+    "id": "VAL-020",
+    "decisions": ["F1"],
+    "description": "An emoji is reported as one whole character, not half a surrogate pair",
+    "input": "5\ud83d\ude00",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "(U+1F600)"
   }
 ]

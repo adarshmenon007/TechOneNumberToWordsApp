@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TechOneNumberToWordsApp.Core;
 
 namespace TechOneNumberToWordsApp.Tests.TestData;
 
@@ -13,6 +14,9 @@ internal static class ConversionCases
     private const string FileName = "conversion-cases.json";
 
     private static readonly Lazy<IReadOnlyList<ConversionCase>> AllCases = new(Load);
+
+    // Exact enum member names, so a misspelt or renamed code in the data file fails the run (D43).
+    private static readonly HashSet<string> ErrorCodeNames = [.. Enum.GetNames<ConversionErrorCode>()];
 
     /// <summary>Every case, in file order.</summary>
     public static IReadOnlyList<ConversionCase> All => AllCases.Value;
@@ -86,6 +90,12 @@ internal static class ConversionCases
 
             var hasWords = c.ExpectedWords is not null;
             var hasError = c.ExpectedErrorCode is not null;
+
+            if (hasError && !ErrorCodeNames.Contains(c.ExpectedErrorCode!))
+            {
+                problems.Add($"{c.Id}: expectedErrorCode '{c.ExpectedErrorCode}' is not a member of ConversionErrorCode.");
+            }
+
             if (hasWords == hasError)
             {
                 problems.Add(hasWords
@@ -94,7 +104,6 @@ internal static class ConversionCases
             }
         }
 
-        // Added once the error-code enum exists: every expectedErrorCode must be a real enum member (D43).
         return problems;
     }
 }

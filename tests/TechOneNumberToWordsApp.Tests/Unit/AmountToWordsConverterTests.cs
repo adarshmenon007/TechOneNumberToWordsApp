@@ -23,16 +23,27 @@ public class AmountToWordsConverterTests
 
     [Theory]
     [MemberData(nameof(Cases))]
-    public void Convert_ReturnsExpectedWords(string caseId)
+    public void Convert_MatchesExpectedOutcome(string caseId)
     {
         var testCase = ConversionCases.Get(caseId);
-        Assert.True(
-            testCase.ExpectedWords is not null,
-            $"{caseId} expects an error; rejection rows are asserted once the rejection slice adds that branch.");
 
         var result = new AmountToWordsConverter().Convert(testCase.Input);
 
-        Assert.True(result.IsSuccess, $"{caseId}: '{testCase.Input}' was rejected: {result.Error?.Message}");
-        Assert.Equal(testCase.ExpectedWords, result.Words);
+        if (testCase.ExpectedWords is not null)
+        {
+            Assert.True(result.IsSuccess, $"{caseId}: '{testCase.Input}' was rejected: {result.Error?.Message}");
+            Assert.Equal(testCase.ExpectedWords, result.Words);
+            return;
+        }
+
+        // The loader guarantees a row has either expectedWords or expectedErrorCode.
+        Assert.False(result.IsSuccess, $"{caseId}: '{testCase.Input}' was accepted as: {result.Words}");
+        Assert.NotNull(result.Error);
+        Assert.Equal(testCase.ExpectedErrorCode, result.Error.Code.ToString());
+
+        if (testCase.MessageContains is not null)
+        {
+            Assert.Contains(testCase.MessageContains, result.Error.Message);
+        }
     }
 }
