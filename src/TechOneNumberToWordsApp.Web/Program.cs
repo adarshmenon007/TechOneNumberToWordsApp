@@ -23,6 +23,15 @@ var app = builder.Build();
 // First, so every response gets the headers, including errors and, later, static files (D34).
 app.UseSecurityHeaders();
 
+// HTTPS: HSTS everywhere except Development (it would stick in a developer's browser), and always redirect plain http
+// to https (D35). They come after the headers so the redirect response carries them too.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+
 // One generic 500 in every environment except Development, where the developer exception page (added by the host)
 // shows the details instead (D24). The exception is logged by the handler; no try/catch here (D42).
 if (!app.Environment.IsDevelopment())
