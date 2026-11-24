@@ -482,3 +482,4 @@ $RECYCLE.BIN/
 *.swp
 Tech_Test_HR.pdf
 .claude/settings.local.json
+Claude outputs/
