@@ -19,6 +19,9 @@ public sealed class AmountToWordsConverter
     /// </summary>
     internal const int MaxDecimalPlaces = 2;
 
+    /// <summary>The text of the AmountTooLong error (C1).</summary>
+    public static string AmountTooLongMessage => throw new NotImplementedException();
+
     /// <summary>Converts the amount the user typed into words, or says what is wrong with it.</summary>
     /// <param name="input">The raw amount, for example "45.50".</param>
     public ConversionResult Convert(string input)
