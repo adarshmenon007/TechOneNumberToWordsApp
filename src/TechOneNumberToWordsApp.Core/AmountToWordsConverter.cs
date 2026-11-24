@@ -19,8 +19,12 @@ public sealed class AmountToWordsConverter
     /// </summary>
     internal const int MaxDecimalPlaces = 2;
 
-    /// <summary>The text of the AmountTooLong error (C1).</summary>
-    public static string AmountTooLongMessage => throw new NotImplementedException();
+    /// <summary>
+    /// The message for an amount that is too long. The validator returns it for the AmountTooLong error, and the web
+    /// layer reuses it for the 413 response, so the wording exists in one place (C1).
+    /// </summary>
+    public static string AmountTooLongMessage { get; } =
+        FormattableString.Invariant($"The amount is too long. Please enter no more than {MaxInputLength} characters.");
 
     /// <summary>Converts the amount the user typed into words, or says what is wrong with it.</summary>
     /// <param name="input">The raw amount, for example "45.50".</param>

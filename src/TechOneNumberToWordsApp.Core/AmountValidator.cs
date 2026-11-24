@@ -32,9 +32,7 @@ internal static class AmountValidator
         // 1. The length cap counts the raw text, before trimming (D29).
         if (input.Length > AmountToWordsConverter.MaxInputLength)
         {
-            return Error(
-                ConversionErrorCode.AmountTooLong,
-                FormattableString.Invariant($"The amount is too long. Please enter no more than {AmountToWordsConverter.MaxInputLength} characters."));
+            return Error(ConversionErrorCode.AmountTooLong, AmountToWordsConverter.AmountTooLongMessage);
         }
 
         // 2. Nothing left once spaces and tabs are trimmed.
