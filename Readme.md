@@ -7,10 +7,10 @@ A C# web page and server routine that turn an Australian-dollar amount into word
 ```
 
 The routine is a class library with no third-party packages. A small ASP.NET Core Minimal API exposes it as
-`POST /api/convert`, and a single HTML page (not built yet) calls that API.
+`POST /api/convert`, and a single plain HTML page, served by the same app, calls that API.
 
-> **Status: draft.** This Readme describes what exists after the API phase. Sections marked *To be written in slice 11* are
-> filled in when the page and the rest of the project are finished. The reasoning behind every design choice is in
+> **Status: draft.** This Readme describes what exists after the page was built. Sections marked *To be written in slice 11* are
+> filled in when the rest of the project is finished. The reasoning behind every design choice is in
 > [`Docs/DesignDecisions.md`](Docs/DesignDecisions.md) (decision numbers such as D24 below refer to it).
 
 ## 1. Quick start
@@ -32,7 +32,7 @@ dotnet run --project src/TechOneNumberToWordsApp.Web
 The app listens on **https://localhost:5443**. Plain http on `http://localhost:5080` redirects to https (D35). It runs in the
 Development environment (set by `launchSettings.json`).
 
-The launch profile opens a browser tab, which shows a 404 until the page is built. For now try the API:
+The launch profile opens the page in your browser (section 2). You can also call the API directly:
 
 ```
 curl -X POST https://localhost:5443/api/convert -H "Content-Type: application/json" -d '{"amount":"123.45"}'
@@ -50,7 +50,25 @@ Invoke-RestMethod -Method Post -Uri https://localhost:5443/api/convert -ContentT
 
 ## 2. Using the page
 
-*To be written in slice 11.*
+Open **https://localhost:5443** (the launch profile does this for you).
+
+1. Type an amount in the **Amount (AUD)** box, for example `1,234.50`. Commas, a decimal point and spaces around the amount are
+   fine; the rules are the ones in section 3.
+2. Click **Convert**, or press Enter.
+3. The answer appears in the box under the form, for example `123.45` gives
+   ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS.
+
+If the amount is not valid, the box shows a message that says what is wrong, marked **Error:**. The page does not check the
+amount itself; the server does, so the same rules and wording apply to the page and to the API (D6). Nothing you type is ever
+shown as markup, only as text (D24).
+
+While the request runs the Convert button is disabled, the amount box cannot be edited and the answer area says "Converting…" (E6). If the server does not
+answer within 15 seconds, or cannot be reached, the page says "Something went wrong. Please try again." (D60). After an
+unexpected server error the same sentence is followed by a **Reference**; to find that error in the server log, see section 7 (F3).
+
+The page works with the keyboard alone, and the answer area is announced by screen readers. It is plain HTML, one style sheet and
+one script, with no framework; the files are in `src/TechOneNumberToWordsApp.Web/wwwroot/`. The checks for it are the manual cases
+in [`Docs/TestPlan.md`](Docs/TestPlan.md) (section 1.5).
 
 ## 3. API reference
 
@@ -131,7 +149,7 @@ the exception is written to the server log. Use the `traceId` to find it (sectio
 #### Headers on every response (D34)
 
 `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer` and `X-Frame-Options: DENY`. There is
-no `Server` header.
+no `Server` header. The page's files get the same headers.
 
 ## 4. Running the tests
 
@@ -167,6 +185,7 @@ src/
     Models/                        request and response records
     Errors/                        errorCode values and the ProblemDetails mapping
     Middleware/                    security headers
+    wwwroot/                       the page: index.html, site.css, app.js, favicon.svg
     Properties/launchSettings.json ports and environment for dotnet run
     appsettings.json               logging
 tests/

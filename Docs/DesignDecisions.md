@@ -31,12 +31,18 @@ and trade-offs were challenged with AI assistance (see `Docs/AI/`).
 |---|---|---|
 | `Docs/DesignDecisions.md` | This file: the full decision log | Written |
 | `Docs/DesignDocument.md` | Narrative for reviewers: why this approach, why not the alternatives (brief item 2) | (to be written) |
-| `Docs/TestPlan.md` | Test plan and traceability (brief item 3) | Draft (library and API sections) |
+| `Docs/TestPlan.md` | Test plan and traceability (brief item 3) | Draft (library, API and page sections; manual UI outcomes still to be recorded) |
 | `Docs/AI/README.md` | AI models used and how (brief item 7) | (to be written) |
 | `Docs/AI/01-design-phase.md` | Conversation export, design phase | Written |
 | `Docs/AI/01-design-phase-plan.md` | Plan file as at the end of the design phase | Written |
 | `Docs/AI/01-design-phase-claude-ai-review.md` | claude.ai review chat (Claude Opus 5.5 as reviewer), used to explain options and trade-offs before decisions | Written |
-| `Readme.md` | Build, host and use (brief item 6) | Draft (what exists after the API phase; the rest is marked "to be written") |
+| `Docs/AI/02-library.md` | Conversation export, library phase | Written |
+| `Docs/AI/02-library-plan.md` | Plan file as at the end of the library phase | Written |
+| `Docs/AI/02-library-claude-ai-review.md` | claude.ai review chat for the library phase | Written |
+| `Docs/AI/03-api.md` | Conversation export, API phase | Written |
+| `Docs/AI/03-api-plan.md` | Plan file as at the end of the API phase | Written |
+| `Docs/AI/03-api-claude-ai-review.md` | claude.ai review chat for the API phase | Written |
+| `Readme.md` | Build, host and use (brief item 6) | Draft (what exists after the page was built; the rest is marked "to be written") |
 
 ## Decision log
 
