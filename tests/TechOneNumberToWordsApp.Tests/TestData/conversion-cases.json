@@ -565,5 +565,117 @@
     "description": "Maximum amount: 999,999,999,999,999.99",
     "input": "999999999999999.99",
     "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS AND NINETY-NINE CENTS"
+  },
+  {
+    "id": "FMT-001",
+    "decisions": ["D9","D10"],
+    "description": "A leading space is trimmed",
+    "input": " 5",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-002",
+    "decisions": ["D9","D10"],
+    "description": "A trailing space is trimmed",
+    "input": "5 ",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-003",
+    "decisions": ["D9","D10"],
+    "description": "Tabs at both ends are trimmed",
+    "input": "\t5\t",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-004",
+    "decisions": ["D9","D10"],
+    "description": "A mix of spaces and tabs at both ends is trimmed",
+    "input": " \t5\t ",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-005",
+    "decisions": ["D9","D10"],
+    "description": "The brief's example with surrounding spaces",
+    "input": " 123.45 ",
+    "expectedWords": "ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS"
+  },
+  {
+    "id": "FMT-006",
+    "decisions": ["D58"],
+    "description": "Leading zeros do not change the amount",
+    "input": "007",
+    "expectedWords": "SEVEN DOLLARS"
+  },
+  {
+    "id": "FMT-007",
+    "decisions": ["D58"],
+    "description": "Leading zeros before a singular amount",
+    "input": "0001",
+    "expectedWords": "ONE DOLLAR"
+  },
+  {
+    "id": "FMT-008",
+    "decisions": ["D58"],
+    "description": "Maximum amount preceded by three leading zeros: 15 significant digits",
+    "input": "000999999999999999.99",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS AND NINETY-NINE CENTS"
+  },
+  {
+    "id": "LIM-003",
+    "decisions": ["D29"],
+    "description": "Exactly 30 characters, the longest input allowed",
+    "input": "000000000000000000000000000005",
+    "expectedWords": "FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-009",
+    "decisions": ["E3"],
+    "description": "One comma",
+    "input": "1,234",
+    "expectedWords": "ONE THOUSAND TWO HUNDRED AND THIRTY-FOUR DOLLARS"
+  },
+  {
+    "id": "FMT-010",
+    "decisions": ["E3"],
+    "description": "A first group of two digits",
+    "input": "12,345",
+    "expectedWords": "TWELVE THOUSAND THREE HUNDRED AND FORTY-FIVE DOLLARS"
+  },
+  {
+    "id": "FMT-011",
+    "decisions": ["E3"],
+    "description": "A first group of three digits",
+    "input": "123,456",
+    "expectedWords": "ONE HUNDRED AND TWENTY-THREE THOUSAND FOUR HUNDRED AND FIFTY-SIX DOLLARS"
+  },
+  {
+    "id": "FMT-012",
+    "decisions": ["E3"],
+    "description": "Two commas",
+    "input": "1,000,000",
+    "expectedWords": "ONE MILLION DOLLARS"
+  },
+  {
+    "id": "FMT-013",
+    "decisions": ["E3"],
+    "description": "Commas together with cents",
+    "input": "1,234,567.89",
+    "expectedWords": "ONE MILLION TWO HUNDRED AND THIRTY-FOUR THOUSAND FIVE HUNDRED AND SIXTY-SEVEN DOLLARS AND EIGHTY-NINE CENTS"
+  },
+  {
+    "id": "LIM-004",
+    "decisions": ["D29","D58"],
+    "description": "Maximum amount with commas: 22 characters, the longest valid input without leading zeros or spaces",
+    "input": "999,999,999,999,999.99",
+    "expectedWords": "NINE HUNDRED AND NINETY-NINE TRILLION NINE HUNDRED AND NINETY-NINE BILLION NINE HUNDRED AND NINETY-NINE MILLION NINE HUNDRED AND NINETY-NINE THOUSAND NINE HUNDRED AND NINETY-NINE DOLLARS AND NINETY-NINE CENTS"
+  },
+  {
+    "id": "FMT-014",
+    "decisions": ["D28"],
+    "description": "Commas then a trailing decimal point",
+    "input": "1,234.",
+    "expectedWords": "ONE THOUSAND TWO HUNDRED AND THIRTY-FOUR DOLLARS"
   }
 ]
