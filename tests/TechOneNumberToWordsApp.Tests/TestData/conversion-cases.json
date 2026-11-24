@@ -860,5 +860,285 @@
     "input": "5\ud83d\ude00",
     "expectedErrorCode": "InvalidCharacter",
     "messageContains": "(U+1F600)"
+  },
+  {
+    "id": "VAL-022",
+    "decisions": ["D27"],
+    "description": "Two decimal points",
+    "input": "1.2.3",
+    "expectedErrorCode": "MultipleDecimalPoints",
+    "messageContains": "more than one decimal point"
+  },
+  {
+    "id": "VAL-023",
+    "decisions": ["D27"],
+    "description": "Two decimal points and no digits: the point count is checked first",
+    "input": "..",
+    "expectedErrorCode": "MultipleDecimalPoints",
+    "messageContains": "more than one decimal point"
+  },
+  {
+    "id": "VAL-024",
+    "decisions": ["D27"],
+    "description": "Two decimal points next to each other",
+    "input": "1..2",
+    "expectedErrorCode": "MultipleDecimalPoints",
+    "messageContains": "more than one decimal point"
+  },
+  {
+    "id": "VAL-025",
+    "decisions": ["E2"],
+    "description": "A decimal point on its own",
+    "input": ".",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-026",
+    "decisions": ["E2"],
+    "description": "A comma on its own",
+    "input": ",",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-027",
+    "decisions": ["E2"],
+    "description": "Only commas",
+    "input": ",,",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-028",
+    "decisions": ["E2"],
+    "description": "A decimal point and a comma, no digits",
+    "input": ".,",
+    "expectedErrorCode": "AmountRequired",
+    "messageContains": "Please enter an amount"
+  },
+  {
+    "id": "VAL-029",
+    "decisions": ["E3"],
+    "description": "Groups of one digit",
+    "input": "1,2,3",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-030",
+    "decisions": ["E3"],
+    "description": "A comma at the very start",
+    "input": ",123",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-031",
+    "decisions": ["E3"],
+    "description": "A last group of two digits",
+    "input": "1,23",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-032",
+    "decisions": ["E3"],
+    "description": "A last group of two digits after a two-digit first group",
+    "input": "12,34",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-033",
+    "decisions": ["E3"],
+    "description": "A last group of four digits",
+    "input": "1,2345",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-034",
+    "decisions": ["E3"],
+    "description": "An empty group between two commas",
+    "input": "1,,234",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-035",
+    "decisions": ["E3"],
+    "description": "A trailing comma",
+    "input": "1,234,",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-036",
+    "decisions": ["E3"],
+    "description": "A first group of four digits",
+    "input": "1234,567",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-037",
+    "decisions": ["E3"],
+    "description": "A first group of zero: in many countries this means 0.001",
+    "input": "0,001",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-038",
+    "decisions": ["E3"],
+    "description": "A first group with a leading zero",
+    "input": "00,500",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-039",
+    "decisions": ["E3"],
+    "description": "All zeros with a comma",
+    "input": "0,000",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "VAL-040",
+    "decisions": ["D28"],
+    "description": "A comma after the decimal point",
+    "input": "1.2,3",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "after the decimal point"
+  },
+  {
+    "id": "VAL-041",
+    "decisions": ["E1"],
+    "description": "Three decimal places: in some countries 1.500 means 1500",
+    "input": "1.500",
+    "expectedErrorCode": "TooManyDecimalPlaces",
+    "messageContains": "too many decimal places"
+  },
+  {
+    "id": "VAL-042",
+    "decisions": ["E1"],
+    "description": "Three decimal places",
+    "input": "1.234",
+    "expectedErrorCode": "TooManyDecimalPlaces",
+    "messageContains": "too many decimal places"
+  },
+  {
+    "id": "VAL-043",
+    "decisions": ["E1"],
+    "description": "A tenth of a cent",
+    "input": "0.001",
+    "expectedErrorCode": "TooManyDecimalPlaces",
+    "messageContains": "too many decimal places"
+  },
+  {
+    "id": "LIM-008",
+    "decisions": ["D58"],
+    "description": "Sixteen digits",
+    "input": "9999999999999999",
+    "expectedErrorCode": "AmountTooLarge",
+    "messageContains": "999,999,999,999,999.99"
+  },
+  {
+    "id": "LIM-009",
+    "decisions": ["D58"],
+    "description": "One more than the maximum, with commas",
+    "input": "1,000,000,000,000,000",
+    "expectedErrorCode": "AmountTooLarge",
+    "messageContains": "999,999,999,999,999.99"
+  },
+  {
+    "id": "LIM-010",
+    "decisions": ["D58"],
+    "description": "Leading zeros do not hide a 16-digit number",
+    "input": "001000000000000000",
+    "expectedErrorCode": "AmountTooLarge",
+    "messageContains": "999,999,999,999,999.99"
+  },
+  {
+    "id": "LIM-011",
+    "decisions": ["D58"],
+    "description": "One more than the maximum, with cents",
+    "input": "1000000000000000.00",
+    "expectedErrorCode": "AmountTooLarge",
+    "messageContains": "999,999,999,999,999.99"
+  },
+  {
+    "id": "ORD-001",
+    "decisions": ["D27"],
+    "description": "Check 3 (symbol) comes before check 4 (negative)",
+    "input": "-$5",
+    "expectedErrorCode": "CurrencySymbolNotAllowed",
+    "messageContains": "currency symbol"
+  },
+  {
+    "id": "ORD-002",
+    "decisions": ["D27"],
+    "description": "Check 4 (negative) comes before check 7 (invalid character)",
+    "input": "-7-2",
+    "expectedErrorCode": "NegativeAmount",
+    "messageContains": "Negative"
+  },
+  {
+    "id": "ORD-003",
+    "decisions": ["D27"],
+    "description": "Check 5 (plus sign) comes before check 7 (invalid character)",
+    "input": "+-5",
+    "expectedErrorCode": "SignNotAllowed",
+    "messageContains": "plus sign"
+  },
+  {
+    "id": "ORD-004",
+    "decisions": ["D27"],
+    "description": "Check 6 (space inside) comes before check 7 (invalid character)",
+    "input": "1 2a",
+    "expectedErrorCode": "ContainsWhitespace",
+    "messageContains": "spaces or tabs"
+  },
+  {
+    "id": "ORD-005",
+    "decisions": ["D27"],
+    "description": "Check 7 (invalid character) comes before check 11 (decimal places)",
+    "input": "1.234a",
+    "expectedErrorCode": "InvalidCharacter",
+    "messageContains": "'a' (U+0061)"
+  },
+  {
+    "id": "ORD-006",
+    "decisions": ["D27"],
+    "description": "Check 4 (negative) comes before check 8 (decimal points)",
+    "input": "-1.2.3",
+    "expectedErrorCode": "NegativeAmount",
+    "messageContains": "Negative"
+  },
+  {
+    "id": "ORD-007",
+    "decisions": ["D27"],
+    "description": "Check 10 (commas) comes before check 11 (decimal places)",
+    "input": "1,23.456",
+    "expectedErrorCode": "InvalidThousandsSeparator",
+    "messageContains": "wrong place"
+  },
+  {
+    "id": "ORD-008",
+    "decisions": ["D27"],
+    "description": "Check 11 (decimal places) comes before check 12 (too large)",
+    "input": "9999999999999999.999",
+    "expectedErrorCode": "TooManyDecimalPlaces",
+    "messageContains": "too many decimal places"
+  },
+  {
+    "id": "ORD-009",
+    "decisions": ["D27","D29"],
+    "description": "Check 1 (length, 31 characters) comes before check 3 (symbol)",
+    "input": "$000000000000000000000000000000",
+    "expectedErrorCode": "AmountTooLong",
+    "messageContains": "30 characters"
   }
 ]
