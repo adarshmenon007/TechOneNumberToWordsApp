@@ -5,8 +5,8 @@ namespace TechOneNumberToWordsApp.Core;
 /// point, no culture settings, so the result cannot depend on the machine it runs on.
 /// </summary>
 /// <remarks>
-/// Built test-first. For now it reads digits with at most one decimal point and at most two decimal digits.
-/// Separators and the rejection rules are added when their tests are written.
+/// Built test-first. For now it reads digits and thousands commas with at most one decimal point and at most two decimal digits.
+/// The rejection rules are added when their tests are written.
 /// </remarks>
 internal static class AmountParser
 {
@@ -24,6 +24,13 @@ internal static class AmountParser
             if (character == '.' && !seenPoint)
             {
                 seenPoint = true;
+                continue;
+            }
+
+            // Thousands separators are skipped for now. Whether each comma is in the right place (E3)
+            // is checked when the rejection tests are written. A comma after the decimal point is not skipped.
+            if (character == ',' && !seenPoint)
+            {
                 continue;
             }
 
