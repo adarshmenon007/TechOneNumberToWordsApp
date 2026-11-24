@@ -37,6 +37,8 @@ internal static class ConversionCases
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
+                // An explicit null in a field that cannot be null (e.g. "decisions": null) fails with the row's position.
+                RespectNullableAnnotations = true,
                 // A misspelt field (e.g. "messageContain") fails the run instead of being ignored.
                 UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
             };

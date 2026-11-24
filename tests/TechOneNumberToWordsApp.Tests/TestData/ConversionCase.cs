@@ -12,6 +12,7 @@ internal sealed record ConversionCase
     /// <summary>The design decisions this row exercises, e.g. "D8" (D47).</summary>
     public required string[] Decisions { get; init; }
 
+    /// <summary>What the row shows, in plain words; used in the test display name.</summary>
     public required string Description { get; init; }
 
     /// <summary>The raw amount exactly as a user would type it, including any odd characters.</summary>
