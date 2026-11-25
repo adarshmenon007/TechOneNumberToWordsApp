@@ -1,7 +1,7 @@
 # Test Plan — Number to Words Web Page
 
-**Status:** draft, library, API and page sections (review gates 1 to 3). The manual UI outcomes (section 1.5) were recorded by the
-author on 2026-11-25: all 19 passed. Slice 11 finishes the whole document (D52). Decision numbers (D8, E3, …) refer to [`DesignDecisions.md`](DesignDecisions.md).
+**Status:** complete: library, API and page sections, the manual UI outcomes (section 1.5, recorded by the author on 2026-11-25: all 19
+passed), traceability and results (section 4, run on 2026-11-25). Decision numbers (D8, E3, …) refer to [`DesignDecisions.md`](DesignDecisions.md).
 
 ## 1. What is tested, and how
 
@@ -95,7 +95,7 @@ stack trace by design.
 
 **Real Kestrel.** `SEC-006` to `SEC-008` and `SEC-010` start a real Kestrel server on a free port over plain http, because the
 in-memory server enforces no body limit and never sends a `Server` header. They use plain http because neither behaviour has
-anything to do with HTTPS and CI has no development certificate (D37).
+anything to do with HTTPS, and a machine without a development certificate must still pass them (D37).
 
 **The page's files (gate 3).** `SEC-005` and `SEC-014` are in `Api/StaticFilesApiTests.cs`. They fetch the real files from `wwwroot`
 through the same in-memory factory, so they show that the static files sit behind the security headers (D34, D38). Everything else
@@ -205,20 +205,20 @@ Microsoft.AspNetCore.Mvc.Testing 10.0.15); `Core` and `Web` have none (S4).
 
 ### 3.1 The brief and the submission requirements
 
-Library, API and page evidence. Rows marked "later" gain evidence in slice 11.
+Evidence for each requirement, and how to check it.
 
 | Requirement | Decisions | Evidence now | How to check |
 |---|---|---|---|
 | **R0** the brief's example: "123.45" → ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS | D8 | `CENT-001` (and the dollars part alone, `AND-005`), in the library and over HTTP | `dotnet test --filter "Id=CENT-001"` |
 | **R1** HTML UI | D5, D6, D24, D34, D38, D60, E6, F3, C3 | `wwwroot/` (`index.html`, `site.css`, `app.js`, `favicon.svg`); `SEC-005` and `SEC-014` automated; manual cases `UI-001` to `UI-019` (outcomes recorded by the author) | `dotnet test --filter "Id~SEC-005"`; the steps in section 1.5 |
-| **R2** design-rationale document | D55 | `Docs/DesignDecisions.md` now; `Docs/DesignDocument.md` later (slice 11) | |
+| **R2** design-rationale document | D55 | `Docs/DesignDocument.md` (the narrative, about 3 to 4 pages) and `Docs/DesignDecisions.md` (the full decision log) | read them |
 | **R3** test plan | D47, D52 | this document | |
 | **R4** supporting files (solution, source, tests with configuration and data) | D43–D46, D49–D51 | `TechOneNumberToWordsApp.sln`, `tests/…/TestData/conversion-cases.json`, `xunit.runner.json`, `test.runsettings` | `dotnet test` from a clean clone |
 | **R5** C# | D1 | `Core` and `Web` are C# on .NET 10 | |
-| **R6** Readme | D56 | `Readme.md`, a draft with the API reference (gate 2) and "Using the page" (gate 3); finished in slice 11 | |
-| **R7** AI model and conversation history | D57 | `Docs/AI/` (exports per phase, plan copies, the claude.ai review); `Docs/AI/README.md` later | |
+| **R6** Readme | D56 | `Readme.md`: quick start (clone, build, run), using the page, API reference, tests, structure, configuration, troubleshooting, documentation and AI usage, limitations | follow the quick start from a clean clone |
+| **R7** AI model and conversation history | D57 | `Docs/AI/README.md` (the models, what each was used for, an index) and the files in `Docs/AI/` (one Claude Code export and plan file per phase, and the claude.ai review chats) | read `Docs/AI/README.md` |
 | **S1** production quality | D7, D10, D19, D22, D23, D27–D29 (library); D24, D33–D35, D37, D41 (API) | 364 tests: the library rule by rule and every ordering pair (`ORD`), every row again over HTTP, one error shape for every error, security headers (also on the page's files), a 1 KB body limit, no leaked exception, no raw input in logs; 99.2% line / 99.3% branch coverage of `Core` and 97.4% / 90.9% of `Web`; warnings are errors (D39) | `dotnet test`; `dotnet build` (warnings are errors) |
-| **S2** explain all code | D50, D55 | small single-purpose classes with comments that give the reason, not just the action; walkthrough later in the design document | |
+| **S2** explain all code | D50, D55 | small single-purpose classes with comments that give the reason, not just the action; the algorithm traced on `123.45` in `Docs/DesignDocument.md` (section 4) | read it |
 | **S3** no internet solutions | D54 | `.claude/settings.json` denies `WebSearch` and `WebFetch` | `git log -p .claude/settings.json` |
 | **S4** no libraries or NuGet packages | D4, D11 | `Core` and `Web` have no `PackageReference`; the parser, validator and wording are hand-written | `grep -c PackageReference src/*/*.csproj` prints 0 for both |
 | **S5** deadline | | not a test matter | |
@@ -314,12 +314,12 @@ Every error response has an `errorCode` (D24a). The 11 conversion codes of secti
 
 | | |
 |---|---|
-| Date | 2026-11-24 |
-| Commit tested | `5c068ee` on `phase/3-ui`, the last code commit before this update (the coverage figures below were taken at `74855e3`; the C# code has not changed since, only a comment) |
+| Date | 2026-11-25 |
+| Commit tested | `9e9736d` on `phase/4-docs`. No C# code, test or page file has changed since `5c068ee`, the last code commit; later commits are documentation only |
 | Environment | .NET SDK 10.0.401, Windows 11 |
 | Command | `dotnet test` |
 | Result | **364 run, 364 passed, 0 failed, 0 skipped** |
-| Manual UI cases | `UI-001` to `UI-019` (section 1.5): all 19 passed, run by the author in Chrome on 2026-11-25 at `16a62e0` (the last commit; it differs from the commit tested above only in documentation) |
+| Manual UI cases | `UI-001` to `UI-019` (section 1.5): all 19 passed, run by the author in Chrome on 2026-11-25 at `16a62e0`; no page file has changed since |
 
 | Part | Tests |
 |---|---|
@@ -426,8 +426,15 @@ The solution has no JavaScript tooling (no Node, no test runner, no package), an
 The page needs a current browser (2022 or later), because the script uses `AbortSignal.timeout` (D60) with no fallback. Nothing
 checks it in browsers other than Chrome, and no screen reader was tested; the cases are written for Chrome.
 
-## 6. Still to come
+## 6. What is not tested, and when to run again
 
-- **Manual UI outcomes:** done. `UI-001` to `UI-019` all passed in Chrome on 2026-11-25 at `16a62e0` (section 1.5). If the page
-  changes after that commit, the cases that it touches must be run again.
-- **Slice 11:** final results (date, commit, totals, coverage), the finished matrix, and the executable decision (D20).
+Not tested at all: browsers other than Chrome, screen readers, load and performance, and any operating system other than Windows 11
+(the tests and the manual cases were run there only). Nothing here replaces testing a real deployment, which is outside this
+project (there is no executable or CI, D20 and D36).
+
+When to run again:
+
+- **The converter, the API or the headers change:** `dotnet test`, and record the commit and date in section 4.
+- **A page file changes** (`index.html`, `site.css`, `app.js`, `favicon.svg`): `dotnet test` (`SEC-005`, `SEC-014`) and the manual cases
+  that the change touches, in section 1.5. `UI-013` and `UI-019` change `window.fetch` in the browser and need a reload
+  afterwards.
