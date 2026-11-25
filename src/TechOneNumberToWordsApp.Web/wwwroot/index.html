@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amount to Words</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/site.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>Amount to Words</h1>
+
+    <form id="convert-form">
+      <label for="amount">Amount (AUD)</label>
+      <p id="amount-hint" class="hint">For example 1,234.50</p>
+      <div class="row">
+        <input id="amount" name="amount" type="text" inputmode="decimal" autocomplete="off" aria-describedby="amount-hint">
+        <button id="convert" type="submit">Convert</button>
+      </div>
+    </form>
+
+    <div id="output" role="status" aria-live="polite" aria-atomic="true"></div>
+  </main>
+</body>
+</html>

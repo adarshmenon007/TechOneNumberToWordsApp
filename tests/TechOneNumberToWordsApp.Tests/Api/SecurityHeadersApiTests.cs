@@ -9,14 +9,6 @@ namespace TechOneNumberToWordsApp.Tests.Api;
 /// </summary>
 public class SecurityHeadersApiTests
 {
-    private static readonly (string Name, string Value)[] Expected =
-    [
-        ("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"),
-        ("X-Content-Type-Options", "nosniff"),
-        ("Referrer-Policy", "no-referrer"),
-        ("X-Frame-Options", "DENY"),
-    ];
-
     [Fact]
     [Trait("Id", "SEC-001")]
     [Trait("Decision", "D34")]
@@ -27,7 +19,7 @@ public class SecurityHeadersApiTests
         using var response = await PostAsync(client, """{"amount":"5"}""");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        AssertSecurityHeaders(response);
+        SecurityHeadersAssert.Present(response);
     }
 
     [Fact]
@@ -40,7 +32,7 @@ public class SecurityHeadersApiTests
         using var response = await PostAsync(client, """{"amount":"abc"}""");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        AssertSecurityHeaders(response);
+        SecurityHeadersAssert.Present(response);
     }
 
     [Fact]
@@ -54,7 +46,7 @@ public class SecurityHeadersApiTests
         using var response = await client.GetAsync("/nothing-here", TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        AssertSecurityHeaders(response);
+        SecurityHeadersAssert.Present(response);
     }
 
     [Fact]
@@ -67,7 +59,7 @@ public class SecurityHeadersApiTests
         using var response = await PostAsync(client, """{"amount":"5"}""");
 
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-        AssertSecurityHeaders(response);
+        SecurityHeadersAssert.Present(response);
     }
 
     // The caller owns the factory and the client and keeps them alive until it has read the response.
@@ -76,15 +68,5 @@ public class SecurityHeadersApiTests
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         return await client.PostAsync("/api/convert", content, TestContext.Current.CancellationToken);
-    }
-
-    // Each header is present once, with exactly the agreed value.
-    private static void AssertSecurityHeaders(HttpResponseMessage response)
-    {
-        foreach (var (name, value) in Expected)
-        {
-            Assert.True(response.Headers.TryGetValues(name, out var values), $"Missing header {name}.");
-            Assert.Equal(value, Assert.Single(values));
-        }
     }
 }

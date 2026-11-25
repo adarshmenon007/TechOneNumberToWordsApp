@@ -1,7 +1,7 @@
 # Test Plan — Number to Words Web Page
 
-**Status:** draft, library and API sections (review gates 1 and 2). The UI section is added at gate 3, and slice 11 finishes
-the whole document (D52). Decision numbers (D8, E3, …) refer to [`DesignDecisions.md`](DesignDecisions.md).
+**Status:** draft, library, API and page sections (review gates 1 to 3). The manual UI outcomes (section 1.5) were recorded by the
+author on 2026-11-25: all 19 passed. Slice 11 finishes the whole document (D52). Decision numbers (D8, E3, …) refer to [`DesignDecisions.md`](DesignDecisions.md).
 
 ## 1. What is tested, and how
 
@@ -11,8 +11,8 @@ The amount-to-words routine lives in `TechOneNumberToWordsApp.Core`. Every test 
 | Layer | Project folder | Status |
 |---|---|---|
 | Library (`Core`): parsing, validation, wording | `tests/TechOneNumberToWordsApp.Tests/Unit/` | Done: sections 1.1 to 1.3 |
-| HTTP API (`Web`): same data over HTTP, error shape, security headers, 413, logging | `tests/…/Api/` | Done: section 1.4 |
-| Page (`wwwroot`): manual cases `UI-xxx` | this document | Gate 3 |
+| HTTP API (`Web`): same data over HTTP, error shape, security headers (also on the page's files), 413, logging | `tests/…/Api/` | Done: section 1.4 |
+| Page (`wwwroot`): manual cases `UI-xxx`, plus `SEC-005` and `SEC-014` | this document | Done: cases and outcomes in section 1.5 (all 19 passed) |
 
 ### 1.1 One data file drives the conversion tests (D43, D44)
 
@@ -58,12 +58,13 @@ sequence in one category can skip numbers that belong to a C# test (`VAL-021`, `
 | `ORD` | Which error wins when an input breaks two rules (D27) | 12 |
 | `LIM` | The size limits: 30-character cap, 15 digits, and the message the web layer reuses (`LIM-012`) | 12 |
 | `API` | HTTP API: request errors, the 500 path, logging (section 1.4) | 13 |
-| `SEC` | Security headers, the 1 KB body limit, the `Server` header, nothing leaked in a 500 or a log | 10 |
-| `UI` | Added at gate 3 | 0 |
-| **Total** | | **188** |
+| `SEC` | Security headers (also on the page's files), the 1 KB body limit, the `Server` header, nothing leaked in a 500 or a log, no HTML inserted by `app.js` | 12 |
+| `UI` | Manual cases for the page (section 1.5); not run by `dotnet test` | 19 |
+| **Total** | | **209** |
 
-This table counts IDs. A data row is one ID although it runs twice (library and HTTP), and `API-003` to `API-011` are one ID
-each although they run twice (`Testing` and `Development`); section 4 counts every test that runs.
+This table counts IDs. A data row is one ID although it runs twice (library and HTTP), `API-003` to `API-011` are one ID
+each although they run twice (`Testing` and `Development`), and `SEC-005` is one ID although it runs four times (one per file);
+section 4 counts every test that runs. The 19 `UI` cases are not run by `dotnet test`.
 
 ### 1.3 Tests that are not data rows
 
@@ -72,7 +73,7 @@ each although they run twice (`Testing` and `Development`); section 4 counts eve
 | `VAL-021` | E4 | `LoneSurrogateTests` | A lone surrogate is half of an emoji with no partner. JSON cannot carry one (System.Text.Json rejects or replaces it) and xUnit's theory data mangles it, so the inputs are built inside the test. The message must give the real code point (U+D83D), never the replacement character U+FFFD, and no quoted character. |
 | `VAL-044` | D23 | `NullInputTests` | Null is not text, so it cannot be a data row. `Convert(null)` throws `ArgumentNullException` (null is a programming error, D24e). |
 
-### 1.4 HTTP API tests (gate 2)
+### 1.4 HTTP API tests (gates 2 and 3)
 
 The API tests start the real application in memory (`WebApplicationFactory<Program>` through one shared `ApiFactory`, D45) and
 send real HTTP requests to `POST /api/convert`. They check what a client sees: status code, content type, body and headers
@@ -96,6 +97,10 @@ stack trace by design.
 in-memory server enforces no body limit and never sends a `Server` header. They use plain http because neither behaviour has
 anything to do with HTTPS and CI has no development certificate (D37).
 
+**The page's files (gate 3).** `SEC-005` and `SEC-014` are in `Api/StaticFilesApiTests.cs`. They fetch the real files from `wwwroot`
+through the same in-memory factory, so they show that the static files sit behind the security headers (D34, D38). Everything else
+about the page is checked by hand (section 1.5).
+
 **Logging.** A small in-memory `ILoggerProvider` in the test project (no package) records each entry's category, level, message,
 structured values, scopes and exception (D33). Each logging test creates its own factory, so it sees only its own entries.
 
@@ -118,20 +123,56 @@ structured values, scopes and exception (D33). Each logging test creates its own
 | `SEC-002` | D34 | The same headers on a 400 | Testing |
 | `SEC-003` | D34 | The same headers on a 404 | Testing |
 | `SEC-004` | D34 | The same headers on a 500 | Testing |
+| `SEC-005` | D34, D38, C3 | The same headers on each file of the page: `/`, `/app.js`, `/site.css` and `/favicon.svg`, each with status 200 and its media type (`text/html`, `text/javascript`, `text/css`, `image/svg+xml`). One theory, four runs | Testing |
 | `SEC-006` | D37, C1 | Body over 1 KB with a declared `Content-Length` → 413, `PayloadTooLarge` (not `AmountTooLong`), title "Invalid request", `detail` equal to `AmountToWordsConverter.AmountTooLongMessage` | Real Kestrel, http |
 | `SEC-007` | D37 | The same with a chunked body (no `Content-Length`) | Real Kestrel, http |
 | `SEC-008` | D34 | The response has no `Server` header | Real Kestrel, http |
 | `SEC-010` | D37 | A body of exactly 1,024 bytes passes the limit and reaches the converter (400 `AmountTooLong`); 1,025 bytes gives the 413 | Real Kestrel, http |
 | `SEC-011` | D33 | A unique marker typed into a rejected amount appears in no log entry (message, structured values, scopes, exception) | Testing |
 | `SEC-012` | D24 | A 500 body has no stack trace, exception message or exception type name | Testing |
+| `SEC-014` | D24 | A guard, not a proof. `app.js` is served, it assigns to `textContent` (a pattern match on `.textContent =`, so the word in a comment is not enough), and none of `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `HTMLUnsafe`, `createContextualFragment`, `DOMParser`, `eval(` or `new Function` appears in it (comments included). A text scan can be got around (for example by building a name from pieces), so `UI-009` checks the behaviour by hand | Testing |
 | `LIM-012` | D23, C1 | (library) `AmountTooLongMessage` equals the message of the `AmountTooLong` error; with `SEC-006` this proves the 413 `detail` matches | Library |
 
-IDs that are deliberately not used: `API-001` and `API-002` (dropped in design; the HTTP theory above replaces them) and
-`SEC-009` (dropped; `LIM-012` with `SEC-006` replaces it). `SEC-005` is reserved for slice 10: the same headers on `index.html`.
+IDs that are deliberately not used: `API-001` and `API-002` (dropped in design; the HTTP theory above replaces them), `SEC-009`
+(dropped; `LIM-012` with `SEC-006` replaces it) and `SEC-013` (proposed for a scan of `index.html` for inline script and style,
+and dropped; the console check in `UI-017` covers CSP violations).
 
 **Finding a log entry from a response (C2).** The `traceId` in an error response is the full W3C id
 (`00-<TraceId>-<SpanId>-<flags>`); the log scope holds only the 32-character `TraceId`, which is the middle part. `API-015` checks
 that the two match.
+
+### 1.5 Manual UI cases (gate 3)
+
+`app.js` has no automated tests (the solution has no JavaScript tooling, D47). These cases check the page by hand.
+
+**How to run them.** Start the app with `dotnet run --project src/TechOneNumberToWordsApp.Web`, open `https://localhost:5443` in
+Chrome with the development certificate trusted (D35), and open DevTools (Console and Network). Reload the page after any case that
+changes `window.fetch` (`UI-013`, `UI-019`). Record each outcome by hand in the last column: pass or fail, the date, the commit and
+the browser.
+
+| ID | Decisions | Steps | Expected | Outcome |
+|---|---|---|---|---|
+| `UI-001` | R0, R1, D5, D40 | Type `123.45`, click **Convert** | The box shows ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS. The label reads "Amount (AUD)"; there is no currency dropdown; the heading is "Amount to Words" | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-002` | D5 | Type `5`, press Enter without clicking | FIVE DOLLARS | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-003` | D58 | Convert `1`, then `0.01`, then `.5` | ONE DOLLAR, ONE CENT, FIFTY CENTS | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-004` | D6, D29 | Paste a 40-character string of digits. Check the field, then click **Convert** | The field keeps all 40 characters (no `maxlength`); the box shows the "amount is too long" message from the server | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-005` | D24, D19 | Convert `12a` | The server's message about the invalid character `'a' (U+0061)`, in error styling with a visible "Error" label; no words | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-006` | D19 | Leave the field empty, click **Convert** | "Please enter an amount." | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-007` | D22 | Convert `$5` | "Please enter the amount without a currency symbol. Amounts are in Australian dollars." | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-008` | C1, D37 | Paste about 2,000 digits, click **Convert** | The same "too long" message as `UI-004`; the Network tab shows a 413 | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-009` | D24, D34 | Convert `<b>x</b>` | The message appears as plain text naming `'<' (U+003C)`; no element is created from the input and nothing is bold (the "Error" label is its own element) | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-010` | E4 | Convert `5😀`, then a full-width `５` | Each message shows the character and its code point correctly | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-011` | E6 | Network throttling "Slow 3G". Convert `5`; while it is pending press Enter again and try to type in the field | The button is disabled, the field is read-only (focus stays, typing changes nothing), the old result is gone, "Converting…" shows, and only one request appears in the Network tab. When it finishes the button is enabled, the field is editable and the new result shows | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-012` | E6 | Convert `5`, then `12a`, then `5` again | Each result replaces the last: old words never sit beside an error, and the old error is gone after a success | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-013` | F3 | In the Console run `window.fetch = () => Promise.resolve(new Response(JSON.stringify({status:500,traceId:"00-abc-def-00"}), {status:500, headers:{"Content-Type":"application/problem+json"}}))`, then Convert `5`. Reload the page afterwards | "Something went wrong. Please try again. Reference: 00-abc-def-00"; the button is enabled again | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-014` | D24, D60 | DevTools Network "Offline" (or stop the server), Convert `5`; then go back online and Convert again | The fallback, "Something went wrong. Please try again." (no Reference); the button is enabled again and the field editable; the next conversion works without reloading | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-015` | R1 (accessibility basics) | Keyboard only: Tab through the page; click the label; press Enter in the field. Then Tab to the **Convert** button and start a conversion from it with Enter or Space, and press Tab again. In DevTools > Accessibility, inspect the box | Tab goes input then button; the focus outline is visible; the label click focuses the field; Enter submits; the box is a `status` live region and the hint is the input's description; after a conversion started from the Convert button with the keyboard, the next Tab goes to a sensible place, not back to the top of the page | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-016` | R1 | Zoom to 200%, then narrow the window to 320 px | No horizontal scrolling and nothing clipped; the input and button wrap | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-017` | D34, C3 | Reload with the Console and Network cleared | No console errors or CSP violation messages; no 404; the icon loads as `image/svg+xml`; `/` shows the four security headers | Pass, 2026-11-25, 16a62e0, Chrome. Needed a hard reload (Ctrl+Shift+R) first, to clear a copy of the page cached from a Visual Studio run |
+| `UI-018` | D35 | Open `http://localhost:5080` | It redirects to `https://localhost:5443` and the page loads | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-019` | D60 | In the Console run `window.fetch = (u, o) => new Promise((_, reject) => o.signal.addEventListener('abort', () => reject(o.signal.reason)))`, then Convert `5` and wait 15 seconds. Reload the page afterwards | After about 15 seconds the fallback, "Something went wrong. Please try again."; the button is enabled again and the field editable | Pass, 2026-11-25, 16a62e0, Chrome |
+
+`UI-019` only works because `app.js` passes the timeout signal in the options of its `fetch` call. `SEC-014` (section 1.4) is the automated companion: it scans `app.js` for the calls that insert HTML (D24).
 
 ## 2. How to run
 
@@ -152,9 +193,9 @@ Run part of the suite with a trait filter:
 | `dotnet test --filter "Decision=D8"` | every test linked to decision D8 (18 data rows, each run in the library and over HTTP: 36) |
 | `dotnet test --filter "Id=CENT-001"` | the brief's example: the library test and its HTTP twin (2) |
 | `dotnet test --filter "Id~AND-"` | every test whose ID contains `AND-` (16 rows, run twice: 32) |
-| `dotnet test --filter "Id~SEC-"` | every security test (10) |
+| `dotnet test --filter "Id~SEC-"` | every security test (15: `SEC-005` runs four times) |
 | `dotnet test --filter "Id~API-"` | every API test (22: `API-003` to `API-011` run twice) |
-| `dotnet test --filter "FullyQualifiedName~Tests.Api"` | the whole HTTP layer (194) |
+| `dotnet test --filter "FullyQualifiedName~Tests.Api"` | the whole HTTP layer (199) |
 
 The test project uses the classic VSTest runner (`xunit.v3.mtp-off`, D48). The only packages in the solution are in the test
 project (xunit.v3.mtp-off 4.0.3, xunit.runner.visualstudio 4.0.1, Microsoft.NET.Test.Sdk 18.12.0,
@@ -164,19 +205,19 @@ Microsoft.AspNetCore.Mvc.Testing 10.0.15); `Core` and `Web` have none (S4).
 
 ### 3.1 The brief and the submission requirements
 
-Library and API evidence. Rows marked "later" gain evidence at the gate named.
+Library, API and page evidence. Rows marked "later" gain evidence in slice 11.
 
 | Requirement | Decisions | Evidence now | How to check |
 |---|---|---|---|
 | **R0** the brief's example: "123.45" → ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS | D8 | `CENT-001` (and the dollars part alone, `AND-005`), in the library and over HTTP | `dotnet test --filter "Id=CENT-001"` |
-| **R1** HTML UI | D5, D6 | later (gate 3) | |
+| **R1** HTML UI | D5, D6, D24, D34, D38, D60, E6, F3, C3 | `wwwroot/` (`index.html`, `site.css`, `app.js`, `favicon.svg`); `SEC-005` and `SEC-014` automated; manual cases `UI-001` to `UI-019` (outcomes recorded by the author) | `dotnet test --filter "Id~SEC-005"`; the steps in section 1.5 |
 | **R2** design-rationale document | D55 | `Docs/DesignDecisions.md` now; `Docs/DesignDocument.md` later (slice 11) | |
 | **R3** test plan | D47, D52 | this document | |
 | **R4** supporting files (solution, source, tests with configuration and data) | D43–D46, D49–D51 | `TechOneNumberToWordsApp.sln`, `tests/…/TestData/conversion-cases.json`, `xunit.runner.json`, `test.runsettings` | `dotnet test` from a clean clone |
 | **R5** C# | D1 | `Core` and `Web` are C# on .NET 10 | |
-| **R6** Readme | D56 | `Readme.md`, a draft with the API reference (gate 2); finished in slice 11 | |
+| **R6** Readme | D56 | `Readme.md`, a draft with the API reference (gate 2) and "Using the page" (gate 3); finished in slice 11 | |
 | **R7** AI model and conversation history | D57 | `Docs/AI/` (exports per phase, plan copies, the claude.ai review); `Docs/AI/README.md` later | |
-| **S1** production quality | D7, D10, D19, D22, D23, D27–D29 (library); D24, D33–D35, D37, D41 (API) | 359 tests: the library rule by rule and every ordering pair (`ORD`), every row again over HTTP, one error shape for every error, security headers, a 1 KB body limit, no leaked exception, no raw input in logs; 99.2% line / 99.3% branch coverage of `Core` and 97.3% / 90.9% of `Web`; warnings are errors (D39) | `dotnet test`; `dotnet build` (warnings are errors) |
+| **S1** production quality | D7, D10, D19, D22, D23, D27–D29 (library); D24, D33–D35, D37, D41 (API) | 364 tests: the library rule by rule and every ordering pair (`ORD`), every row again over HTTP, one error shape for every error, security headers (also on the page's files), a 1 KB body limit, no leaked exception, no raw input in logs; 99.2% line / 99.3% branch coverage of `Core` and 97.4% / 90.9% of `Web`; warnings are errors (D39) | `dotnet test`; `dotnet build` (warnings are errors) |
 | **S2** explain all code | D50, D55 | small single-purpose classes with comments that give the reason, not just the action; walkthrough later in the design document | |
 | **S3** no internet solutions | D54 | `.claude/settings.json` denies `WebSearch` and `WebFetch` | `git log -p .claude/settings.json` |
 | **S4** no libraries or NuGet packages | D4, D11 | `Core` and `Web` have no `PackageReference`; the parser, validator and wording are hand-written | `grep -c PackageReference src/*/*.csproj` prints 0 for both |
@@ -187,39 +228,49 @@ Library and API evidence. Rows marked "later" gain evidence at the gate named.
 
 | Decision | Tests | Count |
 |---|---|---|
-| C1 | LIM-012, SEC-006 | 2 |
+| C1 | LIM-012, SEC-006, UI-008 | 3 |
 | C2 | API-015 | 1 |
+| C3 | SEC-005, UI-017 | 2 |
+| D5 | UI-001..002 | 2 |
+| D6 | UI-004 | 1 |
 | D8 | AND-001..016, CENT-001, WORD-036 | 18 |
 | D9 | FMT-001..005, VAL-045 | 6 |
 | D10 | FMT-001..005, VAL-009..016 | 13 |
 | D11 | CENT-011 | 1 |
 | D12 | VAL-007, VAL-045 | 2 |
 | D18 | API-003 | 1 |
-| D19 | VAL-001..003 | 3 |
-| D22 | VAL-004..006 | 3 |
+| D19 | UI-005..006, VAL-001..003 | 5 |
+| D22 | UI-007, VAL-004..006 | 4 |
 | D23 | LIM-012, VAL-044 | 2 |
-| D24 | API-012, SEC-012 | 2 |
+| D24 | API-012, SEC-012, SEC-014, UI-005, UI-009, UI-014 | 6 |
 | D24c | API-009 | 1 |
 | D24e | API-003..006 | 4 |
 | D27 | LIM-005, LIM-007, ORD-001..012, VAL-001..003, VAL-008, VAL-022..024 | 21 |
 | D28 | FMT-014, VAL-040 | 2 |
-| D29 | LIM-003..007, ORD-009..010 | 7 |
+| D29 | LIM-003..007, ORD-009..010, UI-004 | 8 |
 | D33 | API-013..015, SEC-011 | 4 |
-| D34 | SEC-001..004, SEC-008 | 5 |
-| D37 | SEC-006..007, SEC-010 | 3 |
+| D34 | SEC-001..005, SEC-008, UI-009, UI-017 | 8 |
+| D35 | UI-018 | 1 |
+| D37 | SEC-006..007, SEC-010, UI-008 | 4 |
+| D38 | SEC-005 | 1 |
+| D40 | UI-001 | 1 |
 | D41 | API-006..007, API-009..012 | 6 |
-| D58 | CENT-002..010, CENT-012..013, FMT-006..008, LIM-001..002, LIM-004, LIM-008..011, PLUR-001..004, ZERO-001..004 | 29 |
+| D58 | UI-003, CENT-002..010, CENT-012..013, FMT-006..008, LIM-001..002, LIM-004, LIM-008..011, PLUR-001..004, ZERO-001..004 | 30 |
+| D60 | UI-014, UI-019 | 2 |
 | E1 | VAL-041..043 | 3 |
 | E2 | VAL-025..028 | 4 |
 | E3 | FMT-009..013, VAL-029..039 | 16 |
-| E4 | VAL-017..019, VAL-021, VAL-046 | 5 |
+| E4 | UI-010, VAL-017..019, VAL-021, VAL-046 | 6 |
 | E5 | API-007..008 | 2 |
+| E6 | UI-011..012 | 2 |
 | F1 | VAL-020 | 1 |
+| F3 | UI-013 | 1 |
 | O1 | CENT-007..008, SCALE-001..008, WORD-001..036 | 46 |
 
 Counts are test IDs: a data row counts once although it runs twice (section 1.4), and a test can link to several decisions, so the
-counts add up to more than the 188 IDs. D7, D21 and D25 describe how the library is built and tested rather than rules to test, and
-D35 (HTTPS) has no test of its own (section 5.3); none of these has rows here.
+counts add up to more than the 209 IDs. The `UI` IDs come from the manual cases of section 1.5, not from test traits. D7, D21 and
+D25 describe how the library is built and tested rather than rules to test, and D35 (HTTPS) has no automated test (section 5.3;
+`UI-018` checks the redirect by hand); D7, D21 and D25 have no rows here.
 
 ### 3.3 Rejected input → error code
 
@@ -264,17 +315,18 @@ Every error response has an `errorCode` (D24a). The 11 conversion codes of secti
 | | |
 |---|---|
 | Date | 2026-11-24 |
-| Commit tested | `749be38` on `phase/2-api`, the last code commit before this update |
+| Commit tested | `5c068ee` on `phase/3-ui`, the last code commit before this update (the coverage figures below were taken at `74855e3`; the C# code has not changed since, only a comment) |
 | Environment | .NET SDK 10.0.401, Windows 11 |
 | Command | `dotnet test` |
-| Result | **359 run, 359 passed, 0 failed, 0 skipped** |
+| Result | **364 run, 364 passed, 0 failed, 0 skipped** |
+| Manual UI cases | `UI-001` to `UI-019` (section 1.5): all 19 passed, run by the author in Chrome on 2026-11-25 at `16a62e0` (the last commit; it differs from the commit tested above only in documentation) |
 
 | Part | Tests |
 |---|---|
 | Library: 162 data rows, plus `VAL-021`, `VAL-044` and `LIM-012` (164 at gate 1; `LIM-012` was added in slice 9) | 165 |
 | HTTP: the same 162 data rows through `POST /api/convert` | 162 |
-| API and security tests in C#: `API-003` to `API-011` in two environments (18), `API-012` to `API-015` (4), `SEC-001` to `SEC-004` (4), `SEC-006` to `SEC-008` and `SEC-010` (4), `SEC-011` and `SEC-012` (2) | 32 |
-| **Total** | **359** |
+| API and security tests in C#: `API-003` to `API-011` in two environments (18), `API-012` to `API-015` (4), `SEC-001` to `SEC-004` (4), `SEC-005` (4 files), `SEC-006` to `SEC-008` and `SEC-010` (4), `SEC-011` and `SEC-012` (2), `SEC-014` (1) | 37 |
+| **Total** | **364** |
 
 ### Coverage (Microsoft code coverage, Cobertura, test assembly excluded)
 
@@ -290,7 +342,7 @@ Every error response has an `errorCode` (D24a). The 11 conversion codes of secti
 | `MoneyAmount` | 100% | 100% (see 5.1) |
 | `MoneyWords` | 100% | 100% |
 | `NumberWords` | 96.5% | 95.8% (see 5.2) |
-| **`TechOneNumberToWordsApp.Core` total** | **99.2% (251 of 253)** | **99.3% (133 of 134)** |
+| **`TechOneNumberToWordsApp.Core` total** | **99.2% (250 of 252)** | **99.3% (133 of 134)** |
 
 **`Web`**
 
@@ -302,7 +354,7 @@ Every error response has an `errorCode` (D24a). The 11 conversion codes of secti
 | `ProblemDetailsCustomizer` | 90.3% | 80.0% (see 5.4) |
 | `SecurityHeadersMiddleware`, `SecurityHeadersExtensions` | 100% | 100% |
 | `ConvertRequest`, `ConvertResponse` | 100% | 100% |
-| **`TechOneNumberToWordsApp.Web` total** | **97.3% (108 of 111)** | **90.9% (40 of 44)** |
+| **`TechOneNumberToWordsApp.Web` total** | **97.4% (111 of 114)** | **90.9% (40 of 44)** |
 
 Coverage is evidence, not a target; there is no minimum (D46).
 
@@ -310,7 +362,8 @@ Coverage is evidence, not a target; there is no minimum (D46).
 
 Sections 5.1 and 5.2 are two guards that protect the library against a bug in the library itself. The validator makes both
 unreachable through the public API, so no test can trigger them (D25: tests go through the public class only, with no
-`InternalsVisibleTo`). Sections 5.3 and 5.4 are about the API layer.
+`InternalsVisibleTo`). Sections 5.3 and 5.4 are about the API layer, and section 5.5 is about the page's JavaScript, which
+`dotnet test` does not run at all.
 
 ### 5.1 `MoneyAmount.Create` range checks (D11)
 
@@ -334,7 +387,12 @@ fire if the validator is changed to let a larger number through. These are the t
 - **The HTTPS redirect (D35).** Nothing asserts that a plain-http request is redirected. The in-memory server and the real-Kestrel
   tests have no https port, so the middleware has nothing to redirect to (it logs "Failed to determine the https port" and passes
   the request on). The real-Kestrel tests therefore show only that the middleware does not interfere when no https port is known;
-  they do not show what `dotnet run` does with the launch profile, where both ports exist.
+  they do not show what `dotnet run` does with the launch profile, where both ports exist (there a plain-http request gets a 307 to
+  https, checked by hand on 2026-11-24). The manual case `UI-018` now covers it: open `http://localhost:5080` and the browser
+  must end up on the page at `https://localhost:5443`.
+- **Where the static files sit in the pipeline (D34, D35).** `SEC-005` uses an https client, so it shows that the files carry the
+  security headers (it would fail if they were moved before the headers middleware). It does not prove that they sit after the
+  HTTPS redirect and the exception handler; `UI-018` covers the redirect by hand.
 - **Console logging scopes (C2).** `appsettings.json` sets `"IncludeScopes": true` for the console logger so the `TraceId` appears in
   the console output. The tests clear the console provider and read scopes through the in-memory provider instead, so the setting
   itself is not tested, only that the log scope carries the `TraceId` (`API-015`).
@@ -351,8 +409,25 @@ framework give are 400, 404, 405, 413, 415 and 500. The branch makes sure an unm
 Both sides of each `IsDevelopment()` check in `Program.cs` do run, because the request-error tests run under `Testing` and
 `Development` (section 1.4), so they are not uncovered.
 
+### 5.5 `app.js` has no automated tests
+
+The solution has no JavaScript tooling (no Node, no test runner, no package), and the brief rules out libraries, so nothing runs
+`app.js` under `dotnet test`. What covers it instead:
+
+- `SEC-014` is a guard, not proof: it scans the script for the usual ways to insert HTML or run text as code (`innerHTML`,
+  `outerHTML`, `insertAdjacentHTML`, `document.write`, `HTMLUnsafe`, `createContextualFragment`, `DOMParser`, `eval(`,
+  `new Function`) and checks that the script assigns to `textContent` (D24). A text scan can be got around, so `UI-009` checks the
+  behaviour.
+- `SEC-005` shows the script, the page, the style sheet and the icon are served with the security headers (D34). It does not prove
+  where the static files sit in the pipeline after the HTTPS redirect and the exception handler (see 5.3).
+- The manual cases `UI-001` to `UI-019` (section 1.5) run the script in a browser: every response the page can get (200, 400,
+  413, 500, no answer, timeout), the busy state (E6, D60), keyboard use and the console check for CSP violations.
+
+The page needs a current browser (2022 or later), because the script uses `AbortSignal.timeout` (D60) with no fallback. Nothing
+checks it in browsers other than Chrome, and no screen reader was tested; the cases are written for Chrome.
+
 ## 6. Still to come
 
-- **Gate 3 (UI):** manual cases `UI-xxx` with steps and a hand-recorded outcome (E6, F3, accessibility basics).
-- **Slice 10:** `SEC-005` (security headers on `index.html`).
+- **Manual UI outcomes:** done. `UI-001` to `UI-019` all passed in Chrome on 2026-11-25 at `16a62e0` (section 1.5). If the page
+  changes after that commit, the cases that it touches must be run again.
 - **Slice 11:** final results (date, commit, totals, coverage), the finished matrix, and the executable decision (D20).
