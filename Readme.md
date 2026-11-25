@@ -42,6 +42,8 @@ Development environment (set by `launchSettings.json`).
 With `dotnet run` no browser opens: open https://localhost:5443 yourself (section 2). Visual Studio does open it. You can also call
 the API directly:
 
+Bash, macOS, Linux or Git Bash:
+
 ```
 curl -X POST https://localhost:5443/api/convert -H "Content-Type: application/json" -d '{"amount":"123.45"}'
 ```
@@ -128,13 +130,14 @@ more than one rule, the first rule in the order below wins (D27).
 | `errorCode` | When |
 |---|---|
 | `AmountTooLong` | The raw input is more than 30 characters |
-| `AmountRequired` | The amount is empty, only spaces or tabs, or has no digit (`.`, `,`) |
+| `AmountRequired` | The amount is empty, or only spaces or tabs |
 | `CurrencySymbolNotAllowed` | It contains a currency symbol such as `$` |
 | `NegativeAmount` | It starts with `-` |
 | `SignNotAllowed` | It starts with `+` |
 | `ContainsWhitespace` | A space or tab is inside the amount |
 | `InvalidCharacter` | Any other character that is not a digit, `.` or `,`; the message names it by code point |
 | `MultipleDecimalPoints` | More than one `.` |
+| `AmountRequired` | The amount has no digit, for example `.` or `,` |
 | `InvalidThousandsSeparator` | A comma in the wrong place, or after the decimal point |
 | `TooManyDecimalPlaces` | More than 2 digits after the decimal point |
 | `AmountTooLarge` | More than 15 digits before the decimal point (leading zeros do not count) |
@@ -220,7 +223,7 @@ Docs/                          design document, decision log, test plan, AI conv
 Nothing about the conversion is configurable: the limits (30 characters, 15 digits, 2 decimal places) are part of the rules.
 Outside Development the app also sends an HSTS header (D35).
 
-**There is no executable or installer** (D20): the app is built and run with the .NET SDK, as above. A real deployment would be
+**There is no executable or installer** (D20): a published build is tied to one OS and has no launch profile, so no https port for the redirect. The app is built and run with the .NET SDK, as above. A real deployment would be
 published with `dotnet publish -c Release` and needs a real certificate or a reverse proxy; that is not covered here.
 
 **Logging.** A rejected amount writes one Information line from the endpoint with only its `errorCode`; what the user typed is
@@ -265,6 +268,8 @@ of the run it reports.
 **AI usage.** Claude Opus 5.5 and Claude Sonnet 5.5 were used in Claude Code to challenge the design, write the tests and the code,
 and review it; Claude Opus 5.5 on claude.ai was used as a reviewer, to explain options and trade-offs. Every design decision was
 made by the author. The details are in [`Docs/AI/README.md`](Docs/AI/README.md).
+
+**Repository.** The repository is public, at the employer's request, and the link is the submission (D54, D59).
 
 ## 10. Limitations and future work
 

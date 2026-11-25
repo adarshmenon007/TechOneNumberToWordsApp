@@ -2,7 +2,7 @@
 
 This is the short story of the design. The full record is [`DesignDecisions.md`](DesignDecisions.md): every decision, the reason,
 and the alternatives that were rejected. Numbers such as D7 or E4 below are rows in that file. The author made every decision;
-section 9 says how AI was used.
+section 9 says how AI was used. S1 to S6 are the brief's six submission requirements, and R0 to R7 are its IO example and the seven items under "Please include"; the test plan maps each to its evidence.
 
 ## 1. Summary
 
@@ -29,6 +29,7 @@ page checks nothing itself (D6).
   test project uses xUnit and `Microsoft.AspNetCore.Mvc.Testing`. Test tools are not libraries the product depends on.
 - **No executable.** The brief says "executable if applicable". It does not apply (D20). The app runs with `dotnet run`. A
   published build would be tied to one operating system and would have no launch profile, so no port for the HTTPS redirect.
+- **Public repository.** The repository is public, at the employer's request, and the link is the submission (D54, D59).
 
 ## 3. Architecture
 
@@ -53,7 +54,7 @@ page checks nothing itself (D6).
 ```
 
 There are three projects. `Core` knows nothing about HTTP. `Web` knows nothing about how words are made. `Tests` calls the public
-class and the real HTTP pipeline (D2, D50). `ConvertEndpoint` only checks that a body and an amount exist, then maps the result
+class and the real HTTP pipeline (D25, D44). `ConvertEndpoint` only checks that a body and an amount exist, then maps the result
 (D23).
 
 ## 4. The algorithm, traced on 123.45
@@ -122,8 +123,8 @@ it is 1 to 99 and a larger group came first. So 1,005 is `ONE THOUSAND AND FIVE`
 
 ## 8. Testing approach
 
-Tests came first. For each step there is a red `test:` commit and then a green `feat:` commit (D52, D53). Two exceptions are
-recorded in [`AI/README.md`](AI/README.md).
+Tests came first. For each step there is a red `test:` commit and then a green `feat:` commit (D52, D53). Three exceptions (`74855e3`, `5c068ee` and D35 step 6b)
+are recorded in [`AI/README.md`](AI/README.md).
 
 - **One data file, two layers.** `conversion-cases.json` has 162 rows. Each runs through the library and through real HTTP
   (D43, D44). So the two layers cannot drift apart.

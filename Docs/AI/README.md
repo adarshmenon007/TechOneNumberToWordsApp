@@ -20,11 +20,11 @@ Claude Code was set to use Opus in plan mode and Sonnet otherwise, for the whole
 
 - **Phases and gates.** The project was built in phases, each on its own branch and merged by pull request with a merge commit
   (D53): library, API, UI, then the documents. Each phase ended in a review gate: a self-review against the decision log, then a
-  review by a fresh-context reviewer (a subagent given only the decision log, the plan and the diff, and told to report, not to
-  edit), then a combined list of findings that the author triaged. Only the fixes the author approved were made.
+  review by a fresh-context reviewer (a subagent with no earlier context, told to report, not to edit), then a combined list of findings that the author triaged. Only the fixes the author approved were made.
 - **Tests first.** For code, a red `test:` commit came before the green `feat:` commit (D52, D53), so the test history shows the
-  order. The exceptions are the focus fix in `74855e3` (E6), checked by `UI-015`, and the HTTPS redirect and HSTS (D35, slice 9 step 6b),
-  checked by `UI-018`; neither has an automated test.
+  order. The exceptions are the focus fix in `74855e3` (E6), checked by `UI-015`; the darker focus outline and the removal of `aria-busy` in
+  `5c068ee` (D5, E6), checked by the manual cases; and the HTTPS redirect and HSTS (D35, slice 9 step 6b), checked by `UI-018`. None
+  of the three has a red test commit or an automated test.
 - **Decisions.** The author decided; the AI challenged and implemented. A decision that changed was amended, never deleted, so the
   log keeps the history. Where the AI made a mistake that the author caught, the log or the commit history says so.
 - **No internet solutions (S3).** The committed [`.claude/settings.json`](../../.claude/settings.json) denies Claude Code the
