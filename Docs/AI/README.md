@@ -47,6 +47,8 @@ Claude Code was set to use Opus in plan mode and Sonnet otherwise, for the whole
 | `03-api-claude-ai-review.md` | claude.ai reviewer chat, API phase |
 | `04-ui.md` | Claude Code export, UI phase (gate 3) |
 | `04-ui-plan.md` | The plan file at the end of the UI phase |
+| `05-docs.md` | Claude Code export, documents phase (final gate) |
+| `05-docs-plan.md` | The plan file at the end of the documents phase |
 
 The Claude Code exports are the `/export` output of the sessions. Every export begins with the same first prompt, so a later
 export repeats the earlier part of the session. The claude.ai chat files are edited transcripts: the header of each says what was

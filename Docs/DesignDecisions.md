@@ -44,8 +44,8 @@ and trade-offs were challenged with AI assistance (see `Docs/AI/`).
 | `Docs/AI/03-api-claude-ai-review.md` | claude.ai review chat for the API phase | Written |
 | `Docs/AI/04-ui.md` | Conversation export, UI phase | Written |
 | `Docs/AI/04-ui-plan.md` | Plan file as at the end of the UI phase | Written |
-| `Docs/AI/05-docs.md` | Conversation export, documents phase (final gate) | (to be written at the final gate) |
-| `Docs/AI/05-docs-plan.md` | Plan file as at the end of the documents phase | (to be written at the final gate) |
+| `Docs/AI/05-docs.md` | Conversation export, documents phase (final gate) | Written |
+| `Docs/AI/05-docs-plan.md` | Plan file as at the end of the documents phase | Written |
 | `Readme.md` | Build, host and use (brief item 6) | Written and complete: quick start with clone and build, using the page, API reference, tests, structure, configuration, troubleshooting, no CI, documentation and AI usage, limitations |
 
 ## Decision log
