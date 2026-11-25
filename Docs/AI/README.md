@@ -11,10 +11,10 @@ author.** The AI set out options with trade-offs and a recommendation; the autho
 |---|---|---|
 | Claude Code (terminal) | Claude Opus 5.5 | Everything done in plan mode: the whole design phase, and the planning and the options at the start of each slice (reading the brief, challenging it, and setting out options and trade-offs for the author to decide) |
 | Claude Code (terminal) | Claude Sonnet 5.5 | Everything else: the tests, the code, running the tests, the commits (it is the model named in the `Co-Authored-By` trailer of every commit Claude Code made), the self-reviews and the document drafts |
+| claude.ai (web chat) | Claude Opus 5.5 | A reviewer, in a separate chat from Claude Code. It explained the technical points and the options and trade-offs before decisions such as D40, checked Claude Code's replies against the decision log and the repository files (read-only), and drafted replies for the author to send |
 
 Claude Code was set to use Opus in plan mode and Sonnet otherwise, for the whole project. The banner at the top of every export shows
 `Opus 5.5` because the sessions began in plan mode.
-| claude.ai (web chat) | Claude Opus 5.5 | A reviewer, in a separate chat from Claude Code. It explained the technical points and the options and trade-offs before decisions such as D40, checked Claude Code's replies against the decision log and the repository files (read-only), and drafted replies for the author to send |
 
 ## How the work was done
 
@@ -23,8 +23,8 @@ Claude Code was set to use Opus in plan mode and Sonnet otherwise, for the whole
   review by a fresh-context reviewer (a subagent given only the decision log, the plan and the diff, and told to report, not to
   edit), then a combined list of findings that the author triaged. Only the fixes the author approved were made.
 - **Tests first.** For code, a red `test:` commit came before the green `feat:` commit (D52, D53), so the test history shows the
-  order. The exception is the focus fix in `74855e3` (E6): it has no red test commit, because `app.js` has no automated tests; the
-  manual case `UI-015` covers it instead.
+  order. The exceptions are the focus fix in `74855e3` (E6), checked by `UI-015`, and the HTTPS redirect and HSTS (D35, slice 9 step 6b),
+  checked by `UI-018`; neither has an automated test.
 - **Decisions.** The author decided; the AI challenged and implemented. A decision that changed was amended, never deleted, so the
   log keeps the history. Where the AI made a mistake that the author caught, the log or the commit history says so.
 - **No internet solutions (S3).** The committed [`.claude/settings.json`](../../.claude/settings.json) denies Claude Code the
