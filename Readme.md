@@ -9,23 +9,30 @@ A C# web page and server routine that turn an Australian-dollar amount into word
 The routine is a class library with no third-party packages. A small ASP.NET Core Minimal API exposes it as
 `POST /api/convert`, and a single plain HTML page, served by the same app, calls that API.
 
-> **Status: draft.** This Readme describes what exists after the page was built. Sections marked *To be written in slice 11* are
-> filled in when the rest of the project is finished. The reasoning behind every design choice is in
-> [`Docs/DesignDecisions.md`](Docs/DesignDecisions.md) (decision numbers such as D24 below refer to it).
+The reasoning behind every design choice is in [`Docs/DesignDecisions.md`](Docs/DesignDecisions.md); decision numbers such as D24
+below refer to it. The narrative is in [`Docs/DesignDocument.md`](Docs/DesignDocument.md).
 
 ## 1. Quick start
 
-You need the [.NET 10 SDK](https://dotnet.microsoft.com/download) (`global.json` accepts any 10.0.x SDK).
+You need the [.NET 10 SDK](https://dotnet.microsoft.com/download) (`global.json` accepts any 10.0.x SDK) and git.
 
-**Trust the development certificate first**, once per machine, so the browser and `curl` accept `https://localhost`:
+Get the code:
+
+```
+git clone https://github.com/adarshmenon007/TechOneNumberToWordsApp.git
+cd TechOneNumberToWordsApp
+```
+
+**Trust the development certificate**, once per machine, so the browser and `curl` accept `https://localhost`:
 
 ```
 dotnet dev-certs https --trust
 ```
 
-Then, from the repository root:
+Build (warnings are errors, D39), then run, both from the repository root:
 
 ```
+dotnet build
 dotnet run --project src/TechOneNumberToWordsApp.Web
 ```
 
@@ -196,7 +203,7 @@ tests/
     Api/                           HTTP tests (in-memory server, and real Kestrel for the body limit)
     TestData/conversion-cases.json one data file, run through the library and through HTTP
     test.runsettings, xunit.runner.json
-Docs/                          decision log, test plan, AI conversation history
+Docs/                          design document, decision log, test plan, AI conversation history
 ```
 
 `Core` has no dependency on `Web`, and neither has any NuGet package (D4).
@@ -213,12 +220,21 @@ Docs/                          decision log, test plan, AI conversation history
 Nothing about the conversion is configurable: the limits (30 characters, 15 digits, 2 decimal places) are part of the rules.
 Outside Development the app also sends an HSTS header (D35).
 
+**There is no executable or installer** (D20): the app is built and run with the .NET SDK, as above. A real deployment would be
+published with `dotnet publish -c Release` and needs a real certificate or a reverse proxy; that is not covered here.
+
 **Logging.** A rejected amount writes one Information line from the endpoint with only its `errorCode`; what the user typed is
 never logged (D33). A successful conversion writes nothing of its own. An unexpected exception is logged once, as an Error with
 the exception.
 
 ## 7. Troubleshooting
 
+- **`dotnet` says it cannot find an SDK, or the .NET 10 SDK.** Install the [.NET 10 SDK](https://dotnet.microsoft.com/download).
+  `dotnet --list-sdks` shows what is installed; `global.json` needs 10.0.100 or a later 10.0 SDK.
+- **"Failed to bind to address … address already in use" (port 5443 or 5080).** Another program, or another copy of this app,
+  already uses the port. Stop it, or run on other ports (the plain-http port is the one that redirects):
+  `dotnet run --project src/TechOneNumberToWordsApp.Web --urls "https://localhost:5444;http://localhost:5081"`, then open
+  https://localhost:5444.
 - **The browser or `curl` complains about the certificate.** Run `dotnet dev-certs https --trust`. On Linux that command does not
   trust the certificate system-wide, and `http://localhost:5080` only redirects to the https address, so it does not help. Tell
   your client to skip certificate verification (`curl -k`, or the equivalent in your HTTP tool).
@@ -233,20 +249,33 @@ the exception.
 
 ## 8. Continuous integration
 
-*To be written in slice 11.*
+There is none (D36). The tests are run with `dotnet test` (section 4); the test plan records the date, the commit and the result
+of the run it reports.
 
 ## 9. Documentation and AI usage
 
 | Document | What it is |
 |---|---|
+| [`Docs/DesignDocument.md`](Docs/DesignDocument.md) | The design rationale: how the brief was read, the architecture, the algorithm traced on `123.45`, the alternatives rejected |
 | [`Docs/DesignDecisions.md`](Docs/DesignDecisions.md) | Every design decision, with the reason and the alternatives that were rejected |
-| [`Docs/TestPlan.md`](Docs/TestPlan.md) | The test plan, traceability and results |
-| [`Docs/AI/`](Docs/AI) | The AI conversation history, one export per phase, with the plan files |
+| [`Docs/TestPlan.md`](Docs/TestPlan.md) | The test plan, traceability from the brief to the tests, results and coverage, and the manual page cases |
+| [`Docs/AI/README.md`](Docs/AI/README.md) | Which AI models were used and for what, and an index of the conversation history |
+| [`Docs/AI/`](Docs/AI) | The conversation history: one export per phase, with the plan file for each |
 
-*The design document, and the account of which AI models were used and how, are to be written in slice 11.*
+**AI usage.** Claude Opus 5.5 and Claude Sonnet 5.5 were used in Claude Code to challenge the design, write the tests and the code,
+and review it; Claude Opus 5.5 on claude.ai was used as a reviewer, to explain options and trade-offs. Every design decision was
+made by the author. The details are in [`Docs/AI/README.md`](Docs/AI/README.md).
 
 ## 10. Limitations and future work
 
-*To be finished in slice 11.* So far:
+**Limitations**
 
-- The page needs a current browser (2022 or later). It was checked in Chrome only.
+- Australian dollars only, with cents always two digits (D40).
+- Amounts from 0 to 999,999,999,999,999.99; no negative amounts. Output is English, in capitals.
+- The page needs a current browser (2022 or later). It was checked in Chrome only, and no screen reader was tested.
+- It is a sample application: no authentication, no rate limiting, development certificate only, and no executable or CI (D20, D36).
+
+**Future work**
+
+- More currencies: extract an interface and move the unit words into currency data (D40).
+- Rate limiting, a health-check endpoint, API versioning (`/api/v1`), and localised messages.
