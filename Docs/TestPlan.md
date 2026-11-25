@@ -1,7 +1,7 @@
 # Test Plan — Number to Words Web Page
 
-**Status:** draft, library, API and page sections (review gates 1 to 3). The manual UI outcomes (section 1.5) are recorded by the
-author and are still empty. Slice 11 finishes the whole document (D52). Decision numbers (D8, E3, …) refer to [`DesignDecisions.md`](DesignDecisions.md).
+**Status:** draft, library, API and page sections (review gates 1 to 3). The manual UI outcomes (section 1.5) were recorded by the
+author on 2026-11-25: all 19 passed. Slice 11 finishes the whole document (D52). Decision numbers (D8, E3, …) refer to [`DesignDecisions.md`](DesignDecisions.md).
 
 ## 1. What is tested, and how
 
@@ -12,7 +12,7 @@ The amount-to-words routine lives in `TechOneNumberToWordsApp.Core`. Every test 
 |---|---|---|
 | Library (`Core`): parsing, validation, wording | `tests/TechOneNumberToWordsApp.Tests/Unit/` | Done: sections 1.1 to 1.3 |
 | HTTP API (`Web`): same data over HTTP, error shape, security headers (also on the page's files), 413, logging | `tests/…/Api/` | Done: section 1.4 |
-| Page (`wwwroot`): manual cases `UI-xxx`, plus `SEC-005` and `SEC-014` | this document | Cases written (section 1.5); outcomes to be recorded by the author |
+| Page (`wwwroot`): manual cases `UI-xxx`, plus `SEC-005` and `SEC-014` | this document | Done: cases and outcomes in section 1.5 (all 19 passed) |
 
 ### 1.1 One data file drives the conversion tests (D43, D44)
 
@@ -152,25 +152,25 @@ the browser.
 
 | ID | Decisions | Steps | Expected | Outcome |
 |---|---|---|---|---|
-| `UI-001` | R0, R1, D5, D40 | Type `123.45`, click **Convert** | The box shows ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS. The label reads "Amount (AUD)"; there is no currency dropdown; the heading is "Amount to Words" | |
-| `UI-002` | D5 | Type `5`, press Enter without clicking | FIVE DOLLARS | |
-| `UI-003` | D58 | Convert `1`, then `0.01`, then `.5` | ONE DOLLAR, ONE CENT, FIFTY CENTS | |
-| `UI-004` | D6, D29 | Paste a 40-character string of digits. Check the field, then click **Convert** | The field keeps all 40 characters (no `maxlength`); the box shows the "amount is too long" message from the server | |
-| `UI-005` | D24, D19 | Convert `12a` | The server's message about the invalid character `'a' (U+0061)`, in error styling with a visible "Error" label; no words | |
-| `UI-006` | D19 | Leave the field empty, click **Convert** | "Please enter an amount." | |
-| `UI-007` | D22 | Convert `$5` | "Please enter the amount without a currency symbol. Amounts are in Australian dollars." | |
-| `UI-008` | C1, D37 | Paste about 2,000 digits, click **Convert** | The same "too long" message as `UI-004`; the Network tab shows a 413 | |
-| `UI-009` | D24, D34 | Convert `<b>x</b>` | The message appears as plain text naming `'<' (U+003C)`; no element is created from the input and nothing is bold (the "Error" label is its own element) | |
-| `UI-010` | E4 | Convert `5😀`, then a full-width `５` | Each message shows the character and its code point correctly | |
-| `UI-011` | E6 | Network throttling "Slow 3G". Convert `5`; while it is pending press Enter again and try to type in the field | The button is disabled, the field is read-only (focus stays, typing changes nothing), the old result is gone, "Converting…" shows, and only one request appears in the Network tab. When it finishes the button is enabled, the field is editable and the new result shows | |
-| `UI-012` | E6 | Convert `5`, then `12a`, then `5` again | Each result replaces the last: old words never sit beside an error, and the old error is gone after a success | |
-| `UI-013` | F3 | In the Console run `window.fetch = () => Promise.resolve(new Response(JSON.stringify({status:500,traceId:"00-abc-def-00"}), {status:500, headers:{"Content-Type":"application/problem+json"}}))`, then Convert `5`. Reload the page afterwards | "Something went wrong. Please try again. Reference: 00-abc-def-00"; the button is enabled again | |
-| `UI-014` | D24, D60 | DevTools Network "Offline" (or stop the server), Convert `5`; then go back online and Convert again | The fallback, "Something went wrong. Please try again." (no Reference); the button is enabled again and the field editable; the next conversion works without reloading | |
-| `UI-015` | R1 (accessibility basics) | Keyboard only: Tab through the page; click the label; press Enter in the field. Then Tab to the **Convert** button and start a conversion from it with Enter or Space, and press Tab again. In DevTools > Accessibility, inspect the box | Tab goes input then button; the focus outline is visible; the label click focuses the field; Enter submits; the box is a `status` live region and the hint is the input's description; after a conversion started from the Convert button with the keyboard, the next Tab goes to a sensible place, not back to the top of the page | |
-| `UI-016` | R1 | Zoom to 200%, then narrow the window to 320 px | No horizontal scrolling and nothing clipped; the input and button wrap | |
-| `UI-017` | D34, C3 | Reload with the Console and Network cleared | No console errors or CSP violation messages; no 404; the icon loads as `image/svg+xml`; `/` shows the four security headers | |
-| `UI-018` | D35 | Open `http://localhost:5080` | It redirects to `https://localhost:5443` and the page loads | |
-| `UI-019` | D60 | In the Console run `window.fetch = (u, o) => new Promise((_, reject) => o.signal.addEventListener('abort', () => reject(o.signal.reason)))`, then Convert `5` and wait 15 seconds. Reload the page afterwards | After about 15 seconds the fallback, "Something went wrong. Please try again."; the button is enabled again and the field editable | |
+| `UI-001` | R0, R1, D5, D40 | Type `123.45`, click **Convert** | The box shows ONE HUNDRED AND TWENTY-THREE DOLLARS AND FORTY-FIVE CENTS. The label reads "Amount (AUD)"; there is no currency dropdown; the heading is "Amount to Words" | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-002` | D5 | Type `5`, press Enter without clicking | FIVE DOLLARS | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-003` | D58 | Convert `1`, then `0.01`, then `.5` | ONE DOLLAR, ONE CENT, FIFTY CENTS | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-004` | D6, D29 | Paste a 40-character string of digits. Check the field, then click **Convert** | The field keeps all 40 characters (no `maxlength`); the box shows the "amount is too long" message from the server | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-005` | D24, D19 | Convert `12a` | The server's message about the invalid character `'a' (U+0061)`, in error styling with a visible "Error" label; no words | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-006` | D19 | Leave the field empty, click **Convert** | "Please enter an amount." | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-007` | D22 | Convert `$5` | "Please enter the amount without a currency symbol. Amounts are in Australian dollars." | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-008` | C1, D37 | Paste about 2,000 digits, click **Convert** | The same "too long" message as `UI-004`; the Network tab shows a 413 | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-009` | D24, D34 | Convert `<b>x</b>` | The message appears as plain text naming `'<' (U+003C)`; no element is created from the input and nothing is bold (the "Error" label is its own element) | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-010` | E4 | Convert `5😀`, then a full-width `５` | Each message shows the character and its code point correctly | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-011` | E6 | Network throttling "Slow 3G". Convert `5`; while it is pending press Enter again and try to type in the field | The button is disabled, the field is read-only (focus stays, typing changes nothing), the old result is gone, "Converting…" shows, and only one request appears in the Network tab. When it finishes the button is enabled, the field is editable and the new result shows | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-012` | E6 | Convert `5`, then `12a`, then `5` again | Each result replaces the last: old words never sit beside an error, and the old error is gone after a success | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-013` | F3 | In the Console run `window.fetch = () => Promise.resolve(new Response(JSON.stringify({status:500,traceId:"00-abc-def-00"}), {status:500, headers:{"Content-Type":"application/problem+json"}}))`, then Convert `5`. Reload the page afterwards | "Something went wrong. Please try again. Reference: 00-abc-def-00"; the button is enabled again | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-014` | D24, D60 | DevTools Network "Offline" (or stop the server), Convert `5`; then go back online and Convert again | The fallback, "Something went wrong. Please try again." (no Reference); the button is enabled again and the field editable; the next conversion works without reloading | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-015` | R1 (accessibility basics) | Keyboard only: Tab through the page; click the label; press Enter in the field. Then Tab to the **Convert** button and start a conversion from it with Enter or Space, and press Tab again. In DevTools > Accessibility, inspect the box | Tab goes input then button; the focus outline is visible; the label click focuses the field; Enter submits; the box is a `status` live region and the hint is the input's description; after a conversion started from the Convert button with the keyboard, the next Tab goes to a sensible place, not back to the top of the page | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-016` | R1 | Zoom to 200%, then narrow the window to 320 px | No horizontal scrolling and nothing clipped; the input and button wrap | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-017` | D34, C3 | Reload with the Console and Network cleared | No console errors or CSP violation messages; no 404; the icon loads as `image/svg+xml`; `/` shows the four security headers | Pass, 2026-11-25, 16a62e0, Chrome. Needed a hard reload (Ctrl+Shift+R) first, to clear a copy of the page cached from a Visual Studio run |
+| `UI-018` | D35 | Open `http://localhost:5080` | It redirects to `https://localhost:5443` and the page loads | Pass, 2026-11-25, 16a62e0, Chrome |
+| `UI-019` | D60 | In the Console run `window.fetch = (u, o) => new Promise((_, reject) => o.signal.addEventListener('abort', () => reject(o.signal.reason)))`, then Convert `5` and wait 15 seconds. Reload the page afterwards | After about 15 seconds the fallback, "Something went wrong. Please try again."; the button is enabled again and the field editable | Pass, 2026-11-25, 16a62e0, Chrome |
 
 `UI-019` only works because `app.js` passes the timeout signal in the options of its `fetch` call. `SEC-014` (section 1.4) is the automated companion: it scans `app.js` for the calls that insert HTML (D24).
 
@@ -319,7 +319,7 @@ Every error response has an `errorCode` (D24a). The 11 conversion codes of secti
 | Environment | .NET SDK 10.0.401, Windows 11 |
 | Command | `dotnet test` |
 | Result | **364 run, 364 passed, 0 failed, 0 skipped** |
-| Manual UI cases | `UI-001` to `UI-019` (section 1.5): outcomes not yet recorded by the author |
+| Manual UI cases | `UI-001` to `UI-019` (section 1.5): all 19 passed, run by the author in Chrome on 2026-11-25 at `16a62e0` (the last commit; it differs from the commit tested above only in documentation) |
 
 | Part | Tests |
 |---|---|
@@ -428,6 +428,6 @@ checks it in browsers other than Chrome, and no screen reader was tested; the ca
 
 ## 6. Still to come
 
-- **Manual UI outcomes:** the author runs `UI-001` to `UI-019` and records each outcome (pass or fail, date, commit, browser) in
-  section 1.5.
+- **Manual UI outcomes:** done. `UI-001` to `UI-019` all passed in Chrome on 2026-11-25 at `16a62e0` (section 1.5). If the page
+  changes after that commit, the cases that it touches must be run again.
 - **Slice 11:** final results (date, commit, totals, coverage), the finished matrix, and the executable decision (D20).

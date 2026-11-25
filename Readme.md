@@ -32,7 +32,8 @@ dotnet run --project src/TechOneNumberToWordsApp.Web
 The app listens on **https://localhost:5443**. Plain http on `http://localhost:5080` redirects to https (D35). It runs in the
 Development environment (set by `launchSettings.json`).
 
-The launch profile opens the page in your browser (section 2). You can also call the API directly:
+With `dotnet run` no browser opens: open https://localhost:5443 yourself (section 2). Visual Studio does open it. You can also call
+the API directly:
 
 ```
 curl -X POST https://localhost:5443/api/convert -H "Content-Type: application/json" -d '{"amount":"123.45"}'
@@ -50,7 +51,7 @@ Invoke-RestMethod -Method Post -Uri https://localhost:5443/api/convert -ContentT
 
 ## 2. Using the page
 
-Open **https://localhost:5443** (the launch profile does this for you).
+Open **https://localhost:5443**. With `dotnet run` you open it yourself; only Visual Studio opens the browser for you.
 
 1. Type an amount in the **Amount (AUD)** box, for example `1,234.50`. Commas, a decimal point and spaces around the amount are
    fine; the rules are the ones in section 3.
@@ -224,6 +225,8 @@ the exception.
 - **"Failed to determine the https port for redirect" in the log.** The app was started without the launch profile (for example
   with `ASPNETCORE_URLS` set to an http address), so it does not know where to redirect. Plain http still works. Run with
   `dotnet run --project src/TechOneNumberToWordsApp.Web` to use both ports.
+- **The browser console shows errors about `aspnetcore-browser-refresh.js`.** The browser has cached a copy of the page from a
+  Visual Studio run (Visual Studio adds that script). Press Ctrl+Shift+R to reload without the cache.
 - **Finding the log entry for an error you were shown.** The `traceId` in a response is the full W3C id,
   `00-<TraceId>-<SpanId>-<flags>`. The log shows only the 32-character `TraceId`, which is the middle part: search the log for
   that.
