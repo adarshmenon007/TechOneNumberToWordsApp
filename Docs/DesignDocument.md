@@ -62,7 +62,7 @@ class and the real HTTP pipeline (D2, D50). `ConvertEndpoint` only checks that a
 2. **The validator** runs twelve checks in a fixed order (D27): too long, empty, a currency symbol, a minus, a plus, a space
    inside, any other bad character, more than one point, no digits, misplaced commas, more than two decimals, too many digits.
    `123.45` is 6 characters and passes them all.
-3. **The parser** reads one character at a time. There is no `decimal.Parse` and no floating point (D11). Each digit before the
+3. **The parser** reads one character at a time. Commas are skipped. There is no `decimal.Parse` and no floating point (D11). Each digit before the
    point shifts the total one place left and adds itself: `1`, then `12`, then `123`. The `.` switches to cents. The first digit
    after it is tens of cents, so `4` adds 40. The second is single cents, so `5` adds 5. The result is 123 dollars, 45 cents.
 4. **`MoneyWords`** sees that cents are not zero, so it spells both parts. Cents: `FORTY-FIVE` plus `CENTS`, because only exactly
@@ -100,7 +100,7 @@ it is 1 to 99 and a larger group came first. So 1,005 is `ONE THOUSAND AND FIVE`
 | Choice | Rejected | Why (decision) |
 |---|---|---|
 | Result of the routine | `out` parameters | Breaks callers when it grows; no `async` (D7) |
-| Reading the amount | `decimal.Parse` | Depends on the machine's culture; our own parser is short and exact (D11) |
+| Reading the amount | `decimal.Parse` | The brief asks for our own algorithm; a decimal would have to be split back into dollars and cents; culture is easy to get wrong (D11) |
 | Currency | Many currencies, a registry, a dropdown | Not asked for; more code and more tests for no user (D40) |
 | A leading `$` | Accept it | Brings many edge cases (`$ 5`, `-$5`, `5$`); the label already says AUD (D22) |
 | Error shape | A custom error record | There would be two shapes once the framework answers (D24) |
@@ -139,9 +139,9 @@ See [`TestPlan.md`](TestPlan.md) for the numbers, the traceability and what is n
 ## 9. AI use and constraints
 
 - **AI use.** Claude Opus 5.5 planned and set out options, and Claude Sonnet 5.5 wrote the tests and the code, in Claude Code. A
-  separate Claude Opus 5.5 chat on claude.ai reviewed the replies. Each phase ended in a review: mine, a fresh-context reviewer
-  agent, then a triage that I decided. Every design decision was mine. [`AI/README.md`](AI/README.md) has the detail and the
-  conversation history.
+  separate Claude Opus 5.5 chat on claude.ai reviewed the replies. Each phase ended in a review: Claude Code's own review, then a
+  fresh-context reviewer agent, then a triage that I decided. Every design decision was mine. [`AI/README.md`](AI/README.md) has the
+  detail and the conversation history.
 - **No internet (S3).** The committed [`.claude/settings.json`](../.claude/settings.json) denies `WebSearch` and `WebFetch` to
   Claude Code, and has since the first commit.
 - **No packages in the product (S4).** `Core` and `Web` have no `PackageReference`. Check with
