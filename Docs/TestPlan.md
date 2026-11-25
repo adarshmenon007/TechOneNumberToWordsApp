@@ -222,7 +222,7 @@ Library, API and page evidence. Rows marked "later" gain evidence in slice 11.
 | **S3** no internet solutions | D54 | `.claude/settings.json` denies `WebSearch` and `WebFetch` | `git log -p .claude/settings.json` |
 | **S4** no libraries or NuGet packages | D4, D11 | `Core` and `Web` have no `PackageReference`; the parser, validator and wording are hand-written | `grep -c PackageReference src/*/*.csproj` prints 0 for both |
 | **S5** deadline | | not a test matter | |
-| **S6** private repository with reviewer access | D54 | not a test matter | |
+| **S6** submission: the repository is public (from 25 Nov, at TechnologyOne's request) and the link is the submission | D54, D59 | not a test matter | |
 
 ### 3.2 Decisions → tests (generated from the data file and the C# test traits)
 
