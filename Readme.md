@@ -260,7 +260,7 @@ of the run it reports.
 | [`Docs/DesignDecisions.md`](Docs/DesignDecisions.md) | Every design decision, with the reason and the alternatives that were rejected |
 | [`Docs/TestPlan.md`](Docs/TestPlan.md) | The test plan, traceability from the brief to the tests, results and coverage, and the manual page cases |
 | [`Docs/AI/README.md`](Docs/AI/README.md) | Which AI models were used and for what, and an index of the conversation history |
-| [`Docs/AI/`](Docs/AI) | The conversation history: one export per phase, with the plan file for each |
+| [`Docs/AI/`](Docs/AI) | The conversation history: one Claude Code export and plan file per phase, and the claude.ai review chats |
 
 **AI usage.** Claude Opus 5.5 and Claude Sonnet 5.5 were used in Claude Code to challenge the design, write the tests and the code,
 and review it; Claude Opus 5.5 on claude.ai was used as a reviewer, to explain options and trade-offs. Every design decision was
